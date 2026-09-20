@@ -1,0 +1,29 @@
+.note-list-widget {
+    min-height: 0;
+    max-width: var(--max-content-width); /* Inherited from .note-split */
+
+    overflow: visible;
+    contain: none !important;
+    clear: both;
+
+    &.full-height {
+        overflow: auto;
+    }
+}
+
+body.prefers-centered-content {
+    .note-list-widget:not(.full-height),
+    .note-split.type-text .note-list-widget {
+        /* Horizontally center the widget in its parent when the "Keep content centered" option is on */
+        margin-inline: auto;
+    }
+}
+
+.note-list-widget.full-height,
+.note-list-widget.full-height .note-list-widget-content {
+    height: 100%;
+}
+
+.note-list-widget video {
+    height: 100%;
+}

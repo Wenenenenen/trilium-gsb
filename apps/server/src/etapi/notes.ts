@@ -1,0 +1,270 @@
+import { type ExportFormat, note_service as noteService, NoteParams, search as searchService, SearchContext, SearchParams, TaskContext, zipExportService, zipImportService } from "@triliumnext/core";
+import { becca } from "@triliumnext/core";
+import type { Request, Router } from "express";
+import type { ParsedQs } from "qs";
+
+import utils from "../services/utils.js";
+import eu from "./etapi_utils.js";
+import type { ValidatorMap } from "./etapi-interface.js";
+import mappers from "./mappers.js";
+import v from "./validators.js";
+
+function register(router: Router) {
+    eu.route(router, "get", "/etapi/notes", (req, res, next) => {
+        const { search } = req.query;
+
+        if (typeof search !== "string" || !search?.trim()) {
+            throw new eu.EtapiError(400, "SEARCH_QUERY_PARAM_MANDATORY", "'search' query parameter is mandatory.");
+        }
+
+        const searchParams = parseSearchParams(req);
+        const searchContext = new SearchContext(searchParams);
+
+        const searchResults = searchService.findResultsWithQuery(search, searchContext);
+        const foundNotes = searchResults.map((sr) => becca.notes[sr.noteId]);
+
+        const resp: any = {
+            results: foundNotes.map((note) => mappers.mapNoteToPojo(note))
+        };
+
+        if (searchContext.debugInfo) {
+            resp.debugInfo = searchContext.debugInfo;
+        }
+
+        res.json(resp);
+    });
+
+    eu.route<{ noteId: string }>(router, "get", "/etapi/notes/:noteId", (req, res, next) => {
+        const note = eu.getAndCheckNote(req.params.noteId);
+
+        res.json(mappers.mapNoteToPojo(note));
+    });
+
+    const ALLOWED_PROPERTIES_FOR_CREATE_NOTE: ValidatorMap = {
+        parentNoteId: [v.mandatory, v.notNull, v.isNoteId],
+        title: [v.mandatory, v.notNull, v.isString],
+        type: [v.mandatory, v.notNull, v.isNoteType],
+        mime: [v.notNull, v.isString],
+        content: [v.notNull, v.isString],
+        notePosition: [v.notNull, v.isInteger],
+        prefix: [v.notNull, v.isString],
+        isExpanded: [v.notNull, v.isBoolean],
+        noteId: [v.notNull, v.isValidEntityId],
+        dateCreated: [v.notNull, v.isString, v.isLocalDateTime],
+        utcDateCreated: [v.notNull, v.isString, v.isUtcDateTime]
+    };
+
+    eu.route(router, "post", "/etapi/create-note", (req, res, next) => {
+        const _params = {};
+        eu.validateAndPatch(_params, req.body, ALLOWED_PROPERTIES_FOR_CREATE_NOTE);
+        const params = _params as NoteParams;
+
+        // Validate MIME type for image notes
+        if (params.type === "image" && params.mime && !params.mime.toLowerCase().startsWith("image/")) {
+            throw new eu.EtapiError(400, "INVALID_MIME_FOR_IMAGE", `MIME type '${params.mime}' is not allowed for image notes. MIME must start with 'image/'.`);
+        }
+
+        try {
+            const resp = noteService.createNewNote(params);
+
+            res.status(201).json({
+                note: mappers.mapNoteToPojo(resp.note),
+                branch: mappers.mapBranchToPojo(resp.branch)
+            });
+        } catch (e: any) {
+            return eu.sendError(res, 500, eu.GENERIC_CODE, e.message);
+        }
+    });
+
+    const ALLOWED_PROPERTIES_FOR_PATCH = {
+        title: [v.notNull, v.isString],
+        type: [v.notNull, v.isString],
+        mime: [v.notNull, v.isString],
+        dateCreated: [v.notNull, v.isString, v.isLocalDateTime],
+        utcDateCreated: [v.notNull, v.isString, v.isUtcDateTime]
+    };
+
+    eu.route<{ noteId: string }>(router, "patch", "/etapi/notes/:noteId", (req, res, next) => {
+        const note = eu.getAndCheckNote(req.params.noteId);
+
+        if (note.isProtected) {
+            throw new eu.EtapiError(400, "NOTE_IS_PROTECTED", `Note '${req.params.noteId}' is protected and cannot be modified through ETAPI.`);
+        }
+
+        // Validate MIME type for image notes (check both current and new type/mime)
+        const effectiveType = req.body.type ?? note.type;
+        const effectiveMime = req.body.mime ?? note.mime;
+        const normalizedEffectiveMime = typeof effectiveMime === "string" ? effectiveMime.toLowerCase() : effectiveMime;
+        if (effectiveType === "image" && normalizedEffectiveMime && !normalizedEffectiveMime.startsWith("image/")) {
+            throw new eu.EtapiError(400, "INVALID_MIME_FOR_IMAGE", `MIME type '${effectiveMime}' is not allowed for image notes. MIME must start with 'image/'.`);
+        }
+
+        noteService.saveRevisionIfNeeded(note);
+        eu.validateAndPatch(note, req.body, ALLOWED_PROPERTIES_FOR_PATCH);
+        note.save();
+
+        res.json(mappers.mapNoteToPojo(note));
+    });
+
+    eu.route<{ noteId: string }>(router, "delete", "/etapi/notes/:noteId", (req, res, next) => {
+        const { noteId } = req.params;
+
+        const note = becca.getNote(noteId);
+
+        if (!note) {
+            return res.sendStatus(204);
+        }
+
+        note.deleteNote(null, new TaskContext("no-progress-reporting", "deleteNotes", null));
+
+        res.sendStatus(204);
+    });
+
+    eu.route<{ noteId: string }>(router, "get", "/etapi/notes/:noteId/content", (req, res, next) => {
+        const note = eu.getAndCheckNote(req.params.noteId);
+
+        if (note.isProtected) {
+            throw new eu.EtapiError(400, "NOTE_IS_PROTECTED", `Note '${req.params.noteId}' is protected and content cannot be read through ETAPI.`);
+        }
+
+        const filename = utils.formatDownloadTitle(note.title, note.type, note.mime);
+
+        res.setHeader("Content-Disposition", utils.getContentDisposition(filename));
+
+        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        res.setHeader("Content-Type", note.mime);
+
+        res.send(note.getContent());
+    });
+
+    eu.route<{ noteId: string }>(router, "put", "/etapi/notes/:noteId/content", (req, res, next) => {
+        const note = eu.getAndCheckNote(req.params.noteId);
+
+        if (note.isProtected) {
+            throw new eu.EtapiError(400, "NOTE_IS_PROTECTED", `Note '${req.params.noteId}' is protected and cannot be modified through ETAPI.`);
+        }
+
+        noteService.saveRevisionIfNeeded(note);
+        note.setContent(req.body);
+
+        void noteService.asyncPostProcessContent(note, req.body);
+
+        return res.sendStatus(204);
+    });
+
+    eu.route<{ noteId: string }>(router, "get", "/etapi/notes/:noteId/export", (req, res, next) => {
+        const note = eu.getAndCheckNote(req.params.noteId);
+        const format = req.query.format || "html";
+
+        if (typeof format !== "string" || !["html", "markdown", "share"].includes(format)) {
+            throw new eu.EtapiError(400, "UNRECOGNIZED_EXPORT_FORMAT", `Unrecognized export format '${format}', supported values are 'html' (default), 'markdown' or 'share'.`);
+        }
+
+        const taskContext = new TaskContext("no-progress-reporting", "export", null);
+
+        // technically a branch is being exported (includes prefix), but it's such a minor difference yet usability pain
+        // (e.g. branchIds are not seen in UI), that we export "note export" instead.
+        const branch = note.getParentBranches()[0];
+
+        void zipExportService.exportToZip(taskContext, branch, format as ExportFormat, res);
+    });
+
+    eu.route<{ noteId: string }>(router, "post", "/etapi/notes/:noteId/import", (req, res, next) => {
+        const note = eu.getAndCheckNote(req.params.noteId);
+        const taskContext = new TaskContext("no-progress-reporting", "importNotes", null);
+
+        zipImportService.importZip(taskContext, req.body, note).then((importedNote) => {
+            res.status(201).json({
+                note: mappers.mapNoteToPojo(importedNote),
+                branch: mappers.mapBranchToPojo(importedNote.getParentBranches()[0])
+            });
+        }).catch(next); // forward async import errors to the ETAPI error handler
+    });
+
+    eu.route<{ noteId: string }>(router, "post", "/etapi/notes/:noteId/revision", (req, res, next) => {
+        const note = eu.getAndCheckNote(req.params.noteId);
+
+        const description = typeof req.body?.description === "string" ? req.body.description : "";
+        note.saveRevision({ description, source: "etapi" });
+
+        return res.sendStatus(204);
+    });
+}
+
+function parseSearchParams(req: Request) {
+    const rawSearchParams: SearchParams = {
+        fastSearch: parseBoolean(req.query, "fastSearch"),
+        includeArchivedNotes: parseBoolean(req.query, "includeArchivedNotes"),
+        ancestorNoteId: parseString(req.query["ancestorNoteId"]),
+        ancestorDepth: parseString(req.query["ancestorDepth"]), // e.g. "eq5"
+        orderBy: parseString(req.query["orderBy"]),
+        // TODO: Check why the order direction was provided as a number, but it's a string everywhere else.
+        orderDirection: parseOrderDirection(req.query, "orderDirection") as unknown as string,
+        limit: parseInteger(req.query, "limit"),
+        debug: parseBoolean(req.query, "debug")
+    };
+
+    const searchParams: SearchParams = {};
+
+    for (const paramName of Object.keys(rawSearchParams) as (keyof SearchParams)[]) {
+        if (rawSearchParams[paramName] !== undefined) {
+            (searchParams as any)[paramName] = rawSearchParams[paramName];
+        }
+    }
+
+    return searchParams;
+}
+
+const SEARCH_PARAM_ERROR = "SEARCH_PARAM_VALIDATION_ERROR";
+
+function parseString(value: string | ParsedQs | (string | ParsedQs)[] | undefined): string | undefined {
+    if (typeof value === "string") {
+        return value;
+    }
+
+    return undefined;
+}
+
+function parseBoolean(obj: any, name: string) {
+    if (!(name in obj)) {
+        return undefined;
+    }
+
+    if (!["true", "false"].includes(obj[name])) {
+        throw new eu.EtapiError(400, SEARCH_PARAM_ERROR, `Cannot parse boolean '${name}' value '${obj[name]}, allowed values are 'true' and 'false'.`);
+    }
+
+    return obj[name] === "true";
+}
+
+function parseOrderDirection(obj: any, name: string) {
+    if (!(name in obj)) {
+        return undefined;
+    }
+
+    const integer = parseInt(obj[name]);
+
+    if (!["asc", "desc"].includes(obj[name])) {
+        throw new eu.EtapiError(400, SEARCH_PARAM_ERROR, `Cannot parse order direction value '${obj[name]}, allowed values are 'asc' and 'desc'.`);
+    }
+
+    return integer;
+}
+
+function parseInteger(obj: any, name: string) {
+    if (!(name in obj)) {
+        return undefined;
+    }
+
+    const integer = parseInt(obj[name]);
+
+    if (Number.isNaN(integer)) {
+        throw new eu.EtapiError(400, SEARCH_PARAM_ERROR, `Cannot parse integer '${name}' value '${obj[name]}'.`);
+    }
+
+    return integer;
+}
+
+export default {
+    register
+};

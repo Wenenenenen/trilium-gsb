@@ -1,0 +1,45 @@
+.collection-properties {
+    padding: 4px 8px 12px 8px;
+    display: flex;
+    gap: 0.25em;
+    align-items: center;
+    width: 100%;
+    max-width: unset;
+    font-size: 0.8rem;
+    border-bottom: 1px solid var(--main-border-color);
+
+    .dropdown-menu {
+        input.form-control {
+            padding: 2px 8px;
+            margin-left: 1em;
+        }
+    }
+
+    >div {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+    }
+
+    .center-container {
+        flex-grow: 1;
+        justify-content: center;
+    }
+
+    .right-container {
+        justify-content: flex-end;
+    }
+
+    button.btn {
+        min-width: 0;
+    }
+
+    @media (max-width: 991px) {
+        flex-wrap: wrap;
+        padding: 0.55em 1em;
+
+        >div {
+            flex-grow: 1;
+        }
+    }
+}

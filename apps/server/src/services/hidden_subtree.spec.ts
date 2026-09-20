@@ -1,0 +1,235 @@
+import { deferred, LOCALES } from "@triliumnext/commons";
+import { becca, becca_loader, binary_utils, cls, hidden_subtree as hiddenSubtreeService, i18n, note_service as notes, TaskContext } from "@triliumnext/core";
+import protectedSessionService from "@triliumnext/core/src/services/protected_session.js";
+import { beforeAll, describe, expect, it } from "vitest";
+
+import branches from "./branches.js";
+import sql_init from "./sql_init.js";
+
+describe("Hidden Subtree", () => {
+    beforeAll(async () => {
+        sql_init.initializeDb();
+        await sql_init.dbReady;
+        cls.init(() => hiddenSubtreeService.checkHiddenSubtree());
+    });
+
+    describe("Launcher movement persistence", () => {
+        it("should persist launcher movement between visible and available after integrity check", () => {
+            // Move backend log to visible launchers.
+            const backendLogBranch = becca.getBranchFromChildAndParent("_lbBackendLog", "_lbAvailableLaunchers");
+            expect(backendLogBranch).toBeDefined();
+
+            // Move launcher to visible launchers.
+            cls.init(() => {
+                branches.moveBranchToNote(backendLogBranch!, "_lbVisibleLaunchers");
+                hiddenSubtreeService.checkHiddenSubtree();
+            });
+
+            // Ensure the launcher is still in visible launchers.
+            const childBranches = backendLogBranch?.childNote.getParentBranches()
+                .filter((b) => !b.isDeleted);
+            expect(childBranches).toBeDefined();
+            expect(childBranches![0].parentNoteId).toStrictEqual("_lbVisibleLaunchers");
+        });
+
+        it("should enforce the correct placement of help", () => {
+            // First, verify the help note exists in its original correct location
+            const originalBranch = becca.getBranchFromChildAndParent("_help_Vc8PjrjAGuOp", "_help_gh7bpGYxajRS");
+            expect(originalBranch).toBeDefined();
+            expect(originalBranch?.parentNoteId).toBe("_help_gh7bpGYxajRS");
+
+            // Move the help note to an incorrect location (_help root instead of its proper parent)
+            cls.init(() => {
+                branches.moveBranchToNote(originalBranch!, "_help");
+            });
+
+            // Verify the note was moved to the wrong location
+            const movedBranches = becca.notes["_help_Vc8PjrjAGuOp"]?.getParentBranches()
+                .filter((b) => !b.isDeleted);
+            expect(movedBranches).toBeDefined();
+            expect(movedBranches![0].parentNoteId).toBe("_help");
+
+            // Run the hidden subtree integrity check
+            cls.init(() => {
+                hiddenSubtreeService.checkHiddenSubtree(true);
+            });
+
+            // Verify that the integrity check moved the help note back to its correct location
+            const correctedBranches = becca.notes["_help_Vc8PjrjAGuOp"]?.getParentBranches()
+                .filter((b) => !b.isDeleted);
+            expect(correctedBranches).toBeDefined();
+            expect(correctedBranches![0].parentNoteId).toBe("_help_gh7bpGYxajRS");
+
+            // Ensure the note is no longer under the incorrect parent
+            const helpRootChildren = becca.notes["_help"]?.getChildNotes();
+            const incorrectChild = helpRootChildren?.find(note => note.noteId === "_help_Vc8PjrjAGuOp");
+            expect(incorrectChild).toBeUndefined();
+        });
+
+        it("enforces renames of launcher notes", () => {
+            const jumpToNote = becca.getNote("_lbJumpTo");
+            expect(jumpToNote).toBeDefined();
+            jumpToNote!.title = "Renamed";
+
+            cls.init(() => {
+                jumpToNote!.save();
+                hiddenSubtreeService.checkHiddenSubtree(true);
+            });
+
+            const updatedJumpToNote = becca.getNote("_lbJumpTo");
+            expect(updatedJumpToNote).toBeDefined();
+            expect(updatedJumpToNote?.title).not.toBe("Renamed");
+        });
+
+        it("enforces renames of templates", () => {
+            const boardTemplate = becca.getNote("_template_board");
+            expect(boardTemplate).toBeDefined();
+            boardTemplate!.title = "My renamed board";
+
+            cls.init(() => {
+                boardTemplate!.save();
+                hiddenSubtreeService.checkHiddenSubtree(true);
+            });
+
+            const updatedBoardTemplate = becca.getNote("_template_board");
+            expect(updatedBoardTemplate).toBeDefined();
+            expect(updatedBoardTemplate?.title).not.toBe("My renamed board");
+        });
+
+        it("enforces webviewSrc of templates", () => {
+            const apiRefNote = becca.getNote("_help_9qPsTWBorUhQ");
+            expect(apiRefNote).toBeDefined();
+
+            cls.init(() => {
+                apiRefNote!.setAttribute("label", "webViewSrc", "foo");
+                apiRefNote!.save();
+                hiddenSubtreeService.checkHiddenSubtree(true);
+            });
+
+            const updatedApiRefNote = becca.getNote("_help_9qPsTWBorUhQ");
+            expect(updatedApiRefNote).toBeDefined();
+            expect(updatedApiRefNote?.getLabelValue("webViewSrc")).not.toBe("foo");
+        });
+
+        it("maintains launchers hidden, if they were shown by default but moved by the user", () => {
+            const launcher = becca.getNote("_lbCalendar");
+            const branch = launcher?.getParentBranches()[0];
+            expect(branch).toBeDefined();
+            expect(branch!.parentNoteId).toBe("_lbVisibleLaunchers");
+            expect(launcher).toBeDefined();
+
+            cls.init(() => {
+                branches.moveBranchToNote(branch!, "_lbAvailableLaunchers");
+                hiddenSubtreeService.checkHiddenSubtree();
+            });
+
+            const newBranches = launcher?.getParentBranches().filter(b => !b.isDeleted);
+            expect(newBranches).toHaveLength(1);
+            expect(newBranches![0].parentNoteId).toBe("_lbAvailableLaunchers");
+        });
+
+        it("can restore names in all languages", async () => {
+            const done = deferred<void>();
+            cls.wrap(async () => {
+                for (const locale of LOCALES) {
+                    if (locale.contentOnly) {
+                        continue;
+                    }
+
+                    try {
+                        await i18n.changeLanguage(locale.id);
+                    } catch (error) {
+                        done.reject(error);
+                    }
+                }
+                done.resolve();
+            })();
+            await done;
+        });
+    });
+
+    describe("Hidden subtree", () => {
+        it("cleans up exclude from note map at the root", async () => {
+            const hiddenSubtree = becca.getNoteOrThrow("_hidden");
+            cls.init(() => hiddenSubtree.addLabel("excludeFromNoteMap"));
+            expect(hiddenSubtree.hasLabel("excludeFromNoteMap")).toBeTruthy();
+            cls.init(() => hiddenSubtreeService.checkHiddenSubtree());
+            expect(hiddenSubtree.hasLabel("excludeFromNoteMap")).toBeFalsy();
+        });
+
+        it("cleans up attribute change in templates", () => {
+            const template = becca.getNoteOrThrow("_template_table");
+            cls.init(() => {
+                template.setLabel("subtreeHidden", "foo");
+                hiddenSubtreeService.checkHiddenSubtree();
+            });
+            expect(template.getLabelValue("subtreeHidden")).toBe("false");
+        });
+
+        it("cleans up item to be deleted", async () => {
+            const noteId = "_lbLlmChat";
+            let llmNote = becca.getNote(noteId);
+
+            cls.init(() => {
+                if (!llmNote) {
+                    llmNote = notes.createNewNote({
+                        parentNoteId: "_lbVisibleLaunchers",
+                        noteId,
+                        title: "LLM chat",
+                        type: "launcher",
+                        content: ""
+                    }).note;
+                }
+
+                hiddenSubtreeService.checkHiddenSubtree();
+                becca_loader.reload("test");
+            });
+
+            llmNote = becca.getNote(noteId);
+            expect(llmNote).toBeFalsy();
+        });
+
+        it("leaves the content of a protected template alone when no protected session is available (#10549)", () => {
+            const dataKey = binary_utils.encodeUtf8("0123456789abcdef"); // exactly 16 bytes
+            const note = becca.getNoteOrThrow("_template_presentation_first");
+            const originalContent = note.getContent();
+            expect(originalContent).toBeTruthy();
+
+            // Simulate a user who protected the hidden template while a protected session was active...
+            protectedSessionService.setDataKey(dataKey);
+            try {
+                cls.init(() => notes.protectNoteRecursively(note, true, false, new TaskContext("test-protect", "protectNotes", { protect: true })));
+                expect(note.isProtected).toBe(true);
+
+                // ...and then the server restarts without a protected session — the boot state of #10549.
+                protectedSessionService.resetDataKey();
+                expect(note.isContentAvailable()).toBe(false);
+
+                // The check must neither throw (it used to crash the server on startup) nor touch the content.
+                expect(() => cls.init(() => hiddenSubtreeService.checkHiddenSubtree(true))).not.toThrow();
+
+                // With the session restored, the content still decrypts to the original.
+                protectedSessionService.setDataKey(dataKey);
+                expect(note.getContent()).toBe(originalContent);
+
+                // Clean up: unprotect the note again so the remaining tests see the default state.
+                cls.init(() => notes.protectNoteRecursively(note, false, false, new TaskContext("test-unprotect", "protectNotes", { protect: false })));
+                expect(note.isProtected).toBe(false);
+                expect(note.getContent()).toBe(originalContent);
+            } finally {
+                protectedSessionService.resetDataKey();
+            }
+        });
+
+        it("fixes attribute of wrong type", () => {
+            const template = becca.getNoteOrThrow("_template_table");
+            cls.init(() => {
+                template.setAttribute("relation", "template", "root");
+                hiddenSubtreeService.checkHiddenSubtree();
+            });
+            const attr = template.getAttributes().find(a => a.name === "template");
+            expect(attr).toBeDefined();
+            expect(attr?.type).toBe("label");
+        });
+    });
+});

@@ -1,0 +1,30 @@
+.modal.export-dialog {
+    .tn-card {
+        margin-bottom: 1rem;
+    }
+
+    .tn-card:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Two-segment toggle that fills the card width. */
+    .export-type-group {
+        display: flex;
+        width: 100%;
+    }
+
+    .export-type-group .btn {
+        flex: 1;
+    }
+
+    /* Format name + "Recommended" badge sitting inline on the tile. */
+    .export-format-heading {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+    }
+
+    .export-recommended-badge {
+        --color: var(--link-color, var(--main-text-color));
+    }
+}

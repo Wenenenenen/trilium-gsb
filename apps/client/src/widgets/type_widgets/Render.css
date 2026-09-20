@@ -1,0 +1,7 @@
+.note-detail-render {
+    position: relative;
+
+    &>.admonition {
+        margin: 1em;
+    }
+}

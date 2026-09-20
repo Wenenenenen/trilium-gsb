@@ -1,0 +1,355 @@
+import appContext, { type CommandData, type CommandListenerData, type EventData, type EventNames, type NoteSwitchedContext } from "../../components/app_context.js";
+import Component from "../../components/component.js";
+import NoteContext from "../../components/note_context.js";
+import splitService from "../../services/resizer.js";
+import { isMobile } from "../../services/utils.js";
+import type BasicWidget from "../basic_widget.js";
+import NoteContextAwareWidget from "../note_context_aware_widget.js";
+import FlexContainer from "./flex_container.js";
+
+interface SplitNoteWidget extends BasicWidget {
+    hasBeenAlreadyShown?: boolean;
+    ntxId?: string;
+}
+
+type WidgetFactory = () => SplitNoteWidget;
+
+export default class SplitNoteContainer extends FlexContainer<SplitNoteWidget> {
+
+    private widgetFactory: WidgetFactory;
+    private widgets: Record<string, SplitNoteWidget>;
+
+    constructor(widgetFactory: WidgetFactory) {
+        super("row");
+
+        this.widgetFactory = widgetFactory;
+        this.widgets = {};
+
+        this.class("split-note-container-widget");
+        this.css("flex-grow", "1");
+        this.collapsible();
+    }
+
+    async newNoteContextCreatedEvent({ noteContext }: EventData<"newNoteContextCreated">) {
+        const widget = this.widgetFactory();
+
+        const $renderedWidget = widget.render();
+
+        $renderedWidget.attr("data-ntx-id", noteContext.ntxId);
+        $renderedWidget.on("click", () => appContext.tabManager.activateNoteContext(noteContext.ntxId));
+
+        this.$widget.append($renderedWidget);
+
+        widget.handleEvent("initialRenderComplete", {});
+
+        widget.toggleExt(false);
+
+        if (noteContext.ntxId) {
+            this.widgets[noteContext.ntxId] = widget;
+        }
+
+        await widget.handleEvent("setNoteContext", { noteContext });
+
+        this.child(widget);
+
+        if (noteContext.mainNtxId && noteContext.ntxId && !isMobile()) {
+            splitService.setupNoteSplitResizer([noteContext.mainNtxId,noteContext.ntxId]);
+        }
+    }
+
+    async openNewNoteSplitEvent({ ntxId, notePath, hoistedNoteId, viewScope }: EventData<"openNewNoteSplit">) {
+        const activeContext = appContext.tabManager.getActiveMainContext();
+        const mainNtxId = activeContext?.ntxId;
+        if (!mainNtxId) {
+            console.warn("Missing main note context ID");
+            return;
+        }
+
+        if (!ntxId) {
+            logError("empty ntxId!");
+
+            ntxId = mainNtxId;
+        }
+
+        hoistedNoteId = hoistedNoteId || appContext.tabManager.getActiveContext()?.hoistedNoteId;
+
+
+        const subContexts = activeContext.getSubContexts();
+        let noteContext: NoteContext | undefined;
+        if (isMobile() && subContexts.length > 1) {
+            noteContext = subContexts.find(s => s.ntxId !== ntxId);
+        }
+        if (!noteContext) {
+            noteContext = await appContext.tabManager.openEmptyTab(null, hoistedNoteId, mainNtxId);
+            // remove the original position of newly created note context
+            const ntxIds = appContext.tabManager.children.map((c) => c.ntxId).filter((id) => id !== noteContext?.ntxId) as string[];
+
+            // insert the note context after the originating note context
+            if (!noteContext.ntxId) {
+                logError("Failed to create new note context!");
+                return;
+            }
+            ntxIds.splice(ntxIds.indexOf(ntxId) + 1, 0, noteContext.ntxId);
+
+            this.triggerCommand("noteContextReorder", { ntxIdsInOrder: ntxIds });
+
+            // move the note context rendered widget after the originating widget
+            this.$widget.find(`[data-ntx-id="${noteContext.ntxId}"]`).insertAfter(this.$widget.find(`[data-ntx-id="${ntxId}"]`));
+
+            this.refresh();
+        }
+
+
+        await appContext.tabManager.activateNoteContext(noteContext.ntxId);
+
+        if (notePath) {
+            await noteContext.setNote(notePath, { viewScope });
+        } else {
+            await noteContext.setEmpty();
+        }
+    }
+
+    async closeThisNoteSplitCommand({ ntxId }: CommandListenerData<"closeThisNoteSplit">) {
+        if (!ntxId) return;
+        const contexts = appContext.tabManager.noteContexts;
+        const currentIndex = contexts.findIndex((c) => c.ntxId === ntxId);
+        if (currentIndex === -1) return;
+
+        // the pane showing a pinned note can't be closed (unpin the tab first). Bail before the
+        // demote/reorder below, which would otherwise strip the main context of its pinned state.
+        if (contexts[currentIndex].pinned) {
+            return;
+        }
+
+        // A tab whose only pane is this one has no split to close -- closing it would take the whole
+        // tab down. ClosePaneButton hides itself there; the keyboard action can still ask for it.
+        if (contexts[currentIndex].getMainContext().getSubContexts().length <= 1) {
+            return;
+        }
+
+        const isRemoveMainContext = contexts[currentIndex].isMainContext();
+        if (isRemoveMainContext && currentIndex + 1 < contexts.length) {
+            const ntxIds = contexts.map((c) => c.ntxId).filter((c) => !!c) as string[];
+            this.triggerCommand("noteContextReorder", {
+                ntxIdsInOrder: ntxIds,
+                oldMainNtxId: ntxId,
+                newMainNtxId: ntxIds[currentIndex + 1]
+            });
+        }
+
+        await appContext.tabManager.removeNoteContext(ntxId);
+    }
+
+    async moveThisNoteSplitCommand({ ntxId, isMovingLeft }: CommandListenerData<"moveThisNoteSplit">) {
+        if (!ntxId) {
+            logError("empty ntxId!");
+            return;
+        }
+
+        const contexts = appContext.tabManager.noteContexts;
+
+        const currentIndex = contexts.findIndex((c) => c.ntxId === ntxId);
+        if (currentIndex === -1) {
+            logError(`invalid context! ntxId: ${ntxId}`);
+            return;
+        }
+
+        const leftIndex = isMovingLeft ? currentIndex - 1 : currentIndex;
+
+        // A tab lays its panes out as the main context followed by its sub-contexts, so the right
+        // half of the swapped pair is a sub-context whenever the pair sits inside one tab. Anything
+        // else is at a tab boundary, where a swap would move a pane into the neighbouring tab.
+        // MovePaneButton hides itself in that state; the keyboard actions can still ask for it.
+        if (leftIndex < 0 || leftIndex + 1 >= contexts.length || !contexts[leftIndex + 1].mainNtxId) {
+            return;
+        }
+
+        if (contexts[leftIndex].isEmpty() && contexts[leftIndex + 1].isEmpty()) {
+            // no op
+            return;
+        }
+
+        const ntxIds = contexts.map((c) => c.ntxId).filter((c) => !!c) as string[];
+        const newNtxIds = [...ntxIds.slice(0, leftIndex), ntxIds[leftIndex + 1], ntxIds[leftIndex], ...ntxIds.slice(leftIndex + 2)];
+        const isChangingMainContext = !contexts[leftIndex].mainNtxId;
+
+        this.triggerCommand("noteContextReorder", {
+            ntxIdsInOrder: newNtxIds,
+            oldMainNtxId: isChangingMainContext ? ntxIds[leftIndex] : null,
+            newMainNtxId: isChangingMainContext ? ntxIds[leftIndex + 1] : null
+        });
+
+        // reorder the note context widgets
+        this.$widget.find(`[data-ntx-id="${ntxIds[leftIndex]}"]`).insertAfter(this.$widget.find(`[data-ntx-id="${ntxIds[leftIndex + 1]}"]`));
+
+        // the reorder changes which split is last; the activation below may be a no-op (the moved
+        // context can already be active), so it can't be relied on to refresh.
+        this.refresh();
+
+        // activate context that now contains the original note
+        await appContext.tabManager.activateNoteContext(isMovingLeft ? ntxIds[leftIndex + 1] : ntxIds[leftIndex]);
+
+        splitService.moveNoteSplitResizer(ntxIds[leftIndex]);
+    }
+
+    /*
+     * Entry points for the split keyboard actions. They dispatch from `appContext`, which finds no
+     * matching command on its top-level components and distributes downwards as an event instead, so
+     * they cannot reuse the command handlers above -- those only run when a pane button bubbles the
+     * command up from the pane it belongs to.
+     */
+    async closeActiveNoteSplitEvent({ ntxId }: EventData<"closeActiveNoteSplit">) {
+        await this.closeThisNoteSplitCommand({ ntxId });
+    }
+
+    async moveActiveNoteSplitLeftEvent({ ntxId }: EventData<"moveActiveNoteSplitLeft">) {
+        await this.moveThisNoteSplitCommand({ ntxId, isMovingLeft: true });
+    }
+
+    async moveActiveNoteSplitRightEvent({ ntxId }: EventData<"moveActiveNoteSplitRight">) {
+        await this.moveThisNoteSplitCommand({ ntxId, isMovingLeft: false });
+    }
+
+    activeContextChangedEvent() {
+        this.refresh();
+    }
+
+    noteSwitchedAndActivatedEvent() {
+        this.refresh();
+    }
+
+    noteContextRemovedEvent({ ntxIds }: EventData<"noteContextRemoved">) {
+        for (const ntxId of ntxIds) {
+            this.$widget.find(`[data-ntx-id="${ntxId}"]`).remove();
+
+            const widget = this.widgets[ntxId];
+            if (!widget) {
+                continue;
+            }
+
+            // Detach through this map, not through a `widget.ntxId` lookup: the widgets are whatever
+            // the factory builds (a NoteWrapperWidget on both layouts), and none of them carries an
+            // ntxId -- only the DOM node gets one, as `data-ntx-id`. A filter over `children` reading
+            // `c.ntxId` therefore matches nothing, leaving the closed split in the tree and its
+            // widgets handling events for a pane the user cannot see.
+            this.removeChild(widget);
+            recursiveCleanup(widget);
+            delete this.widgets[ntxId];
+        }
+
+        splitService.delNoteSplitResizer(ntxIds);
+
+        // closing a non-active split fires no activation, so nothing else would refresh here
+        this.refresh();
+    }
+
+    contextsReopenedEvent({ ntxId, mainNtxId, afterNtxId }: EventData<"contextsReopened">) {
+        if (ntxId !== undefined && afterNtxId !== undefined) {
+            this.$widget.find(`[data-ntx-id="${ntxId}"]`).insertAfter(this.$widget.find(`[data-ntx-id="${afterNtxId}"]`));
+        } else if (mainNtxId) {
+            const contexts = appContext.tabManager.noteContexts;
+            const nextIndex = contexts.findIndex(c => c.ntxId === mainNtxId);
+            const beforeNtxId = (nextIndex !== -1 && nextIndex + 1 < contexts.length) ? contexts[nextIndex + 1].ntxId : null;
+
+            this.$widget.find(`[data-ntx-id="${mainNtxId}"]`).insertBefore(this.$widget.find(`[data-ntx-id="${beforeNtxId}"]`));
+        }
+
+        this.refresh();
+    }
+
+    async refresh() {
+        this.toggleExt(true);
+
+        // Mark the active note context.
+        for (const child of this.children as NoteContextAwareWidget[]) {
+            child.$widget.toggleClass("active", !!child.noteContext?.isActive());
+        }
+
+        // Mark the rightmost visible split. CSS can't reach a split from outside #center-pane, so
+        // siblings of it (the right pane peek button) need this hook to match its background.
+        // Read the DOM, not `this.children`: splits are reordered in place, the array is not.
+        const $visibleSplits = this.$widget.children(".note-split:not(.hidden-ext)");
+        $visibleSplits.removeClass("last-visible");
+        $visibleSplits.last().addClass("last-visible");
+    }
+
+    toggleInt(show: boolean) {} // not needed
+
+    toggleExt(show: boolean) {
+        const activeMainContext = appContext.tabManager.getActiveMainContext();
+        const activeNtxId = activeMainContext ? activeMainContext.ntxId : null;
+
+        for (const ntxId in this.widgets) {
+            const noteContext = appContext.tabManager.getNoteContextById(ntxId);
+
+            const widget = this.widgets[ntxId];
+            widget.toggleExt(show && activeNtxId && [noteContext.ntxId, noteContext.mainNtxId].includes(activeNtxId));
+        }
+    }
+
+    /**
+     * widget.hasBeenAlreadyShown is intended for lazy loading of cached tabs - initial note switches of new tabs
+     * are not executed, we're waiting for the first tab activation, and then we update the tab. After this initial
+     * activation, further note switches are always propagated to the tabs.
+     */
+    async handleEventInChildren<T extends EventNames>(name: T, data: EventData<T>) {
+        if (["noteSwitched", "noteSwitchedAndActivated"].includes(name)) {
+            // this event is propagated only to the widgets of a particular tab
+            const noteSwitchedContext = data as NoteSwitchedContext;
+            if (!noteSwitchedContext?.noteContext.ntxId) {
+                return Promise.resolve();
+            }
+            const widget = this.widgets[noteSwitchedContext.noteContext.ntxId];
+
+            if (!widget) {
+                return Promise.resolve();
+            }
+
+            if (widget.hasBeenAlreadyShown || name === "noteSwitchedAndActivated" || appContext.tabManager.getActiveMainContext() === noteSwitchedContext.noteContext.getMainContext()) {
+                widget.hasBeenAlreadyShown = true;
+
+                // Promise.all (not a bare array) so that awaiting triggerEvent("noteSwitched")
+                // genuinely waits for the tab's widgets to process the switch.
+                return Promise.all([ widget.handleEvent("noteSwitched", noteSwitchedContext), this.refreshNotShown(noteSwitchedContext) ]);
+            }
+            return Promise.resolve();
+
+        }
+
+        if (name === "activeContextChanged") {
+            return this.refreshNotShown(data as EventData<"activeContextChanged">);
+        }
+        return super.handleEventInChildren(name, data);
+
+    }
+
+    refreshNotShown(data: NoteSwitchedContext | EventData<"activeContextChanged">) {
+        const promises: (Promise<unknown> | null | undefined)[] = [];
+
+        for (const subContext of data.noteContext.getMainContext().getSubContexts()) {
+            if (!subContext.ntxId) {
+                continue;
+            }
+            const widget = this.widgets[subContext.ntxId];
+
+            if (!widget.hasBeenAlreadyShown) {
+                widget.hasBeenAlreadyShown = true;
+
+                promises.push(widget.handleEvent("activeContextChanged", { noteContext: subContext }));
+            }
+        }
+
+        this.refresh();
+
+        return Promise.all(promises);
+    }
+}
+
+function recursiveCleanup(widget: Component) {
+    for (const child of widget.children) {
+        recursiveCleanup(child);
+    }
+    if ("cleanup" in widget && typeof widget.cleanup === "function") {
+        widget.cleanup();
+    }
+}

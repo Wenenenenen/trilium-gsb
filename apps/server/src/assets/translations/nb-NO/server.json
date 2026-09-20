@@ -1,0 +1,26 @@
+{
+  "keyboard_actions": {
+    "back-in-note-history": "Naviger til forrige notat i historikken",
+    "forward-in-note-history": "Naviger til neste notat i historikken",
+    "open-jump-to-note-dialog": "Åpne \"gå til notat\"-dialogboksen",
+    "scroll-to-active-note": "Skroll notat-treet til aktivt notat",
+    "quick-search": "Aktiver hurtigsøk-feltet",
+    "search-in-subtree": "Søk etter notater i det aktive notatets understruktur",
+    "creating-and-moving-notes": "Lage og flytte notater",
+    "dialogs": "Dialogbokser",
+    "other": "Andre",
+    "expand-subtree": "Utvid undertre for gjeldende notat"
+  },
+  "set_password": {
+    "password": "Passord"
+  },
+  "login": {
+    "title": "Logg inn",
+    "password": "Passord",
+    "button": "Logg inn",
+    "remember-me": "Husk meg"
+  },
+  "share_page": {
+    "parent": "overordnet notat:"
+  }
+}

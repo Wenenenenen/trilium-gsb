@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "../../packages/ckeditor5"
+    },
+    {
+      "path": "../../packages/turndown-plugin-gfm"
+    },
+    {
+      "path": "../../packages/commons"
+    },
+    {
+      "path": "../../packages/trilium-core"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}

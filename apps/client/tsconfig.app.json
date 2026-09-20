@@ -1,0 +1,56 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": [ "ESNext", "DOM.Iterable" ],
+    "outDir": "dist",
+    "types": [
+      "node",
+      "preact"
+    ],
+    "rootDir": "src",
+    "jsx": "react-jsx",
+		"jsxImportSource": "preact",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo"
+  },
+  "exclude": [
+    "out-tsc",
+    "dist",
+    "jest.config.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "vite.config.ts",
+    "vite.config.mts",
+    "vitest.config.ts",
+    "vitest.config.mts",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.tsx",
+    "src/**/*.test.js",
+    "src/**/*.spec.js",
+    "src/**/*.test.jsx",
+    "src/**/*.spec.jsx",
+    "eslint.config.js",
+    "eslint.config.cjs",
+    "eslint.config.mjs"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.json"
+  ],
+  "references": [
+    {
+      "path": "../../packages/highlightjs/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/commons/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/codemirror/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/ckeditor5/tsconfig.lib.json"
+    }
+  ]
+}

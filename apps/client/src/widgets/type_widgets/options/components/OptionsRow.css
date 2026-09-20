@@ -1,0 +1,83 @@
+.option-row {
+    border-bottom: 1px solid var(--main-border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75em 0;
+}
+
+.option-row-label {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.option-row-label > label {
+    margin-bottom: 0 !important;
+}
+
+.option-row-input {
+    flex-shrink: 0;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.option-row-input > select,
+.option-row-input > .dropdown {
+    width: auto;
+    min-width: 150px;
+    max-width: 100%;
+}
+
+.option-row-input > .dropdown button {
+    width: 100%;
+    text-align: start;
+}
+
+/* A choice too long to show is cut short rather than carried off the card. The arrow is a background
+   image with padding reserved for it (forms.css), so it keeps its place at the end. */
+.option-row-input > select,
+.option-row-input > .dropdown > button {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.option-row-description {
+    line-height: 1.3;
+    margin-top: 0.25em;
+    color: var(--muted-text-color);
+}
+
+.option-row:last-child {
+    border-bottom: unset;
+}
+
+.option-row.centered {
+    justify-content: center;
+}
+
+.option-row.stacked {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+}
+
+.option-row.stacked .option-row-input {
+    width: 100%;
+}
+
+@container (max-width: 600px) {
+    /* Rows with compact inputs (toggles, icon buttons) keep the inline layout;
+       only rows with wide inputs (text boxes, selects) stack on narrow widths. */
+    .option-row:not(.stacked):not(:has(.switch-widget)):not(:has(.icon-action)) {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .option-row:not(.stacked):not(:has(.switch-widget)):not(:has(.icon-action)) .option-row-input {
+        width: 100%;
+    }
+}

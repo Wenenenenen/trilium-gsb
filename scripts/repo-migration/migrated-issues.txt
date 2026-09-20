@@ -1,0 +1,933 @@
+Migrated issue #15 - Port server to ES modules to https://github.com/TriliumNext/trilium/issues/4938
+Migrated issue #17 - Hard-coded links in `backend_script_api.js` to https://github.com/TriliumNext/trilium/issues/4939
+Migrated issue #20 - (Feature request) Syntax highlight for code blocks to https://github.com/TriliumNext/trilium/issues/4940
+Migrated issue #21 - Separate client from server (monolithic style) to https://github.com/TriliumNext/trilium/issues/4941
+Migrated issue #22 - Digital signature of Windows executables to https://github.com/TriliumNext/trilium/issues/4942
+Migrated issue #23 - (Feature request) Add a Windows installer to https://github.com/TriliumNext/trilium/issues/4943
+Migrated issue #32 - Markdown Latex support to https://github.com/TriliumNext/trilium/issues/4944
+Migrated issue #34 - (Organization) Review Feature Requests from Original Trilium Repo and Copy or Link Relevant to https://github.com/TriliumNext/trilium/issues/4945
+Migrated issue #35 - Update to CodeMirror 6 to https://github.com/TriliumNext/trilium/issues/4946
+Migrated issue #37 - Remove uses of `any` in server and client to https://github.com/TriliumNext/trilium/issues/4947
+Migrated issue #38 - (Feature request) Basic CI integration for nightly builds to https://github.com/TriliumNext/trilium/issues/4948
+Migrated issue #46 - Instructions for moving [day notes] for new users to https://github.com/TriliumNext/trilium/issues/4949
+Migrated issue #49 - Bring back unit and integration tests to https://github.com/TriliumNext/trilium/issues/4950
+Migrated issue #50 - Port dump-db and other tools to TypeScript to https://github.com/TriliumNext/trilium/issues/4951
+Migrated issue #51 - Fix Electron build to https://github.com/TriliumNext/trilium/issues/4952
+Migrated issue #52 - (Feature request) Add formatter config to https://github.com/TriliumNext/trilium/issues/4953
+Migrated issue #54 - Open note externally does not work on Flatpak builds to https://github.com/TriliumNext/trilium/issues/4954
+Migrated issue #55 - (Feature request) recognising imported LaTeX formulas to https://github.com/TriliumNext/trilium/issues/4955
+Migrated issue #56 - multi-user support to https://github.com/TriliumNext/trilium/issues/4956
+Migrated issue #57 - End-to-end encryption (database-level) to https://github.com/TriliumNext/trilium/issues/4957
+Migrated issue #61 - Use of ETAPI with curl to https://github.com/TriliumNext/trilium/issues/4958
+Migrated issue #64 - (Bug report) EtapiError Prototype Chain Issue to https://github.com/TriliumNext/trilium/issues/4959
+Migrated issue #68 - (Feature request) Multi-factor authentication to https://github.com/TriliumNext/trilium/issues/4960
+Migrated issue #71 - Upgrade to more recent versions of Electron to https://github.com/TriliumNext/trilium/issues/4961
+Migrated issue #72 - mobile UI improvements / mobile version to https://github.com/TriliumNext/trilium/issues/4962
+Migrated issue #73 - better math support/ LaTeX to https://github.com/TriliumNext/trilium/issues/4963
+Migrated issue #74 - footnotes to https://github.com/TriliumNext/trilium/issues/4964
+Migrated issue #75 - flathub verification to https://github.com/TriliumNext/trilium/issues/4965
+Migrated issue #76 - better PDF reader to https://github.com/TriliumNext/trilium/issues/4966
+Migrated issue #77 - table of contents improvements to https://github.com/TriliumNext/trilium/issues/4967
+Migrated issue #78 - Custom login page background to https://github.com/TriliumNext/trilium/issues/4968
+Migrated issue #79 - Note editors other than CKEditor to https://github.com/TriliumNext/trilium/issues/4969
+Migrated issue #80 - ARM version to https://github.com/TriliumNext/trilium/issues/4970
+Migrated issue #81 - personal usage statistics to https://github.com/TriliumNext/trilium/issues/4971
+Migrated issue #82 - simpler link creation to https://github.com/TriliumNext/trilium/issues/4972
+Migrated issue #83 - text "block" inside Note to https://github.com/TriliumNext/trilium/issues/4973
+Migrated issue #84 - Delta viewer for note revisions to https://github.com/TriliumNext/trilium/issues/4974
+Migrated issue #85 - warn user if script is in wrong enviroment to https://github.com/TriliumNext/trilium/issues/4975
+Migrated issue #86 - open in file manager of Trilium's data directory to https://github.com/TriliumNext/trilium/issues/4976
+Migrated issue #87 - signing application on windows/macos to https://github.com/TriliumNext/trilium/issues/4977
+Migrated issue #88 - Auto-update for desktop app to https://github.com/TriliumNext/trilium/issues/4978
+Migrated issue #89 - Distribute as AppImage to https://github.com/TriliumNext/trilium/issues/4979
+Migrated issue #90 - excel-like functionality for tables/table imporvement to https://github.com/TriliumNext/trilium/issues/4980
+Migrated issue #91 - ability to email a note + rx notes via mail to 
+Migrated issue #92 - text alignment to https://github.com/TriliumNext/trilium/issues/4981
+Migrated issue #93 - fix/add mac shortcuts to https://github.com/TriliumNext/trilium/issues/4982
+Migrated issue #94 - initial server setup form cannot be sent with enter key to https://github.com/TriliumNext/trilium/issues/4983
+Migrated issue #95 - search does not find inherited attributes to https://github.com/TriliumNext/trilium/issues/4984
+Migrated issue #96 - undo for subtree operations to https://github.com/TriliumNext/trilium/issues/4985
+Migrated issue #97 - Right to left language support to https://github.com/TriliumNext/trilium/issues/4986
+Migrated issue #98 - zadam/trilium#641 trilium cleanup to https://github.com/TriliumNext/trilium/issues/4987
+Migrated issue #99 - Custom URL Scheme / Open note from command line / desktop URL handler to https://github.com/TriliumNext/trilium/issues/4988
+Migrated issue #100 - (Keyboard) shortcuts for more actions to https://github.com/TriliumNext/trilium/issues/4989
+Migrated issue #101 - better handling of large files to https://github.com/TriliumNext/trilium/issues/4990
+Migrated issue #102 - ability to put images side by side to https://github.com/TriliumNext/trilium/issues/4991
+Migrated issue #103 - External link preview to https://github.com/TriliumNext/trilium/issues/4992
+Migrated issue #104 - standardize date formats to https://github.com/TriliumNext/trilium/issues/4993
+Migrated issue #105 - in-app ui for changing data directory to https://github.com/TriliumNext/trilium/issues/4994
+Migrated issue #106 - use different password to protect notes to https://github.com/TriliumNext/trilium/issues/4995
+Migrated issue #107 - Plugin system to https://github.com/TriliumNext/trilium/issues/4996
+Migrated issue #108 - link to Note Block to https://github.com/TriliumNext/trilium/issues/4997
+Migrated issue #109 - Categorize notes in link map (parent/children/other relation) to https://github.com/TriliumNext/trilium/issues/4998
+Migrated issue #110 - jump back to last edit to https://github.com/TriliumNext/trilium/issues/4999
+Migrated issue #111 - divide recent notes into more categories to https://github.com/TriliumNext/trilium/issues/5000
+Migrated issue #112 - audio recorder to 
+Migrated issue #113 - link file manager folders to https://github.com/TriliumNext/trilium/issues/5001
+Migrated issue #114 - Ability to set logging level / disable file logging to https://github.com/TriliumNext/trilium/issues/5002
+Migrated issue #115 - OCR implementation to https://github.com/TriliumNext/trilium/issues/5003
+Migrated issue #116 - Protocol handler to open desktop app to https://github.com/TriliumNext/trilium/issues/5004
+Migrated issue #117 - markdown export of strikethrough text incorrect to https://github.com/TriliumNext/trilium/issues/5005
+Migrated issue #118 - autocompletion when searching for labels to https://github.com/TriliumNext/trilium/issues/5006
+Migrated issue #119 - sync trilium calendar with external OS calendar to https://github.com/TriliumNext/trilium/issues/5007
+Migrated issue #120 - better visual separation of workspaces to https://github.com/TriliumNext/trilium/issues/5008
+Migrated issue #121 - Collapsable sections/blocks to https://github.com/TriliumNext/trilium/issues/5009
+Migrated issue #122 - Hyperlinks with custom protocols not working to https://github.com/TriliumNext/trilium/issues/5010
+Migrated issue #123 - commenting on note revisions/ manually creating them to https://github.com/TriliumNext/trilium/issues/5011
+Migrated issue #124 - copy button on code blocks to https://github.com/TriliumNext/trilium/issues/5012
+Migrated issue #125 - Relation constraints based on other attributes to https://github.com/TriliumNext/trilium/issues/5013
+Migrated issue #126 - windows installer to https://github.com/TriliumNext/trilium/issues/5014
+Migrated issue #127 - more sponsor options to https://github.com/TriliumNext/trilium/issues/5015
+Migrated issue #128 - Web Clipper doesn't import some code snippets to https://github.com/TriliumNext/trilium/issues/5016
+Migrated issue #129 - markdown syntax improvements to https://github.com/TriliumNext/trilium/issues/5017
+Migrated issue #130 - workspace name in tab title to https://github.com/TriliumNext/trilium/issues/5018
+Migrated issue #131 - similar Notes style is hardcoded to https://github.com/TriliumNext/trilium/issues/5019
+Migrated issue #132 - mindmap note to https://github.com/TriliumNext/trilium/issues/5020
+Migrated issue #133 - Make auto-linking with @ from multi-word name fragments easier to https://github.com/TriliumNext/trilium/issues/5021
+Migrated issue #134 - time relative search terms to link to appropriate day pages to https://github.com/TriliumNext/trilium/issues/5022
+Migrated issue #135 - Option to not expand a subtree when you open a subnote to https://github.com/TriliumNext/trilium/issues/5023
+Migrated issue #136 - link external attachments to https://github.com/TriliumNext/trilium/issues/5024
+Migrated issue #137 - Paragraph toolbar does not scroll with block to https://github.com/TriliumNext/trilium/issues/5025
+Migrated issue #138 - Linting Tool for Codebase to https://github.com/TriliumNext/trilium/issues/5026
+Migrated issue #139 - option to disable the ability to create a new child note with @ to https://github.com/TriliumNext/trilium/issues/5027
+Migrated issue #140 - Option to pin notes, bypassing sort order to https://github.com/TriliumNext/trilium/issues/5028
+Migrated issue #141 - Zen mode to https://github.com/TriliumNext/trilium/issues/5029
+Migrated issue #142 - expiration date for shared notes to https://github.com/TriliumNext/trilium/issues/5030
+Migrated issue #143 - disable sync for certain notes to https://github.com/TriliumNext/trilium/issues/5031
+Migrated issue #144 - High availability sync setup to https://github.com/TriliumNext/trilium/issues/5032
+Migrated issue #145 - toggle aks to delete empty note to https://github.com/TriliumNext/trilium/issues/5033
+Migrated issue #146 - More icon packs to https://github.com/TriliumNext/trilium/issues/5034
+Migrated issue #147 - search and replace Regex to https://github.com/TriliumNext/trilium/issues/5035
+Migrated issue #148 - Annotations on note contents (words, sentences, phrases, blocks/paragraphs) to https://github.com/TriliumNext/trilium/issues/5036
+Migrated issue #149 - save webpage html to note to https://github.com/TriliumNext/trilium/issues/5037
+Migrated issue #150 - add favourite icons to https://github.com/TriliumNext/trilium/issues/5038
+Migrated issue #151 - Special "overview page" showing (all) notes to https://github.com/TriliumNext/trilium/issues/5039
+Migrated issue #152 - Drag-and-drop of file into note content does not work to https://github.com/TriliumNext/trilium/issues/5040
+Migrated issue #153 - better printing options to https://github.com/TriliumNext/trilium/issues/5041
+Migrated issue #154 - Geolocation tags to https://github.com/TriliumNext/trilium/issues/5042
+Migrated issue #156 - Port frontend to TypeScript to https://github.com/TriliumNext/trilium/issues/5043
+Migrated issue #159 - Calendar overview of Note activity (Feature request)  to https://github.com/TriliumNext/trilium/issues/5044
+Migrated issue #161 - Relocate the shared note popup to https://github.com/TriliumNext/trilium/issues/5045
+Migrated issue #162 - (Bug report) Search not working correctly to https://github.com/TriliumNext/trilium/issues/5046
+Migrated issue #170 - Migration Guide to https://github.com/TriliumNext/trilium/issues/5047
+Migrated issue #174 - (Feature request) Change Icon for Jump to Note to https://github.com/TriliumNext/trilium/issues/5048
+Migrated issue #176 - (Feature request) Appearance Settings Optional Sync to https://github.com/TriliumNext/trilium/issues/5049
+Migrated issue #181 - (Feature request) Untrusted (Encrypted) Devices like in Syncthing to https://github.com/TriliumNext/trilium/issues/5050
+Migrated issue #183 - Update Readme for initial release to https://github.com/TriliumNext/trilium/issues/5051
+Migrated issue #184 - Port Wiki to https://github.com/TriliumNext/trilium/issues/5052
+Migrated issue #185 - (Feature request) Export to PDF option to https://github.com/TriliumNext/trilium/issues/5053
+Migrated issue #186 - (Feature request)  Depth in Note Map to https://github.com/TriliumNext/trilium/issues/5054
+Migrated issue #190 - Create Pull Request Template to https://github.com/TriliumNext/trilium/issues/5055
+Migrated issue #191 - Update TriliumNext/Notes Readme to reference new doc file names. to https://github.com/TriliumNext/trilium/issues/5056
+Migrated issue #193 - Fix formatting to https://github.com/TriliumNext/trilium/issues/5057
+Migrated issue #195 - Use TriliumNext Branding to https://github.com/TriliumNext/trilium/issues/5058
+Migrated issue #197 - Note types not preserved during database seed/import to https://github.com/TriliumNext/trilium/issues/5059
+Migrated issue #202 - Uploading image attachment fails to https://github.com/TriliumNext/trilium/issues/5060
+Migrated issue #204 - Renaming a title to empty generates a toast notification with an SQL error to https://github.com/TriliumNext/trilium/issues/5061
+Migrated issue #207 - Unable to import a PDF file to https://github.com/TriliumNext/trilium/issues/5062
+Migrated issue #210 - Sync failed: Cannot read properties of undefined (reading 'utcDateChanged') to https://github.com/TriliumNext/trilium/issues/5063
+Migrated issue #211 - (Bug report) Searching note content fails to https://github.com/TriliumNext/trilium/issues/5064
+Migrated issue #213 - Investigate flaky `services/search.spec.ts` tests to https://github.com/TriliumNext/trilium/issues/5065
+Migrated issue #214 - Fix `spec/etapi` tests and port to vitest to https://github.com/TriliumNext/trilium/issues/5066
+Migrated issue #216 - Update client dependencies to https://github.com/TriliumNext/trilium/issues/5067
+Migrated issue #217 - Update Electron dependencies to https://github.com/TriliumNext/trilium/issues/5068
+Migrated issue #218 - Update server dependencies to https://github.com/TriliumNext/trilium/issues/5069
+Migrated issue #219 - Update TypeScript dependencies to https://github.com/TriliumNext/trilium/issues/5070
+Migrated issue #220 - Update tooling dependencies to https://github.com/TriliumNext/trilium/issues/5071
+Migrated issue #221 - Investigate unused dependency (open) to https://github.com/TriliumNext/trilium/issues/5072
+Migrated issue #222 - Update `better-sqlite3` to https://github.com/TriliumNext/trilium/issues/5073
+Migrated issue #223 - Update Node.js version to https://github.com/TriliumNext/trilium/issues/5074
+Migrated issue #224 - Remove hard-coded libraries to https://github.com/TriliumNext/trilium/issues/5075
+Migrated issue #226 - Canvas: "Copy image reference to clipboard" no longer working to https://github.com/TriliumNext/trilium/issues/5076
+Migrated issue #229 - Remove hard-coded `better-sqlite3` binaries to https://github.com/TriliumNext/trilium/issues/5077
+Migrated issue #233 - Investigate Flatpak builds to https://github.com/TriliumNext/trilium/issues/5078
+Migrated issue #236 - (Bug report) v0.90 cannot sync to 0.63.7 to https://github.com/TriliumNext/trilium/issues/5079
+Migrated issue #237 - Investigate #titleTemplate for template notes to https://github.com/TriliumNext/trilium/issues/5080
+Migrated issue #238 - (Bug report) v.0.90.0-beta random errors when loading notes to https://github.com/TriliumNext/trilium/issues/5081
+Migrated issue #239 - Update translations of the README file to https://github.com/TriliumNext/trilium/issues/5082
+Migrated issue #244 - Frontend JS code exeution error to https://github.com/TriliumNext/trilium/issues/5083
+Migrated issue #247 - (Feature request) Make first day of week configurable to https://github.com/TriliumNext/trilium/issues/5084
+Migrated issue #249 - Error: EPERM: operation not permitted on Windows to https://github.com/TriliumNext/trilium/issues/5085
+Migrated issue #254 - Investigate Windows additional package managers to https://github.com/TriliumNext/trilium/issues/5086
+Migrated issue #262 - (Feature request) Limit the number of Note Revisions to https://github.com/TriliumNext/trilium/issues/5087
+Migrated issue #263 - (Feature request) Option to remove ALL note revisions from the database to https://github.com/TriliumNext/trilium/issues/5088
+Migrated issue #265 - (Feature request) template-Typed Attributes/Relationships to https://github.com/TriliumNext/trilium/issues/5089
+Migrated issue #266 - (Bug report) Initial sync doesn't finish to https://github.com/TriliumNext/trilium/issues/5090
+Migrated issue #267 - Enable verbatim module syntax to https://github.com/TriliumNext/trilium/issues/5091
+Migrated issue #269 - (Bug report) Electron logo shows in Windows "Installed Apps" to https://github.com/TriliumNext/trilium/issues/5092
+Migrated issue #270 - (Bug report) Update Trilium wiki/repo links to reference TriliumNext wiki/repo to https://github.com/TriliumNext/trilium/issues/5093
+Migrated issue #271 - (Bug report) `Search in Note` feature does not find text inside Internal Trilium Link to https://github.com/TriliumNext/trilium/issues/5094
+Migrated issue #274 - Add support for es6-string-html for IDE highlight to https://github.com/TriliumNext/trilium/issues/5095
+Migrated issue #275 - (Bug report) Delete key inside codeblock jumps to the top of code block and tab key intends starting of line instead of where cursor currently is to https://github.com/TriliumNext/trilium/issues/5096
+Migrated issue #276 - Possibility to hide side bar on Mobile Version to https://github.com/TriliumNext/trilium/issues/5097
+Migrated issue #279 - Windows desktop client sync spins forever to https://github.com/TriliumNext/trilium/issues/5098
+Migrated issue #280 - How to switch servers? to https://github.com/TriliumNext/trilium/issues/5099
+Migrated issue #281 - (Bug report) Error importing zip file  to https://github.com/TriliumNext/trilium/issues/5100
+Migrated issue #282 - Can't navigate up on Mermaid diagrams code to https://github.com/TriliumNext/trilium/issues/5101
+Migrated issue #283 - (Feature request) Use mouse wheel to scroll up/down, instead of zoom in/out in mermaid notes to https://github.com/TriliumNext/trilium/issues/5102
+Migrated issue #284 - (Bug report) 0.90.2-beta cannot sync to trilium 0.63.7 server to https://github.com/TriliumNext/trilium/issues/5103
+Migrated issue #286 - Trilium-ckeditor5 Question to https://github.com/TriliumNext/trilium/issues/5104
+Migrated issue #287 - (Bug report) Search doesn't work to https://github.com/TriliumNext/trilium/issues/5105
+Migrated issue #290 - #run=frontendStartup does not work in mobile mode to https://github.com/TriliumNext/trilium/issues/5106
+Migrated issue #293 - Web Clipper needs update to adapt to Chrome manifest V3 to https://github.com/TriliumNext/trilium/issues/5107
+Migrated issue #295 - Deploy to Flathub to https://github.com/TriliumNext/trilium/issues/5108
+Migrated issue #296 - Docker reporting container as not healthy to https://github.com/TriliumNext/trilium/issues/5109
+Migrated issue #297 - Insert Math appears to be broken to https://github.com/TriliumNext/trilium/issues/5110
+Migrated issue #299 - Question: Is there an Docker image at the Moment to https://github.com/TriliumNext/trilium/issues/5111
+Migrated issue #300 - Question: Is there an Docker image at the Moment to https://github.com/TriliumNext/trilium/issues/5112
+Migrated issue #301 - (Bug report) client cannot connect to server to https://github.com/TriliumNext/trilium/issues/5113
+Migrated issue #302 - (Bug report) No docker images available for ARM machines, despite the documentation advertising their availability. to https://github.com/TriliumNext/trilium/issues/5114
+Migrated issue #303 - Blank page after upgrade to https://github.com/TriliumNext/trilium/issues/5115
+Migrated issue #304 - (Bug report) Find/Replace dialog doesn't match theme to https://github.com/TriliumNext/trilium/issues/5116
+Migrated issue #305 - Improve Emoji selection in Special Character selector to https://github.com/TriliumNext/trilium/issues/5117
+Migrated issue #306 - (Bug report) Copying attachment link to clipboard fails to https://github.com/TriliumNext/trilium/issues/5118
+Migrated issue #307 - (Bug report) Similar Notes ribbon item not working to https://github.com/TriliumNext/trilium/issues/5119
+Migrated issue #308 - (Bug report) Error when Duplicating subtree of note that contains broken internal trilium link to https://github.com/TriliumNext/trilium/issues/5120
+Migrated issue #311 - (Bug report) Tray icon is missing on windows to https://github.com/TriliumNext/trilium/issues/5121
+Migrated issue #312 - (Try to) sync app on shutdown to https://github.com/TriliumNext/trilium/issues/5122
+Migrated issue #313 - Update available points to Trilium download instead of TriliumNext to https://github.com/TriliumNext/trilium/issues/5123
+Migrated issue #315 - Add back Alpine build to https://github.com/TriliumNext/trilium/issues/5124
+Migrated issue #318 - Invalid CSRF token on Android phone to https://github.com/TriliumNext/trilium/issues/5125
+Migrated issue #319 - AVIF image compression support  to https://github.com/TriliumNext/trilium/issues/5126
+Migrated issue #321 - Link to releases page is wrong to https://github.com/TriliumNext/trilium/issues/5127
+Migrated issue #320 - (Bug report) Link to releases page is wrong to https://github.com/TriliumNext/trilium/issues/5128
+Migrated issue #323 - (Bug report)  Wrong web link on the Windows app to update to https://github.com/TriliumNext/trilium/issues/5129
+Migrated issue #329 - (Bug report) Damaged macOS binary build to https://github.com/TriliumNext/trilium/issues/5130
+Migrated issue #331 - (Bug report) v0.90.4 docker does not read USER_UID and USER_GID from environment to https://github.com/TriliumNext/trilium/issues/5131
+Migrated issue #335 - Upgrade bootstrap dependencies to https://github.com/TriliumNext/trilium/issues/5132
+Migrated issue #336 - Upgrade Codemirror dependencies to https://github.com/TriliumNext/trilium/issues/5133
+Migrated issue #337 - Upgrade autocomplete dependencies to https://github.com/TriliumNext/trilium/issues/5134
+Migrated issue #338 - internationalization (i18n) / multiple language support to https://github.com/TriliumNext/trilium/issues/5135
+Migrated issue #339 - Landing page for Trilium Next to https://github.com/TriliumNext/trilium/issues/5136
+Migrated issue #340 - Helm chart to https://github.com/TriliumNext/trilium/issues/5137
+Migrated issue #341 - (Bug report) Excess spacing in lists to https://github.com/TriliumNext/trilium/issues/5138
+Migrated issue #344 - (Bug report) katex is not defined to https://github.com/TriliumNext/trilium/issues/5139
+Migrated issue #345 - Hide Electron-specific settings in the web version to https://github.com/TriliumNext/trilium/issues/5140
+Migrated issue #346 - Disable commands that are irrelevant to the settings pages to https://github.com/TriliumNext/trilium/issues/5141
+Migrated issue #347 - Add an option to follow the system's color scheme to https://github.com/TriliumNext/trilium/issues/5142
+Migrated issue #348 - Add a toggle to promote the current note to a template to https://github.com/TriliumNext/trilium/issues/5143
+Migrated issue #350 - (Bug report) scrollbar-color makes the scrollbar appear natively styled to https://github.com/TriliumNext/trilium/issues/5144
+Migrated issue #354 - Allow alternate icon packs for note icons to https://github.com/TriliumNext/trilium/issues/5145
+Migrated issue #357 - Note creation issues with certain template types to https://github.com/TriliumNext/trilium/issues/5146
+Migrated issue #358 - Issue with note title text box border to https://github.com/TriliumNext/trilium/issues/5147
+Migrated issue #361 - (Feature request) Support images with transparent background to https://github.com/TriliumNext/trilium/issues/5148
+Migrated issue #363 - (Bug report) Closing Backlinks popup removes 'Edit' button when in ReadOnly mode to https://github.com/TriliumNext/trilium/issues/5149
+Migrated issue #364 - (Feature Request) Allowed link protocols to https://github.com/TriliumNext/trilium/issues/5150
+Migrated issue #365 - (Bug report) Focus not set to input field when clicking `Include Note` from Block Editor to https://github.com/TriliumNext/trilium/issues/5151
+Migrated issue #368 - 'A JavaScript error occurred in the main process' when launching Trilium to https://github.com/TriliumNext/trilium/issues/5152
+Migrated issue #371 - (Feature request) Connect ghcr package to the repository to https://github.com/TriliumNext/trilium/issues/5153
+Migrated issue #374 - (Feature request) Calendar Navigation is limited - quicker navigation possible? to https://github.com/TriliumNext/trilium/issues/5154
+Migrated issue #375 - (Bug report) Note Tooltip isn't removed when clicking on internal trilium link in read-only mode to https://github.com/TriliumNext/trilium/issues/5155
+Migrated issue #376 - Note remains in Read-Only mode after #readOnly label is removed to https://github.com/TriliumNext/trilium/issues/5156
+Migrated issue #378 - Migration from older versions of Trilium Notes to https://github.com/TriliumNext/trilium/issues/5157
+Migrated issue #382 - (Feature request) 2FA to https://github.com/TriliumNext/trilium/issues/5158
+Migrated issue #383 - Child notes don't refresh on selecting a different note to https://github.com/TriliumNext/trilium/issues/5159
+Migrated issue #384 - (Bug report) Calendar dropdown won't close if click/right-click other button that open notes from launcher bar to https://github.com/TriliumNext/trilium/issues/5160
+Migrated issue #385 - (Bug report) mindmap: pressing F2 (to rename a node) triggres TN's shortcut (Edit branch prefix) to https://github.com/TriliumNext/trilium/issues/5161
+Migrated issue #386 - (Bug report) crash in Chrome 128 to https://github.com/TriliumNext/trilium/issues/5162
+Migrated issue #387 - (Bug report) mindmap: (other) conflicting shortcuts with the rest of the app to https://github.com/TriliumNext/trilium/issues/5163
+Migrated issue #395 - Notes to https://github.com/TriliumNext/trilium/issues/5164
+Migrated issue #397 - (Feature request) Package for Chocolatey to https://github.com/TriliumNext/trilium/issues/5165
+Migrated issue #400 - (Bug report) No docker images available for AMD64 machines since Aug 30, 2024 to https://github.com/TriliumNext/trilium/issues/5166
+Migrated issue #403 - electron-forge's packing includes too many files in its final asar file to https://github.com/TriliumNext/trilium/issues/5167
+Migrated issue #404 - Is it possible to navigate to a block of text (rather than the Main Title) of another Note by simply following backlink? to https://github.com/TriliumNext/trilium/issues/5168
+Migrated issue #405 - (Bug report) Backend JS notes : Migration warning to https://github.com/TriliumNext/trilium/issues/5169
+Migrated issue #406 - (Bug report) "Create and link new note" context menu moves the link to beginning of parent note to https://github.com/TriliumNext/trilium/issues/5170
+Migrated issue #407 - 0.90.6 en/translation.json not found if Trilium does not run from web root to https://github.com/TriliumNext/trilium/issues/5171
+Migrated issue #408 - (Bug report) Check failed: module->status() == kLinked || module->status() == kEvaluated. to https://github.com/TriliumNext/trilium/issues/5172
+Migrated issue #410 - DRAFTS to https://github.com/TriliumNext/trilium/issues/5173
+Migrated issue #411 - '@' Context menu's auto-completion not showing most relevant but most recent to https://github.com/TriliumNext/trilium/issues/5174
+Migrated issue #412 - Clean up DockerHub images/tags to https://github.com/TriliumNext/trilium/issues/5175
+Migrated issue #413 - (Feature request) Mind map: Zoom via Ctrl+Wheel to https://github.com/TriliumNext/trilium/issues/5176
+Migrated issue #415 - (Bug report) When using Docker, mounting an SMB/CIFS folder to `/home/node/trilium-data` causes core dump to https://github.com/TriliumNext/trilium/issues/5177
+Migrated issue #417 - Clicking an entry in the calendar opens the note twice to https://github.com/TriliumNext/trilium/issues/5178
+Migrated issue #419 - Disable automatic quotes to https://github.com/TriliumNext/trilium/issues/5179
+Migrated issue #420 - Calendar API not working to https://github.com/TriliumNext/trilium/issues/5180
+Migrated issue #422 - Strange boxes in note preview to https://github.com/TriliumNext/trilium/issues/5181
+Migrated issue #433 - "require is not a function" when running a script note to https://github.com/TriliumNext/trilium/issues/5182
+Migrated issue #434 - Inline reference to labels to https://github.com/TriliumNext/trilium/issues/5183
+Migrated issue #436 - MR.SNAKE to https://github.com/TriliumNext/trilium/issues/5184
+Migrated issue #437 - (Feature request) Support /metrics endpoint to https://github.com/TriliumNext/trilium/issues/5185
+Migrated issue #438 - (Feature request) Support configuring `trustedReverseProxy` via environment variables to https://github.com/TriliumNext/trilium/issues/5186
+Migrated issue #439 - (Bug report) Setup page blank to https://github.com/TriliumNext/trilium/issues/5187
+Migrated issue #441 - (Bug report) Searching with orderBy doesn't work with dated attributes to https://github.com/TriliumNext/trilium/issues/5188
+Migrated issue #443 - (Feature request) Resizing Left Panel/TOC is too difficult to https://github.com/TriliumNext/trilium/issues/5189
+Migrated issue #446 - Drag and drop note icon to insert link in note to https://github.com/TriliumNext/trilium/issues/5190
+Migrated issue #453 - Allow scrolling when the cursor is in the margins of a note to https://github.com/TriliumNext/trilium/issues/5191
+Migrated issue #454 - Notes not saving to https://github.com/TriliumNext/trilium/issues/5192
+Migrated issue #455 - (Bug report) Relation popup sometimes shows the content of the incorrect note to https://github.com/TriliumNext/trilium/issues/5193
+Migrated issue #456 - Import md with jpeg: broken jpeg to https://github.com/TriliumNext/trilium/issues/5194
+Migrated issue #457 - (Feature request) internal links to notes in Mermaid Diagrams to https://github.com/TriliumNext/trilium/issues/5195
+Migrated issue #459 - (Feature request) Cursor automatically in text box when embedding note to https://github.com/TriliumNext/trilium/issues/5196
+Migrated issue #460 - Delete Note under a parent note with "Book Type", will return  to https://github.com/TriliumNext/trilium/issues/5197
+Migrated issue #462 - (Bug report) Web clipper "save link with a note", cannot see the link in android mobile view to https://github.com/TriliumNext/trilium/issues/5198
+Migrated issue #463 - (Feature request)  Export of HTML with [missing note] could have retained names to https://github.com/TriliumNext/trilium/issues/5199
+Migrated issue #467 - (Bug report) mindmap note suddenly show with file note to https://github.com/TriliumNext/trilium/issues/5200
+Migrated issue #468 - (Feature request) Disable text selection in mermaid diagrams? to https://github.com/TriliumNext/trilium/issues/5201
+Migrated issue #470 - Show Docs url under Notes 'About' panel on right side to https://github.com/TriliumNext/trilium/issues/5202
+Migrated issue #474 - (Bug report) Mermaid diagrams rendered out of viewport to https://github.com/TriliumNext/trilium/issues/5203
+Migrated issue #475 - [REQUEST] Please guide on automating export of trillium notes (using api) to save notes to nextcloud or in local directory to https://github.com/TriliumNext/trilium/issues/5204
+Migrated issue #477 - (Feature request) Image zoom functions / gallery view for shared notes to https://github.com/TriliumNext/trilium/issues/5205
+Migrated issue #479 - [PLUGIN ISSUE]  Issue Regarding  Trilium-chat Plugin  to https://github.com/TriliumNext/trilium/issues/5206
+Migrated issue #481 - (Feature request) custom note icon to https://github.com/TriliumNext/trilium/issues/5207
+Migrated issue #483 - (Bug report) Deployment v0.90.7-beta-server does not work, Error message keeps appearing at startup to https://github.com/TriliumNext/trilium/issues/5208
+Migrated issue #485 - There are horizontal lines under all hyperlinks to https://github.com/TriliumNext/trilium/issues/5209
+Migrated issue #486 - 403 POST tree/load - Invalid CSRF token to https://github.com/TriliumNext/trilium/issues/5210
+Migrated issue #487 - Trilium Demo notes branch review and update to https://github.com/TriliumNext/trilium/issues/5211
+Migrated issue #488 - (Feature request) Introduce stable tag on docker hub to https://github.com/TriliumNext/trilium/issues/5212
+Migrated issue #490 - (Bug report)  api.runOnBackend error says don't use `async` but it's not used to https://github.com/TriliumNext/trilium/issues/5213
+Migrated issue #492 - (Bug report) Scripts can overwrite files in application install dir to https://github.com/TriliumNext/trilium/issues/5214
+Migrated issue #497 - (Bug report) Wiki refers to trillium.cc for 3rd party hosting, which is no longer actively maintained by Zadam. to https://github.com/TriliumNext/trilium/issues/5215
+Migrated issue #498 - (Feature request) Host a demo instance for new user testing to https://github.com/TriliumNext/trilium/issues/5216
+Migrated issue #499 - (Feature request) Friendly share urls: turn title into shareAlias to https://github.com/TriliumNext/trilium/issues/5217
+Migrated issue #500 - (Bug report) Import of .htm keeps htm in title while html does not to https://github.com/TriliumNext/trilium/issues/5218
+Migrated issue #501 - Add a copy button to the code block to https://github.com/TriliumNext/trilium/issues/5219
+Migrated issue #502 - (Feature request)  Add the `#appJs` attribute to load a custom script. to https://github.com/TriliumNext/trilium/issues/5220
+Migrated issue #503 - (Bug report) Promoted boolean attributes no long showing checkbox when the value is true. to https://github.com/TriliumNext/trilium/issues/5221
+Migrated issue #504 - Syntax highlighting in read-only mode code notes to https://github.com/TriliumNext/trilium/issues/5222
+Migrated issue #505 - Error: Router not found for request ... to https://github.com/TriliumNext/trilium/issues/5223
+Migrated issue #506 - (Bug report)  widget api.createNewNote Report an error to https://github.com/TriliumNext/trilium/issues/5224
+Migrated issue #507 - (Feature request)  Why is there no icon file in the .zip file that is required by desktop? to https://github.com/TriliumNext/trilium/issues/5225
+Migrated issue #508 - (Bug report) Firefox extension shortcuts not able to be configured to https://github.com/TriliumNext/trilium/issues/5226
+Migrated issue #511 - (Bug report) Widget initialization failed to https://github.com/TriliumNext/trilium/issues/5227
+Migrated issue #513 - (Feature request) SOCKS Proxy Support in TriliumNext Desktop App to https://github.com/TriliumNext/trilium/issues/5228
+Migrated issue #514 - (Bug report) Search term is not highlighted in preview search result | Improve search result contrast ratio to https://github.com/TriliumNext/trilium/issues/5229
+Migrated issue #516 - (Bug report) toggleTray: Restore from system tray via custom hotkey does not work to https://github.com/TriliumNext/trilium/issues/5230
+Migrated issue #517 - (Bug report)  node.getLabelValues doesn't work in widget. to https://github.com/TriliumNext/trilium/issues/5231
+Migrated issue #518 - (Bug report) Cannot cancel sharing the root note or the root of a workspace when it's hoisted to https://github.com/TriliumNext/trilium/issues/5232
+Migrated issue #521 - Copy and Paste not working, only Text is pasted not Images to https://github.com/TriliumNext/trilium/issues/5233
+Migrated issue #522 - Port issue following certain Windows Updates to https://github.com/TriliumNext/trilium/issues/5234
+Migrated issue #524 - (Feature request) Syntax highlighting code block to https://github.com/TriliumNext/trilium/issues/5235
+Migrated issue #525 - (Bug report) Internal Link: Two Tooltips are displayed to https://github.com/TriliumNext/trilium/issues/5236
+Migrated issue #528 - (Bug report) Canvas note exported to html can't be view due to title name is 13-15 digits long to https://github.com/TriliumNext/trilium/issues/5237
+Migrated issue #529 - (Feature request) Api for image storage and global options for  image copying in trilium to https://github.com/TriliumNext/trilium/issues/5238
+Migrated issue #531 - (Feature request) Insert inline images in text notes to https://github.com/TriliumNext/trilium/issues/5239
+Migrated issue #532 - TriliumNext Web-Clipper Release to https://github.com/TriliumNext/trilium/issues/5240
+Migrated issue #535 - (Bug report) keyboard navigation: stuck on or in Journal to https://github.com/TriliumNext/trilium/issues/5241
+Migrated issue #536 - (Feature request) Allow for PNG export of diagrams (Mermaid / Mindmap) to https://github.com/TriliumNext/trilium/issues/5242
+Migrated issue #537 - (Bug report) `search-button` class should not have a border-radius on the right to https://github.com/TriliumNext/trilium/issues/5243
+Migrated issue #539 - (Feature request) choose CKEditor's editor type to https://github.com/TriliumNext/trilium/issues/5244
+Migrated issue #543 - Cannot search for selected text when in ReadOnly mode to https://github.com/TriliumNext/trilium/issues/5245
+Migrated issue #546 - (Bug report) Boolean attributes not rendered correctly in 0.90.8 to https://github.com/TriliumNext/trilium/issues/5246
+Migrated issue #548 - (Feature request) Search/Filter Map View (Notes & Relations) to https://github.com/TriliumNext/trilium/issues/5247
+Migrated issue #550 - (Feature request) Integrate CKEditor Modals into editor UI to https://github.com/TriliumNext/trilium/issues/5248
+Migrated issue #553 - (Bug report) Open image in browser to https://github.com/TriliumNext/trilium/issues/5249
+Migrated issue #556 - (Feature request) Prevent options note title changes to https://github.com/TriliumNext/trilium/issues/5250
+Migrated issue #558 - (Bug report) Always error connecting to sync server after wrong DNS configuration once to https://github.com/TriliumNext/trilium/issues/5251
+Migrated issue #560 - (Bug report) Edit page missing 95% of content in note to https://github.com/TriliumNext/trilium/issues/5252
+Migrated issue #565 - (Feature request) Change note clone icon indicator from star to link icon to https://github.com/TriliumNext/trilium/issues/5253
+Migrated issue #567 - User configurable whitelist of html tags stripped on import to https://github.com/TriliumNext/trilium/issues/5254
+Migrated issue #568 - (Bug report) Double input after spaces on Android to https://github.com/TriliumNext/trilium/issues/5255
+Migrated issue #570 - (Bug report) Two help pages will be opened when the help button is clicked. to https://github.com/TriliumNext/trilium/issues/5256
+Migrated issue #572 - (Bug report) MacOS app verification to https://github.com/TriliumNext/trilium/issues/5257
+Migrated issue #580 - Docker latest tag isn't updating  to https://github.com/TriliumNext/trilium/issues/5258
+Migrated issue #581 - (Bug report) Error occurred when create new notes under protected notes to https://github.com/TriliumNext/trilium/issues/5259
+Migrated issue #582 - (Bug report) Toolbar duplication occurs when toggling readability to https://github.com/TriliumNext/trilium/issues/5260
+Migrated issue #583 - (Feature request) Shell( Bash) Syntax Highlight to https://github.com/TriliumNext/trilium/issues/5261
+Migrated issue #584 - (Feature request) Expose a dom parser in the backend script api to https://github.com/TriliumNext/trilium/issues/5262
+Migrated issue #586 - Maximum internal attachment size (Feature request)  to https://github.com/TriliumNext/trilium/issues/5263
+Migrated issue #588 - (Bug report) Cannot copy text from included note to https://github.com/TriliumNext/trilium/issues/5264
+Migrated issue #593 - 0 Max content width causes editor issues to https://github.com/TriliumNext/trilium/issues/5265
+Migrated issue #594 - Translations for 0.90.12 to https://github.com/TriliumNext/trilium/issues/5266
+Migrated issue #599 - Document how to use regex search to https://github.com/TriliumNext/trilium/issues/5267
+Migrated issue #602 - (Feature request) Register icon pack in mermaid to https://github.com/TriliumNext/trilium/issues/5268
+Migrated issue #603 - (Bug report) Share icon not visible in note icon picker to https://github.com/TriliumNext/trilium/issues/5269
+Migrated issue #604 - (Bug report) Make "Open New Window" actually open a new window in the web app to https://github.com/TriliumNext/trilium/issues/5270
+Migrated issue #605 - (Feature request) Add icons to tree context menu to https://github.com/TriliumNext/trilium/issues/5271
+Migrated issue #606 - (Feature request) Add box icons to note menu to https://github.com/TriliumNext/trilium/issues/5272
+Migrated issue #608 - (Bug report) The inherited "shareTemplate" attribute does not work to https://github.com/TriliumNext/trilium/issues/5273
+Migrated issue #613 - (Feature request) Replace `(?)` with information icon to https://github.com/TriliumNext/trilium/issues/5274
+Migrated issue #614 - Collapsible Bullets/Lists to https://github.com/TriliumNext/trilium/issues/5275
+Migrated issue #617 - Dependency Dashboard to https://github.com/TriliumNext/trilium/issues/5276
+Migrated issue #619 - (Feature request) Add Options Launcher  to https://github.com/TriliumNext/trilium/issues/5277
+Migrated issue #622 - (Feature request) Handle development user Javascript #Widgets more elegantly to https://github.com/TriliumNext/trilium/issues/5278
+Migrated issue #623 - (Bug report) Loss of an irreplacable attachment - user error or bug? to https://github.com/TriliumNext/trilium/issues/5279
+Migrated issue #624 - Dependency Dashboard to https://github.com/TriliumNext/trilium/issues/5280
+Migrated issue #650 - (Feature request) Change `clone` terminology. to https://github.com/TriliumNext/trilium/issues/5281
+Migrated issue #658 - Redirect anonymous bare url to /share page to https://github.com/TriliumNext/trilium/issues/5282
+Migrated issue #660 - (Bug report) after `Open New Window`, external links are opened in pop-up instead of default browser to https://github.com/TriliumNext/trilium/issues/5283
+Migrated issue #664 - (Feature request) Make the Number List section able to contain other types of paragraphs. to https://github.com/TriliumNext/trilium/issues/5284
+Migrated issue #666 - The 'Show Help' and 'About Trillium Notes' menu options are not available in the mobile view. to https://github.com/TriliumNext/trilium/issues/5285
+Migrated issue #668 - (Bug report) Syntax highlight in code blocks only in edit mode to https://github.com/TriliumNext/trilium/issues/5286
+Migrated issue #669 - (Bug report) Text in canvas notes are not searchable by quick search to https://github.com/TriliumNext/trilium/issues/5287
+Migrated issue #671 - (Bug report) Most tree context menu on mobile are broken to https://github.com/TriliumNext/trilium/issues/5288
+Migrated issue #672 - (Bug report) Renaming a Note Doesn't Update Link Text on Internal Links on Share Page to https://github.com/TriliumNext/trilium/issues/5289
+Migrated issue #674 - Menu positioning problem for KDE Breeze theme to https://github.com/TriliumNext/trilium/issues/5290
+Migrated issue #679 - (Feature request) Internal link to sections to https://github.com/TriliumNext/trilium/issues/5291
+Migrated issue #682 - (Feature request) Convert Tree Buttons to a fixed button bar to https://github.com/TriliumNext/trilium/issues/5292
+Migrated issue #683 - (Feature request) Save tree width by pixels (not percent) to https://github.com/TriliumNext/trilium/issues/5293
+Migrated issue #684 - (Bug report) "Insert Child Note" Context Menu Cuts off at bottom of screen, not scrollable to https://github.com/TriliumNext/trilium/issues/5294
+Migrated issue #685 - (Bug report) Keyboard shortcuts in tree context menu are not in line with menu item to https://github.com/TriliumNext/trilium/issues/5295
+Migrated issue #686 - CKEditor Handle doesn't move when tree width is changed to https://github.com/TriliumNext/trilium/issues/5296
+Migrated issue #687 - (Bug report) Header formatting remains in source note after `cut and paste selection to sub-note` to https://github.com/TriliumNext/trilium/issues/5297
+Migrated issue #690 - Consider changing the default port to https://github.com/TriliumNext/trilium/issues/5298
+Migrated issue #691 - Shared link show Adress from Sync Server to https://github.com/TriliumNext/trilium/issues/5299
+Migrated issue #696 - Nix flake to https://github.com/TriliumNext/trilium/issues/5300
+Migrated issue #697 - (Bug report) Greek characters with tonos  are not represented correctly to https://github.com/TriliumNext/trilium/issues/5301
+Migrated issue #703 - (Feature request) Option to disable Calendar tree when making a new note to 
+Migrated issue #705 - (Feature request) Implement MCP (Model Context Protocol)  to https://github.com/TriliumNext/trilium/issues/5302
+Migrated issue #706 - Creating human-readable URL aliases without sharing to https://github.com/TriliumNext/trilium/issues/5303
+Migrated issue #707 - (Bug report) Can't unshare note when it's hoisted to https://github.com/TriliumNext/trilium/issues/5304
+Migrated issue #712 - (Feature request) Note Tree Sidebar - Confirmation Dialogue When Dragging and Dropping To Move Note to https://github.com/TriliumNext/trilium/issues/5305
+Migrated issue #713 - (Feature request) Hide `internalLink` from `Jump To Note` dialog to https://github.com/TriliumNext/trilium/issues/5306
+Migrated issue #722 - Github description links to relationmap and link map broken to https://github.com/TriliumNext/trilium/issues/5307
+Migrated issue #723 - (Feature request) please add Mind Elixir plugin @mind-elixir/node-menu，thanks. to https://github.com/TriliumNext/trilium/issues/5308
+Migrated issue #724 - (Feature request) Undo button to 
+Migrated issue #729 - (Feature request) Display the fixed toolbar on multiple lines to https://github.com/TriliumNext/trilium/issues/5309
+Migrated issue #732 - (Bug report) Attribute "jump to" for internal links not working anymore to https://github.com/TriliumNext/trilium/issues/5310
+Migrated issue #733 - (Feature request) New API method: isMobile() to https://github.com/TriliumNext/trilium/issues/5311
+Migrated issue #734 - (Feature request) Home-assistant addon to 
+Migrated issue #739 - (Feature request) Code Block language support for Terraform (HCL) to https://github.com/TriliumNext/trilium/issues/5312
+Migrated issue #742 - (Bug report) ENEX import errors to https://github.com/TriliumNext/trilium/issues/5313
+Migrated issue #757 - (Bug report) File type video with emoji in name will break the preview to https://github.com/TriliumNext/trilium/issues/5314
+Migrated issue #764 - desktop app initial sync never stop to https://github.com/TriliumNext/trilium/issues/5315
+Migrated issue #766 - Docker Compose file contains erroneous hint regarding ufw to https://github.com/TriliumNext/trilium/issues/5316
+Migrated issue #768 - (Bug report) Firefox fails to use correct icon set to https://github.com/TriliumNext/trilium/issues/5317
+Migrated issue #771 - (Feature request) Terraform HCL highlight for code notes to https://github.com/TriliumNext/trilium/issues/5318
+Migrated issue #772 - (Bug report) Libraries in Excalidraw are broken to https://github.com/TriliumNext/trilium/issues/5319
+Migrated issue #773 - Add to Winget package repository  to https://github.com/TriliumNext/trilium/issues/5320
+Migrated issue #778 - (Bug report) UX: 0.91.1-beta Light-Dark mode under Close Window control to https://github.com/TriliumNext/trilium/issues/5321
+Migrated issue #779 - (Feature request) Auto-show left panel when configuring launchbar to https://github.com/TriliumNext/trilium/issues/5322
+Migrated issue #780 - (Bug report) Button tooltips don't go away after clicking buttons in mobile view to https://github.com/TriliumNext/trilium/issues/5323
+Migrated issue #781 - (Bug report) Tree settings cannot be collapsed on mobile view to https://github.com/TriliumNext/trilium/issues/5324
+Migrated issue #782 - (Bug report) ReadOnly and Backlink buttons conflict with promoted attributes poorly on mobile view to https://github.com/TriliumNext/trilium/issues/5325
+Migrated issue #783 - (Bug report) Calendar overflows off right of view when in mobile view to https://github.com/TriliumNext/trilium/issues/5326
+Migrated issue #784 - (Bug report) Tapping on quick search result in mobile view displays note preview in addition to opening the note to https://github.com/TriliumNext/trilium/issues/5327
+Migrated issue #785 - (Bug report) Advanced tree menu is only accessible in the mobile view via long-press to https://github.com/TriliumNext/trilium/issues/5328
+Migrated issue #788 - (Feature request) Wikify a note to 
+Migrated issue #790 - Suggestion: Associate HTML label tags with input tags to https://github.com/TriliumNext/trilium/issues/5329
+Migrated issue #794 - Hardcoded English ARIA labels should be localized to https://github.com/TriliumNext/trilium/issues/5330
+Migrated issue #795 - (Bug report) Toolbar tooltips no longer shown to https://github.com/TriliumNext/trilium/issues/5331
+Migrated issue #796 - (Feature request) Improve search result highlighting to https://github.com/TriliumNext/trilium/issues/5332
+Migrated issue #797 - (Bug report) The SUID sandbox helper binary was found, but is not configured correctly to https://github.com/TriliumNext/trilium/issues/5333
+Migrated issue #798 - (Bug report) Cannot arrow down to "full search" when no search results are returned in quick search to https://github.com/TriliumNext/trilium/issues/5334
+Migrated issue #805 - Close to tray to https://github.com/TriliumNext/trilium/issues/5335
+Migrated issue #806 - UX: friendly numbers in settings, like hours or days instead of seconds to https://github.com/TriliumNext/trilium/issues/5336
+Migrated issue #807 - UX: Code blocks: sort mime type by most used to https://github.com/TriliumNext/trilium/issues/5337
+Migrated issue #811 - (Bug report) bêta regressions : pressing Enter not working as expected (at least on Mac) to https://github.com/TriliumNext/trilium/issues/5338
+Migrated issue #812 - (Bug report) Can not toggle notes by clicking on the note's icon in the navigation bar to https://github.com/TriliumNext/trilium/issues/5339
+Migrated issue #817 - Support for ARM server builds to https://github.com/TriliumNext/trilium/issues/5340
+Migrated issue #819 - Duplicate HTML ids for tabs of the same view to https://github.com/TriliumNext/trilium/issues/5341
+Migrated issue #820 - i18n: <kbd> tags should be translatable as well to https://github.com/TriliumNext/trilium/issues/5342
+Migrated issue #825 - i18n: "Duplicate Subtree" prefix should be translatable to https://github.com/TriliumNext/trilium/issues/5343
+Migrated issue #826 - Request: importing html images as attached instead of external reference to https://github.com/TriliumNext/trilium/issues/5344
+Migrated issue #830 - (Feature Request) Syntax Highlighting for Batch scripts to https://github.com/TriliumNext/trilium/issues/5345
+Migrated issue #831 - (Bug report)【A rather serious issue】 The notes are experiencing automatic snapshot recovery, and the edited content does not have any historical records. to https://github.com/TriliumNext/trilium/issues/5346
+Migrated issue #832 - Other databases to https://github.com/TriliumNext/trilium/issues/5347
+Migrated issue #837 - delete to https://github.com/TriliumNext/trilium/issues/5348
+Migrated issue #838 - (Feature request) keyboard shortcut to save selected web clip to https://github.com/TriliumNext/trilium/issues/5349
+Migrated issue #839 - (Feature request) Save clip with prompt to add meta note to https://github.com/TriliumNext/trilium/issues/5350
+Migrated issue #841 - (Bug report) Importing checkbox related notes will not apply checkbox, instead bulletl ist  to https://github.com/TriliumNext/trilium/issues/5351
+Migrated issue #842 - The note icon is not persisted in exported notes to https://github.com/TriliumNext/trilium/issues/5352
+Migrated issue #843 - The syntax highlighting of code blocks is broken for imported notes to https://github.com/TriliumNext/trilium/issues/5353
+Migrated issue #844 - (Bug report) attribute entry tool-tip obscures at-lookup note matches to https://github.com/TriliumNext/trilium/issues/5354
+Migrated issue #848 - (Bug report) sharing: normalize.min.css does not load to 
+Migrated issue #849 - (Feature request) Import/Merge Another Trilium Database Into Current database to https://github.com/TriliumNext/trilium/issues/5355
+Migrated issue #850 - (Feature request) Make location of trilium-data folder configurable to https://github.com/TriliumNext/trilium/issues/5356
+Migrated issue #854 - Mind Map: Ability to add images as node to https://github.com/TriliumNext/trilium/issues/5357
+Migrated issue #855 - (Feature request) Add a "home" button to launcher? to https://github.com/TriliumNext/trilium/issues/5358
+Migrated issue #856 - i18n: keyboard shortcuts from keyboard_actions service are not translatable  to https://github.com/TriliumNext/trilium/issues/5359
+Migrated issue #858 - deps: `csurf` package is deprecated and should be replaced to https://github.com/TriliumNext/trilium/issues/5360
+Migrated issue #863 - (Feature request) UX: image options clarification to https://github.com/TriliumNext/trilium/issues/5361
+Migrated issue #865 - (Feature request) Unify/hide duplicate find dialogs/widgets to https://github.com/TriliumNext/trilium/issues/5362
+Migrated issue #868 - (Feature request) Option to open HTML attachment in browser instead of download to https://github.com/TriliumNext/trilium/issues/5363
+Migrated issue #869 - (Feature request) Move Promoted Attributes to Sidebar to https://github.com/TriliumNext/trilium/issues/5364
+Migrated issue #881 - NotFoundError after trying to paste filepath into note, restart required to https://github.com/TriliumNext/trilium/issues/5365
+Migrated issue #883 - (Bug report) Tapping down arrow on parent node closes tree sidebar to https://github.com/TriliumNext/trilium/issues/5366
+Migrated issue #884 - (Bug report) Launchbar on mobile not acessible most of the time to https://github.com/TriliumNext/trilium/issues/5367
+Migrated issue #885 - (Bug report) Title and 'mobile ribbon' not visible after clicking button to edit 'readOnly' note to https://github.com/TriliumNext/trilium/issues/5368
+Migrated issue #886 - (Bug report) CKEditor paragraph handle is half off screen in mobile view to https://github.com/TriliumNext/trilium/issues/5369
+Migrated issue #894 - (Bug report) Initial sync fails with 'Process exceeded time limit 120000' to https://github.com/TriliumNext/trilium/issues/5370
+Migrated issue #895 - Titles of Settings/Options are renamable  to https://github.com/TriliumNext/trilium/issues/5371
+Migrated issue #901 - (Bug report) Completed checkboxes do not print as completed to https://github.com/TriliumNext/trilium/issues/5372
+Migrated issue #905 - Preserve highlighted text's background color when printing to https://github.com/TriliumNext/trilium/issues/5373
+Migrated issue #909 - (Bug report) ERROR: put /api/special-notes/api-script-launcher threw exception: 'disk I/O error', stack: SqliteError: disk I/O error to 
+Migrated issue #917 - Content query error to https://github.com/TriliumNext/trilium/issues/5374
+Migrated issue #918 - `replaceMathTextWithKatax` method is duplicated in `highlight_list.ts` and `toc.js` to https://github.com/TriliumNext/trilium/issues/5375
+Migrated issue #919 - (Feature request) Add "Open Note" to list of search actions to https://github.com/TriliumNext/trilium/issues/5376
+Migrated issue #920 - (Bug report) Limit search function doesn't work to https://github.com/TriliumNext/trilium/issues/5377
+Migrated issue #921 - Mermaid diagram notes: add link to docs to https://github.com/TriliumNext/trilium/issues/5378
+Migrated issue #922 - (Feature request) Allow hiding of mermaid diagram text to https://github.com/TriliumNext/trilium/issues/5379
+Migrated issue #930 - Make Initial Sync timeout value configurable to https://github.com/TriliumNext/trilium/issues/5380
+Migrated issue #931 - (Bug report) Imported Evernote Enex file overlaps Trilium UI to https://github.com/TriliumNext/trilium/issues/5381
+Migrated issue #943 - Errors occurred when importing .enex files to https://github.com/TriliumNext/trilium/issues/5382
+Migrated issue #948 - Large Code Blocks in Text Notes Break Syntax Highlight to https://github.com/TriliumNext/trilium/issues/5383
+Migrated issue #949 - (Bug report) Syntax Highlight for Certain Languages Don't Work Under Their Own Labels to https://github.com/TriliumNext/trilium/issues/5384
+Migrated issue #950 - csrfMiddleWare is not using TriliumNext defined `error_handlers` to https://github.com/TriliumNext/trilium/issues/5385
+Migrated issue #951 - Electron 31 will be EOL soon to https://github.com/TriliumNext/trilium/issues/5386
+Migrated issue #956 - (Feature request) Could you update the homebrew source to https://github.com/TriliumNext/trilium/issues/5387
+Migrated issue #958 - Search not finding verbatim text in some notes to https://github.com/TriliumNext/trilium/issues/5388
+Migrated issue #959 - (Bug report) "print to pdf" produced pdf file seems malformatted to https://github.com/TriliumNext/trilium/issues/5389
+Migrated issue #962 - Make Text Note Timestamp format adjustable to https://github.com/TriliumNext/trilium/issues/5390
+Migrated issue #964 - (Bug report) Note icon dialog doesn't close if note icon not chosen before moving to another note to https://github.com/TriliumNext/trilium/issues/5391
+Migrated issue #967 - (Bug report) Canvas/Excalidraw note slows down considerably with many images to https://github.com/TriliumNext/trilium/issues/5392
+Migrated issue #969 - (Bug report) tab context menu on mobile is not accessible to https://github.com/TriliumNext/trilium/issues/5393
+Migrated issue #970 - Fixed Formatting Bar covers menubar on mobile when editing a note to https://github.com/TriliumNext/trilium/issues/5394
+Migrated issue #971 - (Bug report) Note Menu opens at bottom of screen on mobile to https://github.com/TriliumNext/trilium/issues/5395
+Migrated issue #972 - (Bug report) Quick Search transparency is a little too much on mobile to https://github.com/TriliumNext/trilium/issues/5396
+Migrated issue #973 - (Bug report) Full Text Search button in quick launch search bar does not work to https://github.com/TriliumNext/trilium/issues/5397
+Migrated issue #974 - (Feature request) Add space between "delete all revisions" and `?` buttons on Note revision dialog to https://github.com/TriliumNext/trilium/issues/5398
+Migrated issue #976 - (Bug report) Context Menu Keyboard Commands wrap to next line to https://github.com/TriliumNext/trilium/issues/5399
+Migrated issue #982 - The system tray icon is not showing up when the application is launched for the first time to https://github.com/TriliumNext/trilium/issues/5400
+Migrated issue #983 - Confusing behaviour when the application is minimized in system tray to https://github.com/TriliumNext/trilium/issues/5401
+Migrated issue #984 - Broken sample note to https://github.com/TriliumNext/trilium/issues/5402
+Migrated issue #985 - Mind map: no intuitive way to exit full-screen mode to https://github.com/TriliumNext/trilium/issues/5403
+Migrated issue #986 - Mind map: the branching side preference is not persisted to https://github.com/TriliumNext/trilium/issues/5404
+Migrated issue #987 - Unable to protect a note immediately after the password is defined to https://github.com/TriliumNext/trilium/issues/5405
+Migrated issue #988 - Code Notes Settings: the "Available MIME Type" list gets corrupted to https://github.com/TriliumNext/trilium/issues/5406
+Migrated issue #989 - Configure Launch Bar: broken context menu commands to https://github.com/TriliumNext/trilium/issues/5407
+Migrated issue #990 - Tree Panel: the preferred width resets under certain conditions to https://github.com/TriliumNext/trilium/issues/5408
+Migrated issue #991 - System Tray Menu: new feature ideas to https://github.com/TriliumNext/trilium/issues/5409
+Migrated issue #992 - Add the ability to create a shell link (shortcut) for a note to https://github.com/TriliumNext/trilium/issues/5410
+Migrated issue #993 - Auto-hide the tab bar and toolbar in full-screen mode to https://github.com/TriliumNext/trilium/issues/5411
+Migrated issue #994 - Constrain the minimum size of the window to https://github.com/TriliumNext/trilium/issues/5412
+Migrated issue #995 - Add support for reduced motion to https://github.com/TriliumNext/trilium/issues/5413
+Migrated issue #996 - Localization: add support to follow the system language to https://github.com/TriliumNext/trilium/issues/5414
+Migrated issue #997 - Add a distinctive icon for the installer on Windows to https://github.com/TriliumNext/trilium/issues/5415
+Migrated issue #1000 - Add a context menu command to quickly archive a note to https://github.com/TriliumNext/trilium/issues/5416
+Migrated issue #1001 - Implement exporting notes to PDF to https://github.com/TriliumNext/trilium/issues/5417
+Migrated issue #1002 - Text Notes: add a way to move up and down text lines via a keyboard shortcut to https://github.com/TriliumNext/trilium/issues/5418
+Migrated issue #1003 - Import Dialog "Safe Import" Tooltip is cut off to https://github.com/TriliumNext/trilium/issues/5419
+Migrated issue #1010 - (Bug report) v0.91.3-beta server version failed to start to https://github.com/TriliumNext/trilium/issues/5420
+Migrated issue #1016 - HTML Import Strips away "valid" h1 tags to https://github.com/TriliumNext/trilium/issues/5421
+Migrated issue #1020 - `generate_documents` dev script seems to hang indefinitely to https://github.com/TriliumNext/trilium/issues/5422
+Migrated issue #1023 - `~child:child:template=...` and deeper child-template not applied automatically to https://github.com/TriliumNext/trilium/issues/5423
+Migrated issue #1024 - Autoformat Code-Block with language to https://github.com/TriliumNext/trilium/issues/5424
+Migrated issue #1025 - Drop down menu for code blocks' language in the top right corner to https://github.com/TriliumNext/trilium/issues/5425
+Migrated issue #1026 - Autoformat inline code when typing between backticks to https://github.com/TriliumNext/trilium/issues/5426
+Migrated issue #1027 - Syntax highlighting not working in read-only notes to https://github.com/TriliumNext/trilium/issues/5427
+Migrated issue #1029 - (Bug report) share.js broken on share pages on v0.91.3-beta to https://github.com/TriliumNext/trilium/issues/5428
+Migrated issue #1044 - imagemin guard for image compression to https://github.com/TriliumNext/trilium/issues/5429
+Migrated issue #1050 - Webpack build in develop takes longer than it did with last beta to https://github.com/TriliumNext/trilium/issues/5430
+Migrated issue #1054 - Text note contents disappeared when switching from "Read-Only" to editable to https://github.com/TriliumNext/trilium/issues/5431
+Migrated issue #1055 - Note properties note.noteSize and note.contentSize doesn't work in "Note Search" to https://github.com/TriliumNext/trilium/issues/5432
+Migrated issue #1058 - Backend Log is not showing on mobile view to https://github.com/TriliumNext/trilium/issues/5433
+Migrated issue #1059 - Use " / " slash command to open formatting toolbar to https://github.com/TriliumNext/trilium/issues/5434
+Migrated issue #1061 - Tick Box & bullet points as HTML objects after migration to https://github.com/TriliumNext/trilium/issues/5435
+Migrated issue #1062 - Map not visible when note is shared. to https://github.com/TriliumNext/trilium/issues/5436
+Migrated issue #1063 - Make geo-map pin note previews clickable to https://github.com/TriliumNext/trilium/issues/5437
+Migrated issue #1064 - Show inline mermaid diagram in share view instead of mermaid diagram code to https://github.com/TriliumNext/trilium/issues/5438
+Migrated issue #1067 - Create tags and show them in the panel to https://github.com/TriliumNext/trilium/issues/5439
+Migrated issue #1072 - XSS Possible in Setup Page to https://github.com/TriliumNext/trilium/issues/5440
+Migrated issue #1078 - Password window remains after opening encrypted notes to https://github.com/TriliumNext/trilium/issues/5441
+Migrated issue #1080 - Protected notes not protected from : deletion, attribute visibility to https://github.com/TriliumNext/trilium/issues/5442
+Migrated issue #1081 - Include attributes in revisions to https://github.com/TriliumNext/trilium/issues/5443
+Migrated issue #1083 - UX: friendly numbers in settings: Zoom factor (percent better than decimal factor) to https://github.com/TriliumNext/trilium/issues/5444
+Migrated issue #1084 - `v0.91.5` does not work. to 
+Migrated issue #1087 - Shortcut for Clipboard Pasting not working on Mac to https://github.com/TriliumNext/trilium/issues/5445
+Migrated issue #1089 - shareAlias should warn you, if the alias is already used on another shared note to https://github.com/TriliumNext/trilium/issues/5446
+Migrated issue #1090 - Consider deleting unused electron locales from release builds to https://github.com/TriliumNext/trilium/issues/5447
+Migrated issue #1093 - Name of server build artifact to https://github.com/TriliumNext/trilium/issues/5448
+Migrated issue #1094 - Figure out a way to pack eslint via webpack to https://github.com/TriliumNext/trilium/issues/5449
+Migrated issue #1095 - Allow the use of GPX files to show routes on the map to https://github.com/TriliumNext/trilium/issues/5450
+Migrated issue #1096 - The #appThemeBase label does not work (the theme is not displayed in the list as it is with #appTheme). to 
+Migrated issue #1098 - Request to add polylines or polygons on the geomap note type to https://github.com/TriliumNext/trilium/issues/5451
+Migrated issue #1100 - Pressing Enter to "Add link" does not work anymore to https://github.com/TriliumNext/trilium/issues/5452
+Migrated issue #1102 - Add RPM packages to https://github.com/TriliumNext/trilium/issues/5453
+Migrated issue #1105 - Open Today's Journal Note for the mobile ui to https://github.com/TriliumNext/trilium/issues/5454
+Migrated issue #1107 - Search not working after upgrade to v0.91.5 to https://github.com/TriliumNext/trilium/issues/5455
+Migrated issue #1109 - Add Flatpak packages to https://github.com/TriliumNext/trilium/issues/5456
+Migrated issue #1110 - Protected note password prompt is not removed after starting protected session to https://github.com/TriliumNext/trilium/issues/5457
+Migrated issue #1112 - Jump-To-Note icons are skewed to https://github.com/TriliumNext/trilium/issues/5458
+Migrated issue #1115 - `dump-db` in releases is shipped as TS to https://github.com/TriliumNext/trilium/issues/5459
+Migrated issue #1117 - Protected Note : Password Prompt Still showing after switching to another note. to https://github.com/TriliumNext/trilium/issues/5460
+Migrated issue #1121 - Format bar placement obscures the bottom bar to https://github.com/TriliumNext/trilium/issues/5461
+Migrated issue #1123 - `etapi.openapi.yaml` is not packaged in Desktop builds causing App to crash to https://github.com/TriliumNext/trilium/issues/5462
+Migrated issue #1126 - Add space between note icon and note title in quick search to https://github.com/TriliumNext/trilium/issues/5463
+Migrated issue #1127 - Add Bookmarks launcher to mobile UI to https://github.com/TriliumNext/trilium/issues/5464
+Migrated issue #1128 - Add Calendar to mobile ui available launchers to https://github.com/TriliumNext/trilium/issues/5465
+Migrated issue #1129 - Add `Open Today's Journal Note` to available mobile ui launchers to https://github.com/TriliumNext/trilium/issues/5466
+Migrated issue #1131 - Check if ETAPI OpenAPI spec is up-to-date to https://github.com/TriliumNext/trilium/issues/5467
+Migrated issue #1133 - Open/focus a note from command line / desktop URL handler? to https://github.com/TriliumNext/trilium/issues/5468
+Migrated issue #1136 - UX: friendly numbers in settings: "Notes erasure" and "Attachment erasure" timeout to https://github.com/TriliumNext/trilium/issues/5469
+Migrated issue #1137 - Expose In UI which Settings are Auto-Synced to https://github.com/TriliumNext/trilium/issues/5470
+Migrated issue #1139 - Bug: Note share with password protection doesn't work to 
+Migrated issue #1142 - TypeScript code files are detected as `video/mp2t` files to https://github.com/TriliumNext/trilium/issues/5471
+Migrated issue #1145 - Check what environmental variables are in use to https://github.com/TriliumNext/trilium/issues/5472
+Migrated issue #1146 - Allow setting session cookie path via config to https://github.com/TriliumNext/trilium/issues/5473
+Migrated issue #1154 - Session Cookies: maxAge does not seem to be correctly set to https://github.com/TriliumNext/trilium/issues/5474
+Migrated issue #1159 - Add keyboard shortcuts for managing splits to https://github.com/TriliumNext/trilium/issues/5475
+Migrated issue #1160 - Add support for `mid:` URI to https://github.com/TriliumNext/trilium/issues/5476
+Migrated issue #1161 - In new 0.91.6 version, "Recent Changes" can't be put into "Mobile Launch Bar" to https://github.com/TriliumNext/trilium/issues/5477
+Migrated issue #1164 - invisible note text to https://github.com/TriliumNext/trilium/issues/5478
+Migrated issue #1165 - Trilium not starting with services to 
+Migrated issue #1169 - pls support for Chinese handwriting fonts to https://github.com/TriliumNext/trilium/issues/5479
+Migrated issue #1170 - Feature Request: Notification API to https://github.com/TriliumNext/trilium/issues/5480
+Migrated issue #1171 - Feature Request: Selected Note API to https://github.com/TriliumNext/trilium/issues/5481
+Migrated issue #1172 - Option to disable Electron built-in shortcuts (Ctrl+Q etc.) to https://github.com/TriliumNext/trilium/issues/5482
+Migrated issue #1174 - Cleanup Build Scripts to https://github.com/TriliumNext/trilium/issues/5483
+Migrated issue #1175 - Implement namespaces for NPM scripts to https://github.com/TriliumNext/trilium/issues/5484
+Migrated issue #1177 - Numbered bullet is different in Note Revision view to https://github.com/TriliumNext/trilium/issues/5485
+Migrated issue #1180 - Share Feature Enhancement to https://github.com/TriliumNext/trilium/issues/5486
+Migrated issue #1181 - Syntax highlighting in Shared Notes to https://github.com/TriliumNext/trilium/issues/5487
+Migrated issue #1182 - Serving raw files to https://github.com/TriliumNext/trilium/issues/5488
+Migrated issue #1189 - note object is different if trigger by #run=frontendStartup to https://github.com/TriliumNext/trilium/issues/5489
+Migrated issue #1193 - Wrong tree selection on launch (last tab instead of active tab) to https://github.com/TriliumNext/trilium/issues/5490
+Migrated issue #1197 - Export canvas to .excalidraw to https://github.com/TriliumNext/trilium/issues/5491
+Migrated issue #1198 - Context Menu is not accessible via keyboard to https://github.com/TriliumNext/trilium/issues/5492
+Migrated issue #1199 - Context Menu should use `menu` element to https://github.com/TriliumNext/trilium/issues/5493
+Migrated issue #1200 - Context Menu click on Submenu parent should not trigger event/close the context menu to https://github.com/TriliumNext/trilium/issues/5494
+Migrated issue #1202 - Webclipper (firefox and chrome) lost table frame content in TriliumNext version 0.91.6 to https://github.com/TriliumNext/trilium/issues/5495
+Migrated issue #1205 - Internal Links cannot be created with shortcut to https://github.com/TriliumNext/trilium/issues/5496
+Migrated issue #1206 - Undo, permanent delete: add as action for note tree to https://github.com/TriliumNext/trilium/issues/5497
+Migrated issue #1208 - Pasting curl command throws 403 to https://github.com/TriliumNext/trilium/issues/5498
+Migrated issue #1209 - Enabling "Enable background effects" does not properly work with dark themes to https://github.com/TriliumNext/trilium/issues/5499
+Migrated issue #1211 - Add keyboard shortcut for "create new split" to https://github.com/TriliumNext/trilium/issues/5500
+Migrated issue #1212 - UX: friendly numbers in settings: Note revision snapshot interval to https://github.com/TriliumNext/trilium/issues/5501
+Migrated issue #1214 - Build: Windows Zip target missing to https://github.com/TriliumNext/trilium/issues/5502
+Migrated issue #1215 - Documentation: Backend Script API page returns 404 Not Found to https://github.com/TriliumNext/trilium/issues/5503
+Migrated issue #1217 - Import markdown leaves out image to https://github.com/TriliumNext/trilium/issues/5504
+Migrated issue #1218 - Some valid javascript syntax are highlighted as error to https://github.com/TriliumNext/trilium/issues/5505
+Migrated issue #1219 - Add Typescript note type by default to https://github.com/TriliumNext/trilium/issues/5506
+Migrated issue #1221 - Sync not work. to 
+Migrated issue #1224 - UX: friendly numbers in settings: Protected Session Timeout to https://github.com/TriliumNext/trilium/issues/5507
+Migrated issue #1226 - Check which API endpoints are not protected / publicly accessible to https://github.com/TriliumNext/trilium/issues/5508
+Migrated issue #1233 - Dynamic themes to https://github.com/TriliumNext/trilium/issues/5509
+Migrated issue #1236 - Treat .mdx files as markdown to https://github.com/TriliumNext/trilium/issues/5510
+Migrated issue #1237 - Calculated Content in Templates via Inline Javascript to https://github.com/TriliumNext/trilium/issues/5511
+Migrated issue #1238 - Possibility to export DB Backups to external location to 
+Migrated issue #1241 - Importing outlook email into TN to https://github.com/TriliumNext/trilium/issues/5512
+Migrated issue #1246 - TriliumNext Home Assistant Addon - almost done, need some support :) to 
+Migrated issue #1247 - UX: friendly numbers in settings: Sync timeout to https://github.com/TriliumNext/trilium/issues/5513
+Migrated issue #1248 - UX: friendly numbers in settings: Auto read-only size to https://github.com/TriliumNext/trilium/issues/5514
+Migrated issue #1251 - Headings not prefixed with `#` but different numbers of hyphens `-` under to https://github.com/TriliumNext/trilium/issues/5515
+Migrated issue #1256 - flatpak doesn't launch after install, needs no-sandbox to https://github.com/TriliumNext/trilium/issues/5516
+Migrated issue #1259 - Keyboard Shortcuts can be assigned multiple times to https://github.com/TriliumNext/trilium/issues/5517
+Migrated issue #1262 - Fuzzy Search to https://github.com/TriliumNext/trilium/issues/5518
+Migrated issue #1264 - docker-compose installation of TriliumNext fails with trilium-py to 
+Migrated issue #1266 - support the images from the external image hosting or S3? to https://github.com/TriliumNext/trilium/issues/5519
+Migrated issue #1269 - JSON formating on codenote to 
+Migrated issue #1278 - The hidden notes hiearchy becomes apparent after importing a note to https://github.com/TriliumNext/trilium/issues/5520
+Migrated issue #1280 - Protected Session Prompt Always Displays。 to https://github.com/TriliumNext/trilium/issues/5521
+Migrated issue #1284 - CI: MacOS build is broken to https://github.com/TriliumNext/trilium/issues/5522
+Migrated issue #1285 - Server: Login fails with `appPath` is not defined to https://github.com/TriliumNext/trilium/issues/5523
+Migrated issue #1293 - Investigate Linting Tool for Codebase to https://github.com/TriliumNext/trilium/issues/5524
+Migrated issue #1301 - Unable to launch desktop client - Permission denied to https://github.com/TriliumNext/trilium/issues/5525
+Migrated issue #1303 - Investigate Creating/Shipping AppArmor Profile to https://github.com/TriliumNext/trilium/issues/5526
+Migrated issue #1308 - Revisions are deleted with their metadata to https://github.com/TriliumNext/trilium/issues/5527
+Migrated issue #1309 - Editing a note causes its attachments opened on separate splits/windows to be re-rendered on each keystroke to https://github.com/TriliumNext/trilium/issues/5528
+Migrated issue #1310 - owned attributes to https://github.com/TriliumNext/trilium/issues/5529
+Migrated issue #1321 - Custom widget position doesn't work to https://github.com/TriliumNext/trilium/issues/5530
+Migrated issue #1323 - Resizable Mermaid Graphics to https://github.com/TriliumNext/trilium/issues/5531
+Migrated issue #1326 - JS frontend parsing error to https://github.com/TriliumNext/trilium/issues/5532
+Migrated issue #1327 - Chinese and numbers at the same time will be used on both sides of the number will have a gap increase to https://github.com/TriliumNext/trilium/issues/5533
+Migrated issue #1329 - Text input lag when running under wayland to https://github.com/TriliumNext/trilium/issues/5534
+Migrated issue #1331 - Refactor Event System to Improve Maintainability and Type Safety to https://github.com/TriliumNext/trilium/issues/5535
+Migrated issue #1333 - Recent Changes not correct. Undelete doc is confusing to https://github.com/TriliumNext/trilium/issues/5536
+Migrated issue #1335 - Search from URL not working to https://github.com/TriliumNext/trilium/issues/5537
+Migrated issue #1336 - One click copy of code blocks into clipboard to https://github.com/TriliumNext/trilium/issues/5538
+Migrated issue #1337 - absurdly thick stroke width in Canvas note type to https://github.com/TriliumNext/trilium/issues/5539
+Migrated issue #1344 - Protected notes persistant password field issue to https://github.com/TriliumNext/trilium/issues/5540
+Migrated issue #1345 - Mermaid diagram notes with customizations cannot be included to https://github.com/TriliumNext/trilium/issues/5541
+Migrated issue #1354 - Read-only notes do not have the same visual arrangement as editable notes. to https://github.com/TriliumNext/trilium/issues/5542
+Migrated issue #1362 - LLM integration to https://github.com/TriliumNext/trilium/issues/5543
+Migrated issue #1363 - Fix Server Build to https://github.com/TriliumNext/trilium/issues/5544
+Migrated issue #1364 - Fancytree assertion failed: only init supported to https://github.com/TriliumNext/trilium/issues/5545
+Migrated issue #1365 - #readOnly should be applied to title and labels (attributes) too to https://github.com/TriliumNext/trilium/issues/5546
+Migrated issue #1370 - Zen Mode: text formatting commands are missing from UI to https://github.com/TriliumNext/trilium/issues/5547
+Migrated issue #1371 - Zen Mode: unable to edit read only notes to https://github.com/TriliumNext/trilium/issues/5548
+Migrated issue #1372 - Zen Mode: use F12 as shortcut key to https://github.com/TriliumNext/trilium/issues/5549
+Migrated issue #1373 - Sync errors may hang the initial setup to https://github.com/TriliumNext/trilium/issues/5550
+Migrated issue #1374 - Restore the existing window (if minimized in System Tray) when a new application instance is launched to https://github.com/TriliumNext/trilium/issues/5551
+Migrated issue #1375 - The "Code" formatting command is missing from the fixed toolbar to https://github.com/TriliumNext/trilium/issues/5552
+Migrated issue #1376 - Launcher: add keyboard navigation for Calendar to https://github.com/TriliumNext/trilium/issues/5553
+Migrated issue #1377 - Note source: disable the ability to change the icon to https://github.com/TriliumNext/trilium/issues/5554
+Migrated issue #1378 - Child note preview: a "broken picture" icon appears for empty canvas notes to https://github.com/TriliumNext/trilium/issues/5555
+Migrated issue #1379 - Note Revisions: inform when the note preview is not supported to https://github.com/TriliumNext/trilium/issues/5556
+Migrated issue #1380 - Docker build: Run update-build-info script to https://github.com/TriliumNext/trilium/issues/5557
+Migrated issue #1383 - How to prevent TriliumNext from automatically converting display formats? to 
+Migrated issue #1391 - Check if it makes sense to ship static Swagger-UI for ETAPI to https://github.com/TriliumNext/trilium/issues/5558
+Migrated issue #1394 - Enhanced Blockquote Support (Callouts-like System) to https://github.com/TriliumNext/trilium/issues/5559
+Migrated issue #1396 - The "Move to" and "Clone to" commands are no longer working to https://github.com/TriliumNext/trilium/issues/5560
+Migrated issue #1397 - Trilium Next - Home Assistant Addon to 
+Migrated issue #1400 - Open in new tab by default to 
+Migrated issue #1401 - task management to https://github.com/TriliumNext/trilium/issues/5561
+Migrated issue #1402 - Pin tab to https://github.com/TriliumNext/trilium/issues/5562
+Migrated issue #1404 - multiple selection to 
+Migrated issue #1405 - note linking to 
+Migrated issue #1406 - support mips in syntax highlighting to https://github.com/TriliumNext/trilium/issues/5563
+Migrated issue #1407 - Upper panel improvement to 
+Migrated issue #1408 - block quote colour to https://github.com/TriliumNext/trilium/issues/5564
+Migrated issue #1409 - Writing does not work correctly to https://github.com/TriliumNext/trilium/issues/5565
+Migrated issue #1410 - Calendar view enhancement to https://github.com/TriliumNext/trilium/issues/5566
+Migrated issue #1411 - two-column layout to 
+Migrated issue #1412 - Copy code block to https://github.com/TriliumNext/trilium/issues/5567
+Migrated issue #1413 - Build: Copy-Dist - Investigate if missing files will make CI fail to https://github.com/TriliumNext/trilium/issues/5568
+Migrated issue #1418 - Import PDF files into Canvas notes to https://github.com/TriliumNext/trilium/issues/5569
+Migrated issue #1419 - Highlights List/Table of Contents exit button hides when too small to https://github.com/TriliumNext/trilium/issues/5570
+Migrated issue #1429 - Horizontal line selection to 
+Migrated issue #1431 - Canvas export as image options missing to https://github.com/TriliumNext/trilium/issues/5571
+Migrated issue #1445 - API Function to Raise Window to https://github.com/TriliumNext/trilium/issues/5572
+Migrated issue #1446 - Local sync IP alternative to remote to 
+Migrated issue #1455 - tsyncserver error gettaddrinfo ENOTFOUND to https://github.com/TriliumNext/trilium/issues/5573
+Migrated issue #1458 - Note source not editable in standard mode nor in protected mode to https://github.com/TriliumNext/trilium/issues/5574
+Migrated issue #1459 - 0.92.4: Add server build to assets to 
+Migrated issue #1464 - Mind Map: No context menu visible to https://github.com/TriliumNext/trilium/issues/5575
+Migrated issue #1468 - "Info" keyword is not removed from admonition when frame is layed out. to https://github.com/TriliumNext/trilium/issues/5576
+Migrated issue #1479 - When entering Chinese content that includes numbers, text formatting errors occur. to https://github.com/TriliumNext/trilium/issues/5577
+Migrated issue #1488 - two desktop entries in Linux to https://github.com/TriliumNext/trilium/issues/5578
+Migrated issue #1489 - Allow Root note to be #shareRoot to https://github.com/TriliumNext/trilium/issues/5579
+Migrated issue #1496 - Allow Word Wrapping in Backend Log Viewer to https://github.com/TriliumNext/trilium/issues/5580
+Migrated issue #1499 - Server release tarball contains broken symlinks to https://github.com/TriliumNext/trilium/issues/5581
+Migrated issue #1503 - Valid typescript syntax is shown as error to https://github.com/TriliumNext/trilium/issues/5582
+Migrated issue #1505 - Add a template label #rerunScriptsOnTemplateChange to allow execution of template scripts. to https://github.com/TriliumNext/trilium/issues/5583
+Migrated issue #1506 - Children notes are not created when creating a custom-template note from the tree context menu to https://github.com/TriliumNext/trilium/issues/5584
+Migrated issue #1508 - Search Prefix to https://github.com/TriliumNext/trilium/issues/5585
+Migrated issue #1512 - PDF Export has phantom text overlayed to https://github.com/TriliumNext/trilium/issues/5586
+Migrated issue #1513 - On mobile, format bar scrolls when should remain static position above keyboard to https://github.com/TriliumNext/trilium/issues/5587
+Migrated issue #1514 - 'X-Forwarded-For' header to 
+Migrated issue #1523 - Allow add multiple synchronization servers to https://github.com/TriliumNext/trilium/issues/5588
+Migrated issue #1524 - Admonitions have wrong icon/logo to https://github.com/TriliumNext/trilium/issues/5589
+Migrated issue #1525 - Server .92.4  -  Named export 'fileTypeFromBuffer' not found to 
+Migrated issue #1527 - Table of Content opens in wrong note with "Meta + Left-Click" to https://github.com/TriliumNext/trilium/issues/5590
+Migrated issue #1530 - Code blocks lost when importing Markdown from clipboard to https://github.com/TriliumNext/trilium/issues/5591
+Migrated issue #1531 - CI: Investigate flaky Nightly Release Build for MacOS to https://github.com/TriliumNext/trilium/issues/5592
+Migrated issue #1532 - CI: Nightly builds are missing branch tag in filename to https://github.com/TriliumNext/trilium/issues/5593
+Migrated issue #1536 - How to close too many tabs on mobile? to https://github.com/TriliumNext/trilium/issues/5594
+Migrated issue #1538 - Undo/Redo doesn't work on the Mac to https://github.com/TriliumNext/trilium/issues/5595
+Migrated issue #1542 - Excalidraw: tries to load unknown fonts and fails with 404 to https://github.com/TriliumNext/trilium/issues/5596
+Migrated issue #1543 - Excalidraw: "Failed to use workers for subsetting, falling back to the main thread. " to https://github.com/TriliumNext/trilium/issues/5597
+Migrated issue #1544 - Allow running multiple client instances / connect client to multiple servers to https://github.com/TriliumNext/trilium/issues/5598
+Migrated issue #1545 - The application is crashing after the initial setup dialog to https://github.com/TriliumNext/trilium/issues/5599
+Migrated issue #1547 - Move drawio.js from plugin to core to 
+Migrated issue #1551 - (Bug report)(0.92.4)The code highlighting in the text is not displayed correctly | 文本中的代码高亮没有正确显示 to https://github.com/TriliumNext/trilium/issues/5600
+Migrated issue #1552 - By dragging to full screen, the window border of the old version will appear. | 通过拖拽全屏，会出现老版本的窗口边框 to https://github.com/TriliumNext/trilium/issues/5601
+Migrated issue #1553 - Run “brew bump-pr” in CI during release to https://github.com/TriliumNext/trilium/issues/5602
+Migrated issue #1554 - The code box in the text cannot be copied from the end to the left. | 文本中的代码框无法从末尾向左复制 to https://github.com/TriliumNext/trilium/issues/5603
+Migrated issue #1555 - Highlights List with Italic text has error when click on it to https://github.com/TriliumNext/trilium/issues/5604
+Migrated issue #1556 - dprint causes build failure on arm v7 to https://github.com/TriliumNext/trilium/issues/5605
+Migrated issue #1558 - Q: How to recognise Obsidian's internal link format - [[Wikilink]] to 
+Migrated issue #1559 - OpenID Connect support to https://github.com/TriliumNext/trilium/issues/5606
+Migrated issue #1562 - Please give an option to "hide the note hoisting by default" to 
+Migrated issue #1567 - Message Execution` of JS note to 
+Migrated issue #1572 - Child Notes - Not showing up under reading pane of parent to https://github.com/TriliumNext/trilium/issues/5607
+Migrated issue #1574 - Avoid dprint ending up in final dist output to https://github.com/TriliumNext/trilium/issues/5608
+Migrated issue #1578 - Add "open in new split" option to JumpTo menu to https://github.com/TriliumNext/trilium/issues/5609
+Migrated issue #1580 - Redirect to login works differently with TOTP enabled to https://github.com/TriliumNext/trilium/issues/5610
+Migrated issue #1582 - Mermaid bugs can crash the frontend to https://github.com/TriliumNext/trilium/issues/5611
+Migrated issue #1587 - PDF export showing title bar buttons to https://github.com/TriliumNext/trilium/issues/5612
+Migrated issue #1594 - Fail to logout to https://github.com/TriliumNext/trilium/issues/5613
+Migrated issue #1596 - Security Issue: TOTP Validation Occurs After Password Verification to https://github.com/TriliumNext/trilium/issues/5614
+Migrated issue #1599 - Clicking below note should focus editor to https://github.com/TriliumNext/trilium/issues/5615
+Migrated issue #1600 - In-APP help is empty on non-English languages to https://github.com/TriliumNext/trilium/issues/5616
+Migrated issue #1601 - Clean up the code formatting to https://github.com/TriliumNext/trilium/issues/5617
+Migrated issue #1609 - Code Syntax Highlighting Not Persisting after navigating back to Note (highlight.js) to https://github.com/TriliumNext/trilium/issues/5618
+Migrated issue #1611 - Check why "typescript" npm package is present in the final dist output's node_modules to https://github.com/TriliumNext/trilium/issues/5619
+Migrated issue #1612 - CI: Build "Server" dist via Nightly as well to https://github.com/TriliumNext/trilium/issues/5620
+Migrated issue #1614 - Customize the format toolbar to https://github.com/TriliumNext/trilium/issues/5621
+Migrated issue #1615 - `Search in note` sometimes can't be opened to https://github.com/TriliumNext/trilium/issues/5622
+Migrated issue #1616 - ARM Signing for Windows to https://github.com/TriliumNext/trilium/issues/5623
+Migrated issue #1618 - Open document with CTRL-click in background will show its TOC in foreground to https://github.com/TriliumNext/trilium/issues/5624
+Migrated issue #1619 - Doc: Broken images in "Creating a custom theme" to https://github.com/TriliumNext/trilium/issues/5625
+Migrated issue #1622 - Include all available templates, even in hoisted notes to https://github.com/TriliumNext/trilium/issues/5626
+Migrated issue #1628 - Investigate webpack packing duplicate leaflet marker icon to https://github.com/TriliumNext/trilium/issues/5627
+Migrated issue #1639 - Issue with left panel to https://github.com/TriliumNext/trilium/issues/5628
+Migrated issue #1640 - Icons in left sidebar not centered or not visible (including fix) to https://github.com/TriliumNext/trilium/issues/5629
+Migrated issue #1641 - Get rid of deprecated methods to https://github.com/TriliumNext/trilium/issues/5630
+Migrated issue #1643 - Internal Note links not working in User Guide to https://github.com/TriliumNext/trilium/issues/5631
+Migrated issue #1645 - Setting cookiePath in config.ini causes crash to https://github.com/TriliumNext/trilium/issues/5632
+Migrated issue #1646 - Launch bar has a right shift except in default theme to https://github.com/TriliumNext/trilium/issues/5633
+Migrated issue #1647 - Quick search not working on horizontal layout to https://github.com/TriliumNext/trilium/issues/5634
+Migrated issue #1648 - Improved tags to https://github.com/TriliumNext/trilium/issues/5635
+Migrated issue #1649 - Export equations into Katex instead of latex to https://github.com/TriliumNext/trilium/issues/5636
+Migrated issue #1651 - v0.92.5-beta -> v0.92.6 mostly-hidden search to https://github.com/TriliumNext/trilium/issues/5637
+Migrated issue #1652 - Add Ctrl + D Shortcut to Select Next Matching Occurrence (Sublime Text Style) to https://github.com/TriliumNext/trilium/issues/5638
+Migrated issue #1656 - Improve todolist plugin , I find a effictive zip can extent trlium. the download url will follow to https://github.com/TriliumNext/trilium/issues/5639
+Migrated issue #1657 - Support for importing ICS (iCalendar) file to https://github.com/TriliumNext/trilium/issues/5640
+Migrated issue #1658 - Add showProtectedDialog() to frontEnd API to https://github.com/TriliumNext/trilium/issues/5641
+Migrated issue #1659 - Web search broken in 0.92.6 update to https://github.com/TriliumNext/trilium/issues/5642
+Migrated issue #1660 - Mobile detection when auth disabled not working to https://github.com/TriliumNext/trilium/issues/5643
+Migrated issue #1667 - Receiving "Error: Option 'redirectBareDomain' doesn't exist" on new installation to https://github.com/TriliumNext/trilium/issues/5644
+Migrated issue #1670 - Export to clipboard to https://github.com/TriliumNext/trilium/issues/5645
+Migrated issue #1676 - Release TAG 0.0.0 ? ^^ to https://github.com/TriliumNext/trilium/issues/5646
+Migrated issue #1677 - Unable to add internal link on mobile version to https://github.com/TriliumNext/trilium/issues/5647
+Migrated issue #1679 - Center Search results under quick search bar to https://github.com/TriliumNext/trilium/issues/5648
+Migrated issue #1680 - Quick search launch bar item does nothing in vertical layout to https://github.com/TriliumNext/trilium/issues/5649
+Migrated issue #1684 - TOTP security enchancement to https://github.com/TriliumNext/trilium/issues/5650
+Migrated issue #1685 - theme unstable when move app to another screen to https://github.com/TriliumNext/trilium/issues/5651
+Migrated issue #1689 - Note background is gray in 0.92.7 (light theme) to https://github.com/TriliumNext/trilium/issues/5652
+Migrated issue #1690 - Node Version? to https://github.com/TriliumNext/trilium/issues/5653
+Migrated issue #1694 - Why can't I see Map-Note properly? to https://github.com/TriliumNext/trilium/issues/5654
+Migrated issue #1695 - The search details to https://github.com/TriliumNext/trilium/issues/5655
+Migrated issue #1697 - Show full note titles in Link Map view to https://github.com/TriliumNext/trilium/issues/5656
+Migrated issue #1701 - Support Bearer Token to https://github.com/TriliumNext/trilium/issues/5657
+Migrated issue #1702 - Saved Search Auto Search on Note Open to https://github.com/TriliumNext/trilium/issues/5658
+Migrated issue #1703 - Have Playwright test against Electron version as well to https://github.com/TriliumNext/trilium/issues/5659
+Migrated issue #1705 - Calendar stops displaying notes after adding a Day Note to https://github.com/TriliumNext/trilium/issues/5660
+Migrated issue #1706 - Add Rate Limiting to TOTP related routes to https://github.com/TriliumNext/trilium/issues/5661
+Migrated issue #1707 - Return correct HTTP status code on failed login attempts instead of 200 to https://github.com/TriliumNext/trilium/issues/5662
+Migrated issue #1709 - config.Session.cookieMaxAge is ignored to https://github.com/TriliumNext/trilium/issues/5663
+Migrated issue #1713 - CSS ChunkLoadError caused by failed MIME type check in V0.92.7 to 
+Migrated issue #1716 - Allow setting Cross-Origin Resource Sharing (CORS) headers to https://github.com/TriliumNext/trilium/issues/5664
+Migrated issue #1717 - PDF Viewer Obstruction on iOS Mobile Client to https://github.com/TriliumNext/trilium/issues/5665
+Migrated issue #1718 - Sync not possible when 2FA is on to https://github.com/TriliumNext/trilium/issues/5666
+Migrated issue #1720 - Better search with search excerpts? to https://github.com/TriliumNext/trilium/issues/5667
+Migrated issue #1721 - Note selection dialog shows icon class when selecting result with arrow button (jump to note / create link) to https://github.com/TriliumNext/trilium/issues/5668
+Migrated issue #1722 - Add link dialog fails to link if you press enter twice too quickly to https://github.com/TriliumNext/trilium/issues/5669
+Migrated issue #1723 - Option to define default image alignment when pasting document to https://github.com/TriliumNext/trilium/issues/5670
+Migrated issue #1726 - Option to search entire database when a note is hoisted to https://github.com/TriliumNext/trilium/issues/5671
+Migrated issue #1727 - Note ordering doesn't load correctly, only shows up right after moving a note to https://github.com/TriliumNext/trilium/issues/5672
+Migrated issue #1728 - Editor extremely slow with large-ish checkbox trees to https://github.com/TriliumNext/trilium/issues/5673
+Migrated issue #1729 - Data loss due to lack of UI feedback when network connection is down to https://github.com/TriliumNext/trilium/issues/5674
+Migrated issue #1734 - Calendar tooltip is not correctly positioned to https://github.com/TriliumNext/trilium/issues/5675
+Migrated issue #1735 - Update to React 19 when possible to https://github.com/TriliumNext/trilium/issues/5676
+Migrated issue #1737 - Browsing to "/share" on uninitialized setup causes crash to https://github.com/TriliumNext/trilium/issues/5677
+Migrated issue #1745 - Calendar template can't reach the day note when weeknote/quarternote is enabled to https://github.com/TriliumNext/trilium/issues/5678
+Migrated issue #1746 - New Install - All new notes have the text 'Dgfff', and any blank notes have that text as wel. to https://github.com/TriliumNext/trilium/issues/5679
+Migrated issue #1747 - Calendar no longer shows multiple `displayedAttributes` to https://github.com/TriliumNext/trilium/issues/5680
+Migrated issue #1755 - Task manager to https://github.com/TriliumNext/trilium/issues/5681
+Migrated issue #1756 - any markdown text containing $ gets converted into math equations during import to https://github.com/TriliumNext/trilium/issues/5682
+Migrated issue #1761 - Edited notes list automatic updates to Hidden Notes to https://github.com/TriliumNext/trilium/issues/5683
+Migrated issue #1762 - Bring back quick reference help page to https://github.com/TriliumNext/trilium/issues/5684
+Migrated issue #1763 - Search within Help User Guide to https://github.com/TriliumNext/trilium/issues/5685
+Migrated issue #1764 - In-app Help links to public pages to https://github.com/TriliumNext/trilium/issues/5686
+Migrated issue #1772 - GPX load error to https://github.com/TriliumNext/trilium/issues/5687
+Migrated issue #1775 - segfault SEGV  directly when the mouse is swiped across the menu bar to https://github.com/TriliumNext/trilium/issues/5688
+Migrated issue #1776 - Integreate `markwhen` as a note type. to https://github.com/TriliumNext/trilium/issues/5689
+Migrated issue #1777 - markdown editor to https://github.com/TriliumNext/trilium/issues/5690
+Migrated issue #1779 - Document link is invalid. to https://github.com/TriliumNext/trilium/issues/5691
+Migrated issue #1780 - codesandbox Sandpack note or plugin？ to https://github.com/TriliumNext/trilium/issues/5692
+Migrated issue #1782 - CSS is wrong for dropdown menus by default to https://github.com/TriliumNext/trilium/issues/5693
+Migrated issue #1792 - Day template does not apply to date while enabling both Quarter and Week view. to https://github.com/TriliumNext/trilium/issues/5694
+Migrated issue #1794 - Line Ending import recognition or setting to https://github.com/TriliumNext/trilium/issues/5695
+Migrated issue #1795 - api.getTodayNote() return empty object on v0.93 ? to https://github.com/TriliumNext/trilium/issues/5696
+Migrated issue #1796 - Take photo from camera to https://github.com/TriliumNext/trilium/issues/5697
+Migrated issue #1798 - iframe sandbox allow popups to https://github.com/TriliumNext/trilium/issues/5698
+Migrated issue #1801 - Non critical error on first startup to https://github.com/TriliumNext/trilium/issues/5699
+Migrated issue #1802 - [Low priority] Uncaught error when checking update to https://github.com/TriliumNext/trilium/issues/5700
+Migrated issue #1803 - Configurable tab width in code blocks to https://github.com/TriliumNext/trilium/issues/5701
+Migrated issue #1804 - Animations: auto play none, once, n times, forever to https://github.com/TriliumNext/trilium/issues/5702
+Migrated issue #1805 - Trilium Notes deployed to Google Cloud Run as Docker image resets after short period of inactivity to 
+Migrated issue #1816 - TriliumNext's read me should focus on what makes it different from the original to https://github.com/TriliumNext/trilium/issues/5703
+Migrated issue #1819 - backlink button is always blocking the main text to https://github.com/TriliumNext/trilium/issues/5704
+Migrated issue #1820 - Improved table formatting - continue formatting to new row to https://github.com/TriliumNext/trilium/issues/5705
+Migrated issue #1821 - Modals/dialogues being presented too high/low which inhibits input (especially on iPad-safari/edge) to https://github.com/TriliumNext/trilium/issues/5706
+Migrated issue #1822 - OneNote import tool to https://github.com/TriliumNext/trilium/issues/5707
+Migrated issue #1824 - image colors become muted on a canvas note when dark theme is enabled to https://github.com/TriliumNext/trilium/issues/5708
+Migrated issue #1825 - Windows signing silently failing to https://github.com/TriliumNext/trilium/issues/5709
+Migrated issue #1826 - Inconsistent Find and Replace Behavior in Large Code Notes to https://github.com/TriliumNext/trilium/issues/5710
+Migrated issue #1848 - AI/LLM features shouldn't be made available (and appear broken) when non-enabled from Options to https://github.com/TriliumNext/trilium/issues/5711
+Migrated issue #1849 - Tooltip z-index is too low? to https://github.com/TriliumNext/trilium/issues/5712
+Migrated issue #1855 - Editable Toolbar to 
+Migrated issue #1856 - When using a custom theme, the #launcher-container is not scrollable on mobile devices. to https://github.com/TriliumNext/trilium/issues/5713
+Migrated issue #1857 - Syncronization inconsistencies/failures to 
+Migrated issue #1862 - Error starting TriliumNote server arm64 to https://github.com/TriliumNext/trilium/issues/5714
+Migrated issue #1874 - support NODE_EXTRA_CA_CERTS to https://github.com/TriliumNext/trilium/issues/5715
+Migrated issue #1875 - Title bar and tree panels' background displaying in black to https://github.com/TriliumNext/trilium/issues/5716
+Migrated issue #1877 - Data loss when Note triggers "automatic read-only" threshold to https://github.com/TriliumNext/trilium/issues/5717
+Migrated issue #1890 - Unsupported URL Type "workspace:": workspace:* to 
+Migrated issue #1894 - Attributes Dialogue Doesn't Display for existing attributes to https://github.com/TriliumNext/trilium/issues/5718
+Migrated issue #1912 - Feature Request: Support for Embedding YouTube Videos via iframe to https://github.com/TriliumNext/trilium/issues/5719
+Migrated issue #1914 - Inserts the internal trilium link in the incorrect position. to https://github.com/TriliumNext/trilium/issues/5720
+Migrated issue #1915 - MP4 audio not playable as preview to https://github.com/TriliumNext/trilium/issues/5721
+Migrated issue #1916 - LanguageTool integration to https://github.com/TriliumNext/trilium/issues/5722
+Migrated issue #1917 - import file size limit 250MB to https://github.com/TriliumNext/trilium/issues/5723
+Migrated issue #1919 - Display text note bookmarks in the right panel. to https://github.com/TriliumNext/trilium/issues/5724
+Migrated issue #1920 - Add TriliumNext to TrueNAS apps to https://github.com/TriliumNext/trilium/issues/5725
+Migrated issue #1934 - Question about file:\\\ embed to https://github.com/TriliumNext/trilium/issues/5726
+Migrated issue #1936 - Table borders to https://github.com/TriliumNext/trilium/issues/5727
+Migrated issue #1944 - Firefox android web-clipper not working  to 
+Migrated issue #1945 - Copy link to note to https://github.com/TriliumNext/trilium/issues/5728
+Migrated issue #1946 - Firewall warning on corporate network to https://github.com/TriliumNext/trilium/issues/5729
+Migrated issue #1965 - Incomplete packaged-server build to https://github.com/TriliumNext/trilium/issues/5730
+Migrated issue #1968 - Feature Request [API]: Add getHoistedNote to Frontend Script API to https://github.com/TriliumNext/trilium/issues/5731
+Migrated issue #1969 - Multiple issues when importing into root note to https://github.com/TriliumNext/trilium/issues/5732
+Migrated issue #1983 - Windows Client Fails to Connect to Sync Server over HTTPS with Self-Signed Certificate to https://github.com/TriliumNext/trilium/issues/5733
+Migrated issue #1993 - Wrong URL when installing PWA when reverse proxied under non-root path to https://github.com/TriliumNext/trilium/issues/5734
+Migrated issue #2000 - Ctrl+F when a dialog is open opens different search dialog to https://github.com/TriliumNext/trilium/issues/5735
+Migrated issue #2002 - Address already in use. Unable to raise Trilium by calling from command line to https://github.com/TriliumNext/trilium/issues/5736
+Migrated issue #2004 - Missing week link when #enableWeekNotes to https://github.com/TriliumNext/trilium/issues/5737
+Migrated issue #2005 - (Feature request) Allow changing note color from tree to https://github.com/TriliumNext/trilium/issues/5738
+Migrated issue #2011 - Looking for advice on video lecture note taking. to https://github.com/TriliumNext/trilium/issues/5739
+Migrated issue #2012 - After reopening the last closed tab, navigation in the right pane panel stops working. to https://github.com/TriliumNext/trilium/issues/5740
+Migrated issue #2013 - The left panel remains fixed to https://github.com/TriliumNext/trilium/issues/5741
+Migrated issue #2017 - External link balloon popup stays visible when switching tabs to https://github.com/TriliumNext/trilium/issues/5742
+Migrated issue #2018 - "Choose note type" dialog not closable by escape key to https://github.com/TriliumNext/trilium/issues/5743
+Migrated issue #2026 - Database view to https://github.com/TriliumNext/trilium/issues/5744
+Migrated issue #2027 - Sorting selected text in notes alphabetically to https://github.com/TriliumNext/trilium/issues/5745
+Migrated issue #2031 - automatic text wrapping within container for canvas. to https://github.com/TriliumNext/trilium/issues/5746
+Migrated issue #2034 - Editable Toolbar to https://github.com/TriliumNext/trilium/issues/5747
+Migrated issue #2052 - linux/arm64/v8 for Docker to https://github.com/TriliumNext/trilium/issues/5748
+Migrated issue #2053 - Migrating from Trilium to 
+Migrated issue #2057 - Add new async/await functionality to https://github.com/TriliumNext/trilium/issues/5749
+Migrated issue #2058 - Add new async/await functionality to https://github.com/TriliumNext/trilium/issues/5750
+Migrated issue #2060 - Trilium.cc seems fraudulent to 
+Migrated issue #2070 - Linking to subtitles to https://github.com/TriliumNext/trilium/issues/5751
+Migrated issue #2073 - Help needed: how to use your ckeditor component separately? to 
+Migrated issue #2084 - Signing issues on Windows to https://github.com/TriliumNext/trilium/issues/5752
+Migrated issue #2085 - GPX track not rendering on geomap note to https://github.com/TriliumNext/trilium/issues/5753
+Migrated issue #2086 - Server creates json cookie file in sessions dir 1 per minute to https://github.com/TriliumNext/trilium/issues/5754
+Migrated issue #2090 - Latest server update breaks desktop app sync. to 
+Migrated issue #2093 - Unable to start to 
+Migrated issue #2094 - Latest Docker Image Crashing on Startup to https://github.com/TriliumNext/trilium/issues/5755
+Migrated issue #2095 - Support Note Map Type as Shared Page to https://github.com/TriliumNext/trilium/issues/5756
+Migrated issue #2097 - Desktop application not working on Debian 12 to https://github.com/TriliumNext/trilium/issues/5757
+Migrated issue #2098 - 0.94.0: Unable to access Trilium server not running at root URL to https://github.com/TriliumNext/trilium/issues/5758
+Migrated issue #2099 - 0.94.0: Unable to select text in owned attributes to https://github.com/TriliumNext/trilium/issues/5759
+Migrated issue #2102 - Login Mask double shown when using  iOS Browser to https://github.com/TriliumNext/trilium/issues/5760
+Migrated issue #2103 - 0.94.0 Blank interface on startup to https://github.com/TriliumNext/trilium/issues/5761
+Migrated issue #2104 - Chat interface not showing properly in Firefox to https://github.com/TriliumNext/trilium/issues/5762
+Migrated issue #2105 - 0.94.0: error getting day node with ETAPI to https://github.com/TriliumNext/trilium/issues/5763
+Migrated issue #2108 - External links using fragment navigation are wrongly recognized as internal links to https://github.com/TriliumNext/trilium/issues/5764
+Migrated issue #2116 - Web-clipper to https://github.com/TriliumNext/trilium/issues/5765
+Migrated issue #2119 - Sync errors with sync version 35 due to LLM embeddings to https://github.com/TriliumNext/trilium/issues/5766
+Migrated issue #2120 - Copy paste of code is not visible anymore to https://github.com/TriliumNext/trilium/issues/5767
+Migrated issue #2121 - Ask for a "BaseUrl" to https://github.com/TriliumNext/trilium/issues/5768
+Migrated issue #2122 - White Screen after enabling LLM features. to https://github.com/TriliumNext/trilium/issues/5769
+Migrated issue #2124 - Share page images stretched vertically to https://github.com/TriliumNext/trilium/issues/5770
+Migrated issue #2125 - Other AI Moddels to 
+Migrated issue #2126 - Enhance Sharing Theme to https://github.com/TriliumNext/trilium/issues/5771
+Migrated issue #2128 - “Insert note after” long-press dialog doesn’t create Note to https://github.com/TriliumNext/trilium/issues/5772
+Migrated issue #2135 - Embedding Provider Order. Ollama to https://github.com/TriliumNext/trilium/issues/5773
+Migrated issue #2137 - 用dpanel升级后，启动报错 to https://github.com/TriliumNext/trilium/issues/5774
+Migrated issue #2138 - Strict SQLite tables to https://github.com/TriliumNext/trilium/issues/5775
+Migrated issue #2139 - Content disappears when inserting code block via Markdown formatting to https://github.com/TriliumNext/trilium/issues/5776
+Migrated issue #2142 - Share template falls back to default after updating to v0.94.0. to https://github.com/TriliumNext/trilium/issues/5777
+Migrated issue #2172 - Blank Window and ERR_CONNECTION_REFUSED on M1 macOS to https://github.com/TriliumNext/trilium/issues/5778
+Migrated issue #2173 - Failed to start client 0.94.0 under debian 12. to https://github.com/TriliumNext/trilium/issues/5779
+Migrated issue #2176 - Blank App after Update to v0.94.0 to https://github.com/TriliumNext/trilium/issues/5780
+Migrated issue #2178 - Parts of page content vanish when typing while selected text in code box to https://github.com/TriliumNext/trilium/issues/5781
+Migrated issue #2185 - Javascript GTK error : GTK 2/3 and GTK 4 used, GLIBC_2.38 not found to https://github.com/TriliumNext/trilium/issues/5782
+Migrated issue #2186 - Extend the `CodeMirror` class to preserve customizability with CodeMirror 6 to https://github.com/TriliumNext/trilium/issues/5783
+Migrated issue #2187 - Enhancement: Bookmark URL 1-Click Navigation to https://github.com/TriliumNext/trilium/issues/5784
+Migrated issue #2188 - Unable to select text in notes to https://github.com/TriliumNext/trilium/issues/5785
+Migrated issue #2189 - Regarding inactive members of the organization to https://github.com/TriliumNext/trilium/issues/5786
+Migrated issue #2191 - Text notes: selection gets incomplete when moving multiple lines up/down to https://github.com/TriliumNext/trilium/issues/5787
+Migrated issue #2196 - Web UI Timeout? to https://github.com/TriliumNext/trilium/issues/5788
+Migrated issue #2200 - Llama3.1 doesn't work to https://github.com/TriliumNext/trilium/issues/5789
+Migrated issue #2201 - Can't pull rootless to https://github.com/TriliumNext/trilium/issues/5790
+Migrated issue #2202 - Table with left or right alignment and width != 100% makes the next paragraphs displayed on the side of the table to https://github.com/TriliumNext/trilium/issues/5791
+Migrated issue #2203 - When editing table data in a text note, CKEditor 5 suddenly crashes. to https://github.com/TriliumNext/trilium/issues/5792
+Migrated issue #2207 - AI/LLM feature: allow manual input model names to https://github.com/TriliumNext/trilium/issues/5793
+Migrated issue #2221 - Dedicated mobile app with offline mode to https://github.com/TriliumNext/trilium/issues/5794
+Migrated issue #2233 - Allow dropping image attachments in without shrinking them (seperate from the setting) to https://github.com/TriliumNext/trilium/issues/5795
+Migrated issue #2235 - API Documentation links broken? to https://github.com/TriliumNext/trilium/issues/5796
+Migrated issue #2244 - 0.94.1: HTTP 500 error when opening AI/LLM settings page to https://github.com/TriliumNext/trilium/issues/5797
+Migrated issue #2246 - “Insert note after” long-press dialog doesn’t create Note #2128 to https://github.com/TriliumNext/trilium/issues/5798
+Migrated issue #2250 - Odd Hover Behavior on Links to https://github.com/TriliumNext/trilium/issues/5799
+Migrated issue #2251 - Vertical scroll incorrectly appears when page ends with horizontal line to https://github.com/TriliumNext/trilium/issues/5800
+Migrated issue #2252 - Sync of new CLients successfully, but no data to https://github.com/TriliumNext/trilium/issues/5801
+Migrated issue #2256 - Documentation on Ollama AI/ML integration? to https://github.com/TriliumNext/trilium/issues/5802
+Migrated issue #2257 - JavaScript heap out of memory to https://github.com/TriliumNext/trilium/issues/5803
+Migrated issue #2268 - Fedora42 KDE desktop syncing issues with the app to https://github.com/TriliumNext/trilium/issues/5804
+Migrated issue #2280 - Mermaid notes sluggish to https://github.com/TriliumNext/trilium/issues/5805
+Migrated issue #2294 - Model selection not working until restart to https://github.com/TriliumNext/trilium/issues/5806
+Migrated issue #2296 - Sync issues to https://github.com/TriliumNext/trilium/issues/5807
+Migrated issue #2301 - Double click image to show image fullscreen to https://github.com/TriliumNext/trilium/issues/5808
+Migrated issue #2313 - Tray and Menu Favorites icons wrong after 0.94.1 install ??? to 
+Migrated issue #2321 - Every empty note has noses content to https://github.com/TriliumNext/trilium/issues/5809
+Migrated issue #2325 - .deb for ARM is not opening to https://github.com/TriliumNext/trilium/issues/5810
+Migrated issue #2328 - 0.95 Synchronization error to https://github.com/TriliumNext/trilium/issues/5811
+Migrated issue #2332 - When editing a note in Linux, middle-clicking a note title in tree pane triggers a paste action to https://github.com/TriliumNext/trilium/issues/5812
+Migrated issue #2333 - Custom icons in shares (+ optional note iconpicker) to https://github.com/TriliumNext/trilium/issues/5813
+Migrated issue #2334 - LLM Tool calls not correctly identified to https://github.com/TriliumNext/trilium/issues/5814
+Migrated issue #2335 - error: 404 Not Found Router not found for request GET //api/setup/status to https://github.com/TriliumNext/trilium/issues/5815
+Migrated issue #2337 - Version .95 won't open on Linux Mint 21.1 to https://github.com/TriliumNext/trilium/issues/5816
+Migrated issue #2339 - Windows V0.95.0 Client Failed to sync with server to https://github.com/TriliumNext/trilium/issues/5817
+Migrated issue #2340 - Converting an attachment to a note breaks links to https://github.com/TriliumNext/trilium/issues/5818
+Migrated issue #2346 - V0.95.0 Custom share theme conflicts with the newly updated Trilium.Rocks share theme to 
+Migrated issue #2353 - MIME type for the style was rejected for the custom sharing page to https://github.com/TriliumNext/trilium/issues/5819
+Migrated issue #2354 - Option to always show the "Hoist note" button to 
+Migrated issue #2359 - Where has the AI configuration page gone ? to https://github.com/TriliumNext/trilium/issues/5820
+Migrated issue #2360 - Custom Table of Contents (TOC) Headers to 
+Migrated issue #2369 - Migrating to Trillium from SilverBullet (wikilinks support) to https://github.com/TriliumNext/trilium/issues/5821

@@ -1,0 +1,23 @@
+# Alpine is pinned to 3.23 deliberately: musl 1.2.6 (Alpine 3.24+) issues pwritev2, which hosts
+# with libseccomp < 2.3.3 deny with EPERM instead of ENOSYS. musl only falls back on ENOSYS, so
+# SQLite fails with "disk I/O error" there. Alpine 3.23 ships musl 1.2.5 and is supported until
+# 2027-11-01. See https://github.com/TriliumNext/Trilium/issues/10627
+#
+# See the comment in Dockerfile: better-sqlite3 v13 ships N-API prebuilds — the
+# linuxmusl-* ones here — so there is no native compile step and no builder
+# stage. They link libstdc++, which node:*-alpine already provides at runtime.
+FROM node:24.19.0-alpine3.23
+# Install runtime dependencies
+RUN apk add --no-cache su-exec shadow
+
+WORKDIR /usr/src/app
+COPY ./dist /usr/src/app
+COPY ./start-docker.sh /usr/src/app
+
+# Add application user
+RUN adduser -s /bin/false node; exit 0
+
+# Configure container
+EXPOSE 8080
+CMD [ "sh", "./start-docker.sh" ]
+HEALTHCHECK --start-period=10s CMD exec su-exec node node /usr/src/app/docker_healthcheck.cjs

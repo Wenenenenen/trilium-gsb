@@ -1,0 +1,94 @@
+.note-detail-readonly-text-content {
+    /* h1 should not be used at all since semantically that's a note title */
+    h1 { font-size: 1.8em; }
+    h2 { font-size: 1.6em; }
+    h3 { font-size: 1.4em; }
+    h4 { font-size: 1.2em; }
+    h5 { font-size: 1.1em; }
+    h6 { font-size: 1.0em; }
+
+    .mermaid-diagram,
+    .mermaid-diagram svg,
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+/* Top-level (not scoped to the note view) so a swallowed mermaid failure is
+   visible in the chat panel too, where the container lacks the note class. */
+.mermaid-diagram.mermaid-error {
+    display: block;
+    white-space: pre-wrap;
+    padding: 0.75em 1em;
+    border: 1px solid var(--main-border-color);
+    border-radius: 4px;
+    color: var(--muted-text-color);
+    font-family: var(--monospace-font-family, monospace);
+    font-size: 0.85em;
+}
+
+body.heading-style-markdown .note-detail-readonly-text-content {
+    h1::before { content: "#\2004"; color: var(--muted-text-color); }
+    h2::before { content: "##\2004"; color: var(--muted-text-color); }
+    h3::before { content: "###\2004"; color: var(--muted-text-color); }
+    h4:not(.include-note-title)::before { content: "####\2004"; color: var(--muted-text-color); }
+    h5::before { content: "#####\2004"; color: var(--muted-text-color); }
+    h6::before { content: "######\2004"; color: var(--muted-text-color); }
+}
+
+body.heading-style-underline .note-detail-readonly-text-content {
+    h1 { border-bottom: 1px solid var(--main-border-color); }
+    h2 { border-bottom: 1px solid var(--main-border-color); }
+    h3 { border-bottom: 1px solid var(--main-border-color); }
+    h4:not(.include-note-title) { border-bottom: 1px solid var(--main-border-color); }
+    h5 { border-bottom: 1px solid var(--main-border-color); }
+    h6 { border-bottom: 1px solid var(--main-border-color); }
+}
+
+.note-detail-readonly-text {
+    padding-inline-start: 24px;
+    padding-top: 10px;
+    font-family: var(--detail-font-family);
+    min-height: 50px;
+    position: relative;
+}
+
+body.mobile .note-detail-readonly-text {
+    padding-inline-start: 10px;
+}
+
+.note-detail-readonly-text p:first-child, .note-detail-readonly-text::before {
+    margin-top: 0;
+}
+
+.note-detail-readonly-text img {
+    max-width: 100%;
+    cursor: pointer;
+}
+
+.edit-text-note-button {
+    position: absolute;
+    top: 5px;
+    inset-inline-end: 10px;
+    font-size: 150%;
+    padding: 5px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: var(--button-border-radius);
+    color: var(--button-text-color);
+}
+
+.edit-text-note-button:hover {
+    border-color: var(--button-border-color);
+}
+
+/* Inline code click-to-copy */
+.note-detail-readonly-text-content code.copyable-inline-code {
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.note-detail-readonly-text-content code.copyable-inline-code:hover {
+    background-color: var(--inline-code-hover-background-color);
+}

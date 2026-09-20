@@ -1,0 +1,69 @@
+.pdf-pages-list {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+}
+
+.pdf-page-row {
+    display: flex;
+    gap: 4px;
+    padding: 0 8px;
+}
+
+.pdf-page-item {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.pdf-page-item:hover {
+    background-color: var(--hover-item-background-color);
+}
+
+.pdf-page-item.active {
+    border-color: var(--main-border-color);
+    background-color: var(--active-item-background-color);
+}
+
+.pdf-page-thumbnail {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pdf-page-thumbnail img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.pdf-page-number {
+    font-size: 12px;
+    margin-top: 4px;
+    color: var(--main-text-color);
+    background-color: var(--accented-background-color);
+    padding: 0.2em 0.5em;
+    border-radius: 4px;
+}
+
+.pdf-page-loading {
+    color: var(--muted-text-color);
+    font-size: 11px;
+}
+
+.no-pages {
+    padding: 16px;
+    text-align: center;
+    color: var(--muted-text-color);
+}

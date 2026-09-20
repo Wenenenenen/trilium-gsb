@@ -1,0 +1,136 @@
+// @ts-check
+
+import eslint from '@eslint/js';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+import simpleImportSort from "eslint-plugin-simple-import-sort";
+import playwright from "eslint-plugin-playwright";
+import tsParser from "@typescript-eslint/parser";
+import preact from "eslint-config-preact";
+import stylistic from "@stylistic/eslint-plugin";
+
+// Go to https://eslint.style/rules/default/${rule_without_prefix} to check the rule details
+export const stylisticRules = {
+    "@stylistic/indent": ["error", 4],
+    // "@stylistic/quotes": ["error", "double", { avoidEscape: true, allowTemplateLiterals: "always" }],
+    "@stylistic/semi": ["error", "always"],
+    // "@stylistic/quote-props": ["error", "consistent-as-needed"],
+    // "@stylistic/max-len": ["error", { code: 100 }],
+    // "@stylistic/comma-dangle": ["error", "never"],
+    // "@stylistic/linebreak-style": ["error", "unix"],
+    // "@stylistic/array-bracket-spacing": ["error", "always"],
+    // "@stylistic/object-curly-spacing": ["error", "always"],
+    // "@stylistic/padded-blocks": ["error", { classes: "always" }]
+};
+
+const mainConfig = [
+  ...preact,
+  eslint.configs.recommended,
+  tseslint.configs.recommended,
+  // consider using rules below, once we have a full TS codebase and can be more strict
+  // tseslint.configs.strictTypeChecked,
+  // tseslint.configs.stylisticTypeChecked,
+  // tseslint.configs.recommendedTypeChecked,
+  {
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname
+      }
+    }
+  },
+  {
+    rules: {
+      "no-undef": "off",
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_"
+        }
+      ],
+      // Catch mishandled promises at the type level. `no-misused-promises` flags a Promise used
+      // where a non-Promise is expected (e.g. a boolean conditional or a void-returning callback);
+      // `no-floating-promises` flags promises whose result/rejection is silently discarded.
+      // Warn repo-wide (large existing backlog, mostly in apps/client); errored on the server below.
+      "@typescript-eslint/no-misused-promises": "warn",
+      "@typescript-eslint/no-floating-promises": "warn"
+    }
+  },
+  {
+    // The server is the security-sensitive surface (auth, sync, API), so enforce the promise
+    // rules as errors here — an unawaited async call in a conditional or callback can silently
+    // change control flow.
+    files: ["apps/server/**/*.{js,ts,mjs,cjs,tsx}"],
+    rules: {
+      "@typescript-eslint/no-misused-promises": "error",
+      "@typescript-eslint/no-floating-promises": "error"
+    }
+  },
+  {
+    plugins: {
+      "simple-import-sort": simpleImportSort
+    },
+
+    rules: {
+      "simple-import-sort/imports": "warn",
+      "simple-import-sort/exports": "warn"
+    }
+  },
+  {
+    files: ["**/*.{js,ts,mjs,cjs,tsx}"],
+
+    languageOptions: {
+      parser: tsParser
+    },
+
+    plugins: {
+      "@stylistic": stylistic
+    },
+
+    rules: {
+      ...stylisticRules
+    }
+  }
+];
+
+const playwrightConfig = {
+  files: [
+    "packages/trilium-e2e/src/**/*.spec.ts",
+    "apps/server/e2e/**/*.spec.ts",
+    "apps/standalone/e2e/**/*.spec.ts",
+    "apps/desktop/e2e/**/*.spec.ts"
+  ],
+  plugins: { playwright },
+  // Override or add rules here
+  rules: { ...playwright.configs["flat/recommended"].rules, },
+  languageOptions: { parser: tsParser },
+};
+
+export default defineConfig(
+  globalIgnores([
+    ".cache",
+    "tmp",
+    "**/dist",
+    "**/out-tsc",
+    "apps/edit-docs/demo/*",
+    "docs/*",
+    "apps/web-clipper/lib/*",
+    // Build output that is gitignored but sits outside a `dist`, so it would otherwise be
+    // linted. `cap sync` copies the whole standalone bundle into the native projects, which
+    // adds ~165 MB of minified JS and makes ESLint run out of memory.
+    "apps/mobile/android/**",
+    "apps/mobile/ios/**",
+    "apps/*/out/**",
+    "apps/web-clipper/.output/**",
+    "site/**",
+    "**/test-output/**",
+    // A worktree here is a full second copy of the repository.
+    ".claude/worktrees/**",
+    // TODO: check if we want to format packages here as well - for now skipping it
+    "packages/*",
+  ]),
+  ...mainConfig,
+  playwrightConfig
+);

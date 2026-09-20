@@ -1,0 +1,72 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "config:recommended"
+    ],
+    "schedule": [
+        "before 3am"
+    ],
+    "labels": [
+        "dependencies",
+        "renovate"
+    ],
+    "prHourlyLimit": 0,
+    "prConcurrentLimit": 0,
+    "branchConcurrentLimit": 0,
+    "minimumReleaseAge": "3 days",
+    "ignorePaths": [
+        "**/node_modules/**",
+        "apps/edit-docs/demo/**",
+        "apps/server/src/assets/doc_notes/**",
+        "docs/**",
+        "apps/server/Dockerfile.legacy",
+        "apps/mobile/android/**"
+    ],
+    "html": {
+        "enabled": false
+    },
+    "bun": {
+        "enabled": false
+    },
+    "nix": {
+        "enabled": true
+    },
+    "packageRules": [
+        {
+            "description": "Never auto-update the Android Gradle Plugin; it must track the installed Android Studio, not the latest release",
+            "matchPackageNames": ["com.android.tools.build:gradle"],
+            "enabled": false
+        },
+        {
+            "description": "pdfjs-dist is owned by the update-pdfjs-viewer workflow, which bumps it together with the viewer vendored under packages/pdfjs-viewer/viewer. pdf.js refuses to start when the two versions disagree, so a bare version bump is never a usable change",
+            "matchPackageNames": ["pdfjs-dist"],
+            "enabled": false
+        },
+        {
+            "matchPackageNames": ["@fsegurai/codemirror-theme-**", "@catppuccin/codemirror"],
+            "groupName": "codemirror themes"
+        },
+        {
+            "matchPackageNames": "**-config-ckeditor5",
+            "groupName": "ckeditor5 config packages"
+        },
+        {
+            "matchPackageNames": [
+                "@ckeditor/**",
+                "ckeditor5"
+            ],
+            "groupName": "ckeditor monorepo"
+        },
+        {
+            "matchPackageNames": "@univerjs/**",
+            "groupName": "univer monorepo"
+        },
+        {
+            "matchPackageNames": [
+                "ai",
+                "@ai-sdk/**"
+            ],
+            "groupName": "ai sdk"
+        }
+    ]
+}

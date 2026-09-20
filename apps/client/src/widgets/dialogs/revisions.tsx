@@ -1,0 +1,865 @@
+import "./revisions.css";
+
+import { dayjs, type RevisionItem, type RevisionPojo, safeHostname, safeLinkPreviewHref } from "@triliumnext/commons";
+import clsx from "clsx";
+import { diffWords } from "diff";
+import HtmlDiff from "htmldiff-js";
+import { Fragment } from "preact";
+import type { CSSProperties } from "preact/compat";
+import { Dispatch, StateUpdater, useEffect, useRef, useState } from "preact/hooks";
+
+import appContext from "../../components/app_context";
+import FNote from "../../entities/fnote";
+import dialog from "../../services/dialog";
+import froca from "../../services/froca";
+import { t } from "../../services/i18n";
+import { applyLinkEmbeds } from "../../services/link_embed";
+import open from "../../services/open";
+import options from "../../services/options";
+import protected_session_holder from "../../services/protected_session_holder";
+import { sanitizeNoteContentHtml } from "../../services/sanitize_content.js";
+import server from "../../services/server";
+import toast from "../../services/toast";
+import utils from "../../services/utils";
+import ActionButton from "../react/ActionButton";
+import Button from "../react/Button";
+import Dropdown from "../react/Dropdown";
+import FormList, { FormDropdownDivider, FormListItem } from "../react/FormList";
+import FormToggle from "../react/FormToggle";
+import { useTriliumEvent } from "../react/hooks";
+import { DetailPane, MasterDetailHeader, MasterPane, useMobileMasterDetail } from "../react/master_detail";
+import Modal from "../react/Modal";
+import NoItems from "../react/NoItems";
+import { RawHtmlBlock, SanitizedHtml } from "../react/RawHtml";
+import PdfViewer, { getPdfUrl } from "../type_widgets/file/PdfViewer";
+import { applyReferenceLinks } from "../type_widgets/text/read_only_helper";
+
+const DIFFABLE_TYPES = ["text", "code", "mermaid"];
+
+export default function RevisionsDialog() {
+    const [ note, setNote ] = useState<FNote>();
+    const [ noteContent, setNoteContent ] = useState<string>();
+    const [ revisions, setRevisions ] = useState<RevisionItem[]>();
+    const [ currentRevision, setCurrentRevision ] = useState<RevisionItem>();
+    const [ shown, setShown ] = useState(false);
+    const [ showDiff, setShowDiff ] = useState(true);
+    const [ refreshCounter, setRefreshCounter ] = useState(0);
+    const modalRef = useRef<HTMLDivElement>(null);
+    const { isMasterDetail, mobileView, switchMobileView, resetMobileView } = useMobileMasterDetail(modalRef);
+    const isMobile = utils.isMobile();
+
+    useTriliumEvent("showRevisions", async ({ noteId }) => {
+        const note = await getNote(noteId);
+        if (note) {
+            setNote(note);
+            // Mobile opens on the revision list; selecting one slides to its detail.
+            resetMobileView("list");
+            setShown(true);
+        }
+    });
+
+    useEffect(() => {
+        if (note?.noteId) {
+            server.get<RevisionItem[]>(`notes/${note.noteId}/revisions`).then(setRevisions);
+            note.getContent().then(setNoteContent);
+        } else {
+            setRevisions(undefined);
+            setNoteContent(undefined);
+        }
+    }, [ note, refreshCounter ]);
+
+    const revisionsLoaded = revisions !== undefined;
+    const hasRevisions = !!revisions?.length;
+
+    if (revisions?.length && !currentRevision) {
+        setCurrentRevision(revisions[0]);
+    }
+
+    const onHidden = () => {
+        setShown(false);
+        setShowDiff(true);
+        setNote(undefined);
+        setCurrentRevision(undefined);
+        setRevisions(undefined);
+    };
+
+    if (revisionsLoaded && !hasRevisions) {
+        return (
+            <Modal
+                className="revisions-dialog"
+                size="md"
+                title={t("revisions.note_revisions")}
+                helpPageId="vZWERwf8U3nx"
+                header={note && (
+                    <RevisionsMenu
+                        note={note}
+                        onRevisionSaved={() => {
+                            setRefreshCounter(c => c + 1);
+                            setCurrentRevision(undefined);
+                        }}
+                        onAllDeleted={() => {
+                            setRevisions([]);
+                            setCurrentRevision(undefined);
+                        }}
+                        hasRevisions={false}
+                    />
+                )}
+                onHidden={onHidden}
+                show={shown}
+            >
+                <NoItems icon="bx bx-history" text={t("revisions.no_revisions")} />
+            </Modal>
+        );
+    }
+
+    const selectRevision = (revisionId: string) => {
+        const correspondingRevision = (revisions ?? []).find((r) => r.revisionId === revisionId);
+        if (correspondingRevision) {
+            setCurrentRevision(correspondingRevision);
+        }
+        switchMobileView("page");
+    };
+
+    const revisionsList = (
+        <RevisionsList
+            revisions={revisions ?? []}
+            onSelect={selectRevision}
+            currentRevision={currentRevision}
+            detailed={utils.isMobile()}
+        />
+    );
+
+    const handleRevisionDeleted = () => {
+        setRefreshCounter(c => c + 1);
+        setCurrentRevision(undefined);
+        // The detail is now empty; on mobile slide back to the list.
+        switchMobileView("list");
+    };
+
+    const menu = note && (
+        <RevisionsMenu
+            note={note}
+            onRevisionSaved={() => {
+                setRefreshCounter(c => c + 1);
+                setCurrentRevision(undefined);
+            }}
+            onAllDeleted={() => {
+                setRevisions([]);
+                setCurrentRevision(undefined);
+            }}
+            hasRevisions={true}
+        />
+    );
+
+    return (
+        <Modal
+            modalRef={modalRef}
+            className="revisions-dialog"
+            size="xl"
+            title={t("revisions.note_revisions")}
+            helpPageId="vZWERwf8U3nx"
+            header={isMasterDetail
+                ? (
+                    <MasterDetailHeader
+                        inPage={mobileView === "page"}
+                        onBack={() => switchMobileView("list")}
+                        backTitle={t("revisions.back")}
+                        pageTitle={revisionTitle(currentRevision)}
+                        listTitle={t("revisions.note_revisions")}
+                        listIcon="bx bx-history"
+                        listActions={menu}
+                    />
+                )
+                : menu}
+            sidebar={isMasterDetail ? undefined : revisionsList}
+            onHidden={onHidden}
+            show={shown}
+        >
+            {isMasterDetail && <MasterPane className="revision-mobile-nav">{revisionsList}</MasterPane>}
+            <DetailPane className="revision-detail">
+                <RevisionToolbar
+                    revisionItem={currentRevision}
+                    showDiff={showDiff}
+                    setShowDiff={setShowDiff}
+                    setShown={setShown}
+                    // On mobile the action buttons move to a bottom footer instead of the toolbar.
+                    showActions={!isMobile}
+                    onRevisionDeleted={handleRevisionDeleted}
+                    onDescriptionUpdated={(revisionId, description) => {
+                        setRevisions(prev => prev?.map(r =>
+                            r.revisionId === revisionId ? { ...r, description } : r
+                        ));
+                        if (currentRevision?.revisionId === revisionId) {
+                            setCurrentRevision({ ...currentRevision, description });
+                        }
+                    }}
+                />
+                <div className="revision-content-wrapper">
+                    <RevisionPreview
+                        noteContent={noteContent}
+                        revisionItem={currentRevision}
+                        showDiff={showDiff}
+                    />
+                </div>
+                {isMobile && currentRevision && canInteractWithRevision(currentRevision) && (
+                    <div className="revision-detail-footer">
+                        <RevisionActions
+                            revisionItem={currentRevision}
+                            setShown={setShown}
+                            onRevisionDeleted={handleRevisionDeleted}
+                            variant="footer"
+                        />
+                    </div>
+                )}
+            </DetailPane>
+        </Modal>
+    );
+}
+
+/** How the page showing one revision is headed: the moment it was taken. */
+function revisionTitle(revisionItem?: RevisionItem) {
+    return revisionItem?.dateCreated
+        ? dayjs(revisionItem.dateCreated).format("MMM D, YYYY · HH:mm")
+        : t("revisions.note_revisions");
+}
+
+function RevisionsMenu({ note, onRevisionSaved, onAllDeleted, hasRevisions }: {
+    note: FNote,
+    onRevisionSaved: () => void,
+    onAllDeleted: () => void,
+    hasRevisions: boolean
+}) {
+    let revisionsNumberLimit: number | string = parseInt(note.getLabelValue("versioningLimit") ?? "", 10);
+    if (!Number.isInteger(revisionsNumberLimit)) {
+        revisionsNumberLimit = options.getInt("revisionSnapshotNumberLimit") ?? 0;
+    }
+    if (revisionsNumberLimit === -1) {
+        revisionsNumberLimit = "∞";
+    }
+
+    return (
+        <Dropdown
+            text={<span className="bx bx-dots-horizontal-rounded" />}
+            hideToggleArrow
+            buttonClassName="custom-title-bar-button"
+            noSelectButtonStyle
+            buttonProps={{ title: t("revisions.menu_tooltip") }}
+            dropdownContainerClassName="mobile-bottom-menu"
+            dropdownOptions={{ popperConfig: { strategy: "fixed" } }}
+        >
+            <FormListItem
+                icon="bx bx-save"
+                onClick={async () => {
+                    await server.post(`notes/${note.noteId}/revision`);
+                    toast.showMessage(t("revisions.revision_saved"));
+                    onRevisionSaved();
+                }}
+            >
+                {t("revisions.save_revision_now")}
+            </FormListItem>
+            <FormListItem
+                icon="bx bx-purchase-tag"
+                onClick={async () => {
+                    const name = await dialog.prompt({
+                        title: t("entrypoints.save-named-revision-title"),
+                        message: t("entrypoints.save-named-revision-message"),
+                        defaultValue: ""
+                    });
+                    if (name === null) return;
+                    await server.post(`notes/${note.noteId}/revision`, { description: name || undefined });
+                    toast.showMessage(t("revisions.revision_saved"));
+                    onRevisionSaved();
+                }}
+            >
+                {t("revisions.save_named_revision")}
+            </FormListItem>
+            <FormDropdownDivider />
+            <FormListItem disabled className="revision-menu-header">
+                {t("revisions.snapshot_header")}
+            </FormListItem>
+            <FormListItem disabled>
+                {t("revisions.snapshot_interval_value", { seconds: options.getInt("revisionSnapshotTimeInterval") })}
+            </FormListItem>
+            <FormListItem disabled>
+                {t("revisions.snapshot_limit_value", { number: revisionsNumberLimit })}
+            </FormListItem>
+            <FormListItem
+                icon="bx bx-cog"
+                onClick={() => void appContext.triggerCommand("showOptions", { section: "_optionsOther" })}
+            >
+                {t("revisions.settings")}
+            </FormListItem>
+            {hasRevisions && (
+                <>
+                    <FormDropdownDivider />
+                    <FormListItem
+                        icon="bx bx-trash"
+                        onClick={async () => {
+                            if (await dialog.confirm(t("revisions.confirm_delete_all"))) {
+                                await server.remove(`notes/${note.noteId}/revisions`);
+                                onAllDeleted();
+                                toast.showMessage(t("revisions.revisions_deleted"));
+                            }
+                        }}
+                    >
+                        {t("revisions.delete_all_revisions")}
+                    </FormListItem>
+                </>
+            )}
+        </Dropdown>
+    );
+}
+
+const REVISION_SOURCE_ICONS: Record<string, string> = {
+    auto: "bx bx-time-five",
+    manual: "bx bx-save",
+    etapi: "bx bx-code-alt",
+    llm: "bx bx-bot",
+    restore: "bx bx-history"
+};
+const DEFAULT_REVISION_ICON = "bx bx-file";
+
+function getRevisionSourceTitle(source?: string): string {
+    return t(`revisions.source_description_${source ?? "unknown"}`);
+}
+
+type DateGroup = "today" | "yesterday" | "this_week" | "this_month" | "older";
+
+function getDateGroup(dateStr: string): DateGroup {
+    const date = dayjs(dateStr);
+    const now = dayjs();
+
+    if (date.isSame(now, "day")) return "today";
+    if (date.isSame(now.subtract(1, "day"), "day")) return "yesterday";
+    if (date.isSame(now, "week")) return "this_week";
+    if (date.isSame(now, "month")) return "this_month";
+    return "older";
+}
+
+function getDateGroupLabel(group: DateGroup, dateStr: string): string {
+    if (group === "older") return dayjs(dateStr).format("MMMM YYYY");
+    return t(`revisions.date_${group}`);
+}
+
+function formatRevisionDate(dateStr: string, group: DateGroup): string {
+    const date = dayjs(dateStr);
+    switch (group) {
+        case "today":
+        case "yesterday":
+            return date.format("HH:mm");
+        case "this_week":
+            return date.format("dddd · HH:mm");
+        default:
+            return date.isSame(dayjs(), "year")
+                ? date.format("MMM D · HH:mm")
+                : date.format("MMM D, YYYY · HH:mm");
+    }
+}
+
+function buildRevisionTooltip(item: RevisionItem): string {
+    const dateLine = item.dateCreated
+        ? `${dayjs(item.dateCreated).format("YYYY-MM-DD HH:mm")} (${dayjs(item.dateCreated).fromNow()})`
+        : "";
+    return [
+        item.description,
+        getRevisionSourceTitle(item.source),
+        dateLine,
+        item.contentLength && utils.formatSize(item.contentLength)
+    ].filter(Boolean).join("\n");
+}
+
+function RevisionsList({ revisions, onSelect, currentRevision, detailed }: { revisions: RevisionItem[], onSelect: (val: string) => void, currentRevision?: RevisionItem, detailed?: boolean }) {
+    let lastGroup: DateGroup | "" = "";
+
+    return (
+        <FormList onSelect={onSelect} fullHeight wrapperClassName={clsx("revision-list", detailed && "detailed")}>
+            {revisions.map((item) => {
+                const group = item.dateCreated ? getDateGroup(item.dateCreated) : "" as DateGroup;
+                const showHeader = group !== lastGroup;
+                lastGroup = group;
+
+                // On touch devices the hover tooltip is unreachable, so the source/size it carries are
+                // surfaced inline as a meta line instead.
+                const meta = detailed && [
+                    getRevisionSourceTitle(item.source),
+                    item.contentLength && utils.formatSize(item.contentLength)
+                ].filter(Boolean).join(" · ");
+
+                return (
+                    <Fragment key={item.revisionId}>
+                        {showHeader && (
+                            <div className="revision-group-header">{item.dateCreated ? getDateGroupLabel(group, item.dateCreated) : ""}</div>
+                        )}
+                        <FormListItem
+                            key={item.revisionId}
+                            value={item.revisionId}
+                            icon={REVISION_SOURCE_ICONS[item.source ?? ""] ?? DEFAULT_REVISION_ICON}
+                            title={detailed ? undefined : buildRevisionTooltip(item)}
+                            active={currentRevision && item.revisionId === currentRevision.revisionId}
+                        >
+                            <div>
+                                <div className="revision-item-date">
+                                    {item.dateCreated && formatRevisionDate(item.dateCreated, group)}
+                                </div>
+                                {item.description && (
+                                    <div className="revision-item-description">
+                                        {item.description}
+                                    </div>
+                                )}
+                                {meta && (
+                                    <div className="revision-item-meta">
+                                        {meta}
+                                    </div>
+                                )}
+                            </div>
+                        </FormListItem>
+                    </Fragment>
+                );
+            })}
+        </FormList>);
+}
+
+function RevisionToolbar({ revisionItem, showDiff, setShowDiff, setShown, showActions, onRevisionDeleted, onDescriptionUpdated }: {
+    revisionItem?: RevisionItem,
+    showDiff: boolean,
+    setShowDiff: Dispatch<StateUpdater<boolean>>,
+    setShown: Dispatch<StateUpdater<boolean>>,
+    /** Whether the delete/download/restore buttons are shown inline; on mobile they move to a footer. */
+    showActions: boolean,
+    onRevisionDeleted?: () => void,
+    onDescriptionUpdated?: (revisionId: string, description: string) => void,
+}) {
+    const canShowDiff = DIFFABLE_TYPES.includes(revisionItem?.type ?? "");
+    const canInteract = revisionItem && canInteractWithRevision(revisionItem);
+    const [ editingDescription, setEditingDescription ] = useState(false);
+    const [ descriptionDraft, setDescriptionDraft ] = useState("");
+
+    useEffect(() => {
+        setEditingDescription(false);
+    }, [revisionItem]);
+
+    return (
+        <div className="revision-toolbar">
+            {revisionItem && (canShowDiff || (showActions && canInteract)) && (
+                <div className="revision-toolbar-actions">
+                    {canShowDiff && (
+                        <FormToggle
+                            currentValue={showDiff}
+                            onChange={(newValue) => setShowDiff(newValue)}
+                            switchOnName={t("revisions.highlight_changes")}
+                            switchOffName={t("revisions.highlight_changes")}
+                        />
+                    )}
+                    <div style="flex-grow: 1" />
+                    {showActions && canInteract && (
+                        <RevisionActions
+                            revisionItem={revisionItem}
+                            setShown={setShown}
+                            onRevisionDeleted={onRevisionDeleted}
+                            variant="toolbar"
+                        />
+                    )}
+                </div>
+            )}
+            {revisionItem && (
+                <RevisionDescription
+                    revisionItem={revisionItem}
+                    editing={editingDescription}
+                    draft={descriptionDraft}
+                    onEdit={() => {
+                        setDescriptionDraft(revisionItem.description || "");
+                        setEditingDescription(true);
+                    }}
+                    onDraftChange={setDescriptionDraft}
+                    onSave={async () => {
+                        await server.patch(`revisions/${revisionItem.revisionId}`, { description: descriptionDraft });
+                        setEditingDescription(false);
+                        toast.showMessage(t("revisions.description_updated"));
+                        onDescriptionUpdated?.(revisionItem.revisionId!, descriptionDraft);
+                    }}
+                    onCancel={() => setEditingDescription(false)}
+                />
+            )}
+        </div>
+    );
+}
+
+/** Whether the user may delete/download/restore the revision (protected revisions need an unlocked session). */
+function canInteractWithRevision(revisionItem: RevisionItem) {
+    return !revisionItem.isProtected || protected_session_holder.isProtectedSessionAvailable();
+}
+
+/**
+ * The delete/download/restore actions for the current revision. Rendered inline in the toolbar on
+ * desktop (`variant="toolbar"`, icon-only) and as labelled buttons in the detail footer on mobile
+ * (`variant="footer"`).
+ */
+function RevisionActions({ revisionItem, setShown, onRevisionDeleted, variant }: {
+    revisionItem: RevisionItem,
+    setShown: Dispatch<StateUpdater<boolean>>,
+    onRevisionDeleted?: () => void,
+    variant: "toolbar" | "footer"
+}) {
+    const onDelete = async () => {
+        if (await dialog.confirm(t("revisions.confirm_delete"))) {
+            await server.remove(`revisions/${revisionItem.revisionId}`);
+            toast.showMessage(t("revisions.revision_deleted"));
+            onRevisionDeleted?.();
+        }
+    };
+    const onDownload = () => {
+        if (revisionItem.revisionId) {
+            open.downloadRevision(revisionItem.noteId, revisionItem.revisionId);
+        }
+    };
+    const onRestore = async () => {
+        if (await dialog.confirm(t("revisions.confirm_restore"))) {
+            await server.post(`revisions/${revisionItem.revisionId}/restore`);
+            setShown(false);
+            toast.showMessage(t("revisions.revision_restored"));
+        }
+    };
+
+    if (variant === "footer") {
+        return (
+            <>
+                <ActionButton icon="bx bx-trash" text={t("revisions.delete_button")} onClick={onDelete} frame />
+                <ActionButton icon="bx bx-download" text={t("revisions.download_button")} onClick={onDownload} frame />
+                <Button kind="primary" icon="bx bx-history" text={t("revisions.restore_button")} onClick={onRestore} />
+            </>
+        );
+    }
+
+    return (
+        <>
+            <ActionButton icon="bx bx-trash" text={t("revisions.delete_button")} onClick={onDelete} frame />
+            <ActionButton icon="bx bx-download" text={t("revisions.download_button")} onClick={onDownload} frame />
+            <Button icon="bx bx-history" text={t("revisions.restore_button")} onClick={onRestore} />
+        </>
+    );
+}
+
+function RevisionPreview({noteContent, revisionItem, showDiff }: {
+    noteContent?: string,
+    revisionItem?: RevisionItem,
+    showDiff: boolean,
+}) {
+    const [ fullRevision, setFullRevision ] = useState<RevisionPojo>();
+
+    useEffect(() => {
+        if (revisionItem) {
+            server.get<RevisionPojo>(`revisions/${revisionItem.revisionId}`).then(setFullRevision);
+        } else {
+            setFullRevision(undefined);
+        }
+    }, [revisionItem]);
+
+    return (
+        <div
+            className={clsx("revision-content use-tn-links selectable-text", `type-${revisionItem?.type}`)}
+            style={{ wordBreak: "break-word" }}
+        >
+            <h3 className="revision-title">{revisionItem?.title}</h3>
+            <RevisionContent noteContent={noteContent} revisionItem={revisionItem} fullRevision={fullRevision} showDiff={showDiff}/>
+        </div>
+    );
+}
+
+function RevisionDescription({ revisionItem, editing, draft, onEdit, onDraftChange, onSave, onCancel }: {
+    revisionItem: RevisionItem,
+    editing: boolean,
+    draft: string,
+    onEdit: () => void,
+    onDraftChange: (val: string) => void,
+    onSave: () => void,
+    onCancel: () => void
+}) {
+    if (editing) {
+        return (
+            <div className="revision-description-editor">
+                <span className="bx bx-purchase-tag revision-description-icon" />
+                <input
+                    type="text"
+                    className="form-control form-control-sm"
+                    placeholder={t("revisions.description_placeholder")}
+                    value={draft}
+                    onInput={(e) => onDraftChange((e.target as HTMLInputElement).value)}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") onSave();
+                        if (e.key === "Escape") onCancel();
+                    }}
+                    // eslint-disable-next-line jsx-a11y/no-autofocus
+                    autoFocus
+                />
+                <ActionButton icon="bx bx-check" text={t("common.save")} onClick={onSave} />
+                <ActionButton icon="bx bx-x" text={t("common.cancel")} onClick={onCancel} />
+            </div>
+        );
+    }
+
+    return (
+        <div className="revision-description-display">
+            <span className="bx bx-purchase-tag revision-description-icon" />
+            <span className={clsx("revision-description-text", { empty: !revisionItem.description })}>
+                {revisionItem.description || t("revisions.description_placeholder")}
+            </span>
+            <ActionButton
+                icon="bx bx-edit-alt"
+                text={t("revisions.edit_description")}
+                onClick={onEdit}
+            />
+        </div>
+    );
+}
+
+const IMAGE_STYLE: CSSProperties = {
+    maxWidth: "100%",
+    maxHeight: "90%",
+    objectFit: "contain"
+};
+
+const CODE_STYLE: CSSProperties = {
+    maxWidth: "100%",
+    wordBreak: "break-all",
+    whiteSpace: "pre-wrap"
+};
+
+function RevisionContent({ noteContent, revisionItem, fullRevision, showDiff }: { noteContent?:string, revisionItem?: RevisionItem, fullRevision?: RevisionPojo, showDiff: boolean}) {
+    const content = fullRevision?.content;
+    if (!revisionItem || !fullRevision) {
+        return <></>;
+    }
+
+    if (showDiff && DIFFABLE_TYPES.includes(revisionItem.type)) {
+        return <RevisionContentDiff noteContent={noteContent} itemContent={content} itemType={revisionItem.type}/>;
+    }
+    switch (revisionItem.type) {
+        case "text":
+            return <RevisionContentText content={content} />;
+        case "code":
+            return <div className="revision-diff-code">{content}</div>;
+        case "image":
+            switch (revisionItem.mime) {
+                case "image/svg+xml": {
+                    //Base64 of other format images may be embedded in svg
+                    const encodedSVG = encodeURIComponent(content as string);
+                    return <img
+                        src={`data:${fullRevision.mime},${encodedSVG}`}
+                        style={IMAGE_STYLE} />;
+                }
+                default: {
+                    // the reason why we put this inline as base64 is that we do not want to let user copy this
+                    // as a URL to be used in a note. Instead, if they copy and paste it into a note, it will be uploaded as a new note
+                    return <img
+                        src={`data:${fullRevision.mime};base64,${fullRevision.content}`}
+                        style={IMAGE_STYLE} />;
+                }
+            }
+        case "file":
+            return <FilePreview fullRevision={fullRevision} revisionItem={revisionItem} />;
+        case "canvas":
+        case "mindMap":
+        case "mermaid":
+        case "spreadsheet": {
+            const encodedTitle = encodeURIComponent(revisionItem.title);
+            return <img
+                src={`api/revisions/${revisionItem.revisionId}/image/${encodedTitle}?${Math.random()}`}
+                style={IMAGE_STYLE} />;
+        }
+        default:
+            return <>{t("revisions.preview_not_available")}</>;
+    }
+}
+
+export function RevisionContentText({ content }: { content: string | Uint8Array | undefined }) {
+    const contentRef = useRef<HTMLDivElement>(null);
+
+    // A revision stores what CKEditor's data downcast produced, and two of those constructs carry
+    // no visible content of their own: a link preview is an empty `<span class="link-mention">` /
+    // `<section class="link-embed">` holding only its metadata as data attributes, and a reference
+    // link stores a bare title that the note view turns into an icon-and-colour span. Without these
+    // passes a link preview is an empty gap in the revision (#10707).
+    useEffect(() => {
+        const container = contentRef.current;
+        if (!container) return;
+
+        applyLinkEmbeds(container);
+        void applyReferenceLinks(container);
+    }, [content]);
+
+    useEffect(() => {
+        if (contentRef.current?.querySelector("span.math-tex")) {
+            // KaTeX is heavy, so the math service is only loaded when there are formulas to render.
+            void import("../../services/math").then(({ renderMathInElement }) => {
+                if (contentRef.current) {
+                    // throwOnError: false renders invalid formulas as an inline red error
+                    // instead of throwing and logging to the console.
+                    renderMathInElement(contentRef.current, { trust: true, throwOnError: false });
+                }
+            });
+        }
+    }, [content]);
+    return <RawHtmlBlock containerRef={contentRef} className="ck-content" html={sanitizeNoteContentHtml(content as string)} />;
+}
+
+function RevisionContentDiff({ noteContent, itemContent, itemType }: {
+    noteContent?: string,
+    itemContent: string | Uint8Array | undefined,
+    itemType: string
+}) {
+    if (typeof itemContent !== "string") {
+        return (
+            <div className="revision-diff-content">
+                <NoItems icon="bx bx-low-vision" text={t("revisions.diff_not_available")} />
+            </div>
+        );
+    }
+
+    let diffHtml: string;
+    if (itemType === "text") {
+        // Use proper HTML-aware diff for rich text content
+        diffHtml = HtmlDiff.execute(seedLinkPreviewTitles(noteContent), seedLinkPreviewTitles(itemContent));
+    } else {
+        // Use word diff for code/mermaid (plain text)
+        const diff = diffWords(noteContent ?? "", itemContent);
+        diffHtml = diff.map(part => {
+            if (part.added) {
+                return `<span class="revision-diff-added">${utils.escapeHtml(part.value)}</span>`;
+            } else if (part.removed) {
+                return `<span class="revision-diff-removed">${utils.escapeHtml(part.value)}</span>`;
+            }
+            return utils.escapeHtml(part.value);
+        }).join("");
+    }
+
+    // Diff returned no results, meaning that they are identical.
+    if (!diffHtml) {
+        return <NoItems className="revision-diff-content" icon="bx bx-copy" text={t("revisions.diff_identical")} />;
+    }
+
+    return <SanitizedHtml
+        className={clsx("revision-diff-content", itemType === "text" ? "ck-content" : "revision-diff-code")}
+        html={diffHtml}
+    />;
+}
+
+/**
+ * Fills every link preview with a real link carrying the title it displays, so that the differ can
+ * see it and the reader gets something they recognise as a link.
+ *
+ * htmldiff-js diffs words, and a link preview holds none: it is stored as an empty
+ * `<span class="link-mention">` / `<section class="link-embed">` carrying its metadata in data
+ * attributes, which only the note view turns into a card. Left alone the differ emits the element
+ * unmarked whether it was added or removed, so a revision that gained a link and one that lost it
+ * come out identical (#10707).
+ *
+ * What is built here is the anchor a preview without a favicon renders as anyway — same classes,
+ * same href — rather than the whole card: the differ marks up the text it compares, and rendering
+ * the card over the top of that would wipe the markup back out. So a changed link reads as a
+ * changed link, and an unchanged one still looks like the note it came from.
+ *
+ * Parsed with DOMParser rather than through an element's innerHTML: the document it builds is
+ * inert, so nothing a revision happens to contain loads or runs on the way past.
+ */
+export function seedLinkPreviewTitles(html: string | undefined) {
+    // Both sides of the diff are seeded, so the parse-and-serialize round trip would be symmetric
+    // and harmless — but skipping it leaves a diff of notes without previews exactly as it was.
+    if (!html || (!html.includes("link-mention") && !html.includes("link-embed"))) {
+        return html;
+    }
+
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    for (const preview of doc.querySelectorAll<HTMLElement>("span.link-mention, section.link-embed")) {
+        if (preview.textContent?.trim()) {
+            continue;
+        }
+
+        const { title, url } = preview.dataset;
+        // Same fallback the preview itself uses, so the diff names the link the way the note does.
+        const text = title || (url ? safeHostname(url) : "");
+        if (!text) {
+            continue;
+        }
+
+        const anchor = doc.createElement("a");
+        anchor.className = "link-embed-mention";
+        anchor.href = safeLinkPreviewHref(url);
+        anchor.target = "_blank";
+        anchor.rel = "noopener noreferrer";
+
+        const titleEl = doc.createElement("span");
+        titleEl.className = "link-embed-mention-title";
+        titleEl.textContent = text;
+
+        anchor.append(titleEl);
+        preview.replaceChildren(anchor);
+    }
+
+    return doc.body.innerHTML;
+}
+
+
+function FilePreview({ revisionItem, fullRevision }: { revisionItem: RevisionItem, fullRevision: RevisionPojo }) {
+    return (
+        <div className="revision-file-preview">
+            <table className="file-preview-table">
+                <tbody>
+                    <tr>
+                        <th>{t("revisions.mime")}</th>
+                        <td>{revisionItem.mime}</td>
+                    </tr>
+                    <tr>
+                        <th>{t("revisions.file_size")}</th>
+                        <td>{revisionItem.contentLength && utils.formatSize(revisionItem.contentLength)}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="revision-file-preview-content">
+                <FilePreviewInner revisionItem={revisionItem} fullRevision={fullRevision} />
+            </div>
+        </div>
+    );
+}
+
+function FilePreviewInner({ revisionItem, fullRevision }: { revisionItem: RevisionItem, fullRevision: RevisionPojo }) {
+    if (revisionItem.mime.startsWith("audio/")) {
+        return (
+            <audio
+                src={`api/revisions/${revisionItem.revisionId}/download`}
+                controls
+            />
+        );
+    }
+
+    if (revisionItem.mime.startsWith("video/")) {
+        return (
+            <video
+                src={`api/revisions/${revisionItem.revisionId}/download`}
+                controls
+            />
+        );
+    }
+
+    if (revisionItem.mime === "application/pdf") {
+        return (
+            <PdfViewer
+                pdfUrl={getPdfUrl(`revisions/${revisionItem.revisionId}/download`)}
+            />
+        );
+    }
+
+    if (fullRevision.content) {
+        return <pre className="file-preview-content" style={CODE_STYLE}>{fullRevision.content}</pre>;
+    }
+
+    return t("revisions.preview_not_available");
+}
+
+async function getNote(noteId?: string | null) {
+    if (noteId) {
+        return await froca.getNote(noteId);
+    }
+    return appContext.tabManager.getActiveContextNote();
+
+}

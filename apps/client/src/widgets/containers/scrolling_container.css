@@ -1,0 +1,36 @@
+.scrolling-container {
+    --content-margin-inline: 24px;
+
+    overflow: auto;
+    scroll-behavior: smooth;
+    position: relative;
+
+    > .note-detail > .note-detail-editable-text > .note-detail-editable-text-editor,
+    > .note-list-widget:not(.full-height) .note-list-wrapper {
+        margin-inline: var(--content-margin-inline);
+    }
+
+    > .inline-title {
+        padding-inline: var(--content-margin-inline);
+    }
+
+    > .note-detail > .note-detail-editable-text > .note-detail-editable-text-editor {
+        overflow: unset;
+    }
+}
+
+body.mobile .scrolling-container {
+    --content-margin-inline: 8px;
+}
+
+.note-split.type-code:not(.mime-text-x-sqlite, .mime-text-x-markdown) {
+    &> .scrolling-container {
+        background-color: var(--code-background-color);
+        --scrollbar-background-color: var(--main-background-color);
+    }
+
+    .inline-title,
+    .title-actions {
+        background-color: var(--main-background-color);
+    }
+}

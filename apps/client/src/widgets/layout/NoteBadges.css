@@ -1,0 +1,65 @@
+.component.note-badges {
+    contain: none;
+}
+
+@keyframes fadeOut {
+    from { opacity: var(--default-opacity); }
+    to { opacity: 0; }
+}
+
+.note-badges {
+    display: flex;
+    gap: 5px;
+    min-width: 0;
+    flex-shrink: 1;
+    overflow: hidden;
+    --badge-radius: 12px;
+
+    .ext-badge {
+        &.temporarily-editable-badge {--color: var(--badge-temporaraily-editable-background-color)}
+        &.read-only-badge {--color: var(--badge-read-only-background-color);}
+        &.share-badge {--color: var(--badge-share-background-color);}
+        &.clipped-note-badge {--color: var(--badge-clipped-note-background-color);}
+        &.doc-url-badge {--color: var(--badge-doc-url-background-color);}
+        &.execute-badge {--color: var(--badge-execute-background-color);}
+        &.snippet-badge {--color: var(--badge-snippet-background-color);}
+        &.save-status-badge {
+            --default-opacity: 0.4;
+            opacity: var(--default-opacity);
+            transition: opacity 250ms ease-in;
+            color: var(--main-text-color);
+
+            &.error {
+                color: var(--dropdown-item-icon-destructive-color);
+                opacity: 1;
+            }
+
+            &.saved {
+                animation: fadeOut 250ms ease-in 5s forwards;
+                pointer-events: none;
+            }
+
+            body#trilium-app.motion-disabled &.saved {
+                animation: fadeOut 0s 5s forwards !important;
+            }
+        }
+        &.active-content-badge { --color: var(--badge-active-content-background-color); }
+        &.active-content-badge.disabled {
+            opacity: 0.5;
+        }
+
+        min-width: 0;
+
+        .text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
+        }
+
+        .switch-button {
+            --switch-track-height: 8px;
+            --switch-track-width: 30px;
+        }
+    }
+}
+

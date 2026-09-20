@@ -1,0 +1,51 @@
+name: Bug Report
+description: Report a bug
+type: "Bug"
+body:
+- type: textarea
+  attributes:
+    label: Description
+    description: A clear and concise description of the bug and any additional information.
+  validations:
+    required: true
+- type: input
+  attributes:
+    label: TriliumNext Version
+    description: What version of TriliumNext are you using?
+    placeholder: 0.90.0-beta
+  validations:
+    required: true
+- type: dropdown
+  attributes:
+    label: What operating system are you using?
+    options:
+      - Windows
+      - macOS
+      - Ubuntu
+      - Other Linux
+      - Other (specify below)
+  validations:
+    required: true
+- type: dropdown
+  attributes:
+    label: What is your setup?
+    description: https://triliumnext.github.io/Docs/Wiki/quick-start.html
+    options:
+      - Local (no sync)
+      - Local + server sync
+      - Server access only
+  validations:
+    required: true
+- type: input
+  attributes:
+    label: Operating System Version
+    description: What operating system version are you using? On Windows, click Start button > Settings > System > About. On macOS, click the Apple Menu > About This Mac. On Linux, use lsb_release or uname -a.
+    placeholder: "e.g. Windows 10 version 1909, macOS Catalina 10.15.7, or Ubuntu 20.04"
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Error logs
+    description: Please provide error logs, see [wiki page](https://triliumnext.github.io/Docs/Wiki/error-logs.html) for instructions on how to submit them.
+  validations:
+    required: false

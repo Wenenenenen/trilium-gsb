@@ -1,0 +1,292 @@
+import dateNoteService from "../services/date_notes.js";
+import froca from "../services/froca.js";
+import openService from "../services/open.js";
+import options from "../services/options.js";
+import protectedSessionService from "../services/protected_session.js";
+import { collectShortcutHints } from "../services/shortcut_hints.js";
+import treeService from "../services/tree.js";
+import utils from "../services/utils.js";
+import appContext, { type CommandListenerData } from "./app_context.js";
+import Component from "./component.js";
+
+export default class RootCommandExecutor extends Component {
+    editReadOnlyNoteCommand() {
+        const noteContext = appContext.tabManager.getActiveContext();
+        if (noteContext?.viewScope) {
+            noteContext.viewScope.readOnlyTemporarilyDisabled = true;
+            appContext.triggerEvent("readOnlyTemporarilyDisabled", { noteContext });
+        }
+    }
+
+    async showShortcutHintsCommand() {
+        const sections = collectShortcutHints(await resolveFocusedComponent());
+        appContext.triggerEvent("shortcutHintsRequested", { sections });
+    }
+
+    async showSQLConsoleCommand() {
+        const sqlConsoleNote = await dateNoteService.createSqlConsole();
+        if (!sqlConsoleNote) {
+            return;
+        }
+
+        const noteContext = await appContext.tabManager.openTabWithNoteWithHoisting(sqlConsoleNote.noteId, { activate: true });
+
+        appContext.triggerEvent("focusOnDetail", { ntxId: noteContext.ntxId });
+    }
+
+    async searchNotesCommand({ searchString, ancestorNoteId }: CommandListenerData<"searchNotes">) {
+        const searchNote = await dateNoteService.createSearchNote({ searchString, ancestorNoteId });
+        if (!searchNote) {
+            return;
+        }
+
+        // force immediate search
+        await froca.loadSearchNote(searchNote.noteId);
+
+        const noteContext = await appContext.tabManager.openTabWithNoteWithHoisting(searchNote.noteId, {
+            activate: true
+        });
+    }
+
+    async searchInSubtreeCommand({ notePath }: CommandListenerData<"searchInSubtree">) {
+        const noteId = treeService.getNoteIdFromUrl(notePath);
+
+        this.searchNotesCommand({ ancestorNoteId: noteId });
+    }
+
+    openNoteExternallyCommand() {
+        const noteId = appContext.tabManager.getActiveContextNoteId();
+        const mime = appContext.tabManager.getActiveContextNoteMime();
+        if (noteId) {
+            openService.openNoteExternally(noteId, mime || "");
+        }
+    }
+
+    openNoteCustomCommand() {
+        const noteId = appContext.tabManager.getActiveContextNoteId();
+        const mime = appContext.tabManager.getActiveContextNoteMime();
+        if (noteId) {
+            openService.openNoteCustom(noteId, mime || "");
+        }
+    }
+
+    openNoteOnServerCommand() {
+        const noteId = appContext.tabManager.getActiveContextNoteId();
+        if (noteId) {
+            openService.openNoteOnServer(noteId);
+        }
+    }
+
+    enterProtectedSessionCommand() {
+        protectedSessionService.enterProtectedSession();
+    }
+
+    leaveProtectedSessionCommand() {
+        protectedSessionService.leaveProtectedSession();
+    }
+
+    hideLeftPaneCommand() {
+        appContext.triggerEvent("setLeftPaneVisibility", { leftPaneVisible: false });
+    }
+
+    showLeftPaneCommand() {
+        appContext.triggerEvent("setLeftPaneVisibility", { leftPaneVisible: true });
+    }
+
+    toggleLeftPaneCommand() {
+        appContext.triggerEvent("setLeftPaneVisibility", { leftPaneVisible: null });
+    }
+
+    async showBackendLogCommand() {
+        await appContext.tabManager.openTabWithNoteWithHoisting("_backendLog", { activate: true });
+    }
+
+    async showSpaceUsageCommand() {
+        await appContext.tabManager.openTabWithNoteWithHoisting("_spaceUsage", { activate: true });
+    }
+
+    async showHelpCommand() {
+        await this.showAndHoistSubtree("_help");
+    }
+
+    async showLaunchBarSubtreeCommand() {
+        const rootNote = utils.isMobile() ? "_lbMobileRoot" : "_lbRoot";
+        appContext.triggerCommand("openInTreePopup", { noteIdOrPath: rootNote, hoistedNoteId: rootNote });
+    }
+
+    async showShareSubtreeCommand() {
+        await this.showAndHoistSubtree("_share");
+    }
+
+    async showHiddenSubtreeCommand() {
+        await this.showAndHoistSubtree("_hidden");
+    }
+
+    async showSQLConsoleHistoryCommand() {
+        await this.showAndHoistSubtree("_sqlConsole");
+    }
+
+    async showSearchHistoryCommand() {
+        await this.showAndHoistSubtree("_search");
+    }
+
+    async showAndHoistSubtree(subtreeNoteId: string) {
+        await appContext.tabManager.openContextWithNote(subtreeNoteId, {
+            activate: true,
+            hoistedNoteId: subtreeNoteId
+        });
+    }
+
+    async showNoteSourceCommand() {
+        const notePath = appContext.tabManager.getActiveContextNotePath();
+
+        if (notePath) {
+            await appContext.tabManager.openTabWithNoteWithHoisting(notePath, {
+                activate: true,
+                viewScope: {
+                    viewMode: "source"
+                }
+            });
+        }
+    }
+
+    showNoteOCRTextCommand() {
+        const noteId = appContext.tabManager.getActiveContextNoteId();
+        if (noteId) {
+            appContext.triggerCommand("showOcrTextDialog", {
+                textUrl: `ocr/notes/${noteId}/text`,
+                processUrl: `ocr/process-note/${noteId}`
+            });
+        }
+    }
+
+    async showAttachmentsCommand() {
+        const notePath = appContext.tabManager.getActiveContextNotePath();
+
+        if (notePath) {
+            await appContext.tabManager.openTabWithNoteWithHoisting(notePath, {
+                activate: true,
+                viewScope: {
+                    viewMode: "attachments"
+                }
+            });
+        }
+    }
+
+    async showAttachmentDetailCommand() {
+        const notePath = appContext.tabManager.getActiveContextNotePath();
+
+        if (notePath) {
+            await appContext.tabManager.openTabWithNoteWithHoisting(notePath, {
+                activate: true,
+                viewScope: {
+                    viewMode: "attachments"
+                }
+            });
+        }
+    }
+
+    toggleTrayCommand() {
+        if (!utils.isElectron() || options.is("disableTray")) return;
+
+        window.electronApi?.window.toggleAllWindows();
+    }
+
+    toggleZenModeCommand() {
+        const $body = $("body");
+        $body.toggleClass("zen");
+        const isEnabled = $body.hasClass("zen");
+        appContext.triggerEvent("zenModeChanged", { isEnabled });
+    }
+
+    async toggleRibbonTabNoteMapCommand(data: CommandListenerData<"toggleRibbonTabNoteMap">) {
+        // A phone has neither the ribbon the map was a tab of nor the pane it is a card of, so it is
+        // shown the way the pane's card shows it expanded: as the quick-edit popup, which is the map at
+        // the size of the window wherever there is no card to expand from. The popup carries the note's
+        // title, steps aside when a note of the map is pressed, and can be taken on to a tab.
+        if (utils.isMobile()) {
+            const notePath = appContext.tabManager.getActiveContext()?.notePath;
+            if (notePath) {
+                void appContext.triggerCommand("openInPopup", { noteIdOrPath: notePath, viewScope: { viewMode: "note-map" } });
+            }
+            return;
+        }
+
+        const { isExperimentalFeatureEnabled } = await import("../services/experimental_features.js");
+        const isNewLayout = isExperimentalFeatureEnabled("new-layout");
+        if (!isNewLayout) {
+            this.triggerEvent("toggleRibbonTabNoteMap", data);
+            return;
+        }
+
+        // The sidebar's map is the note map of the new layout: it is the one that follows the note being
+        // read, so the menu points at it rather than opening a second copy beside it that would then go
+        // stale. Peeked rather than docked, as the connection badges of the status bar are: a press for
+        // the tab already docked would otherwise close the pane out from under the card it is meant to
+        // expand (see reduceTabSelection).
+        void appContext.triggerEvent("selectRightPaneTab", {
+            tabId: "connections",
+            peek: true,
+            expandWidgetId: "noteMap"
+        });
+    }
+
+    firstTabCommand() {
+        this.#goToTab(1);
+    }
+    secondTabCommand() {
+        this.#goToTab(2);
+    }
+    thirdTabCommand() {
+        this.#goToTab(3);
+    }
+    fourthTabCommand() {
+        this.#goToTab(4);
+    }
+    fifthTabCommand() {
+        this.#goToTab(5);
+    }
+    sixthTabCommand() {
+        this.#goToTab(6);
+    }
+    seventhTabCommand() {
+        this.#goToTab(7);
+    }
+    eigthTabCommand() {
+        this.#goToTab(8);
+    }
+    ninthTabCommand() {
+        this.#goToTab(9);
+    }
+    lastTabCommand() {
+        this.#goToTab(Number.POSITIVE_INFINITY);
+    }
+
+    #goToTab(tabNumber: number) {
+        const mainNoteContexts = appContext.tabManager.getMainNoteContexts();
+
+        const index = tabNumber === Number.POSITIVE_INFINITY ? mainNoteContexts.length - 1 : tabNumber - 1;
+        const tab = mainNoteContexts[index];
+
+        if (tab) {
+            appContext.tabManager.activateTabContext(tab.ntxId);
+        }
+    }
+
+}
+
+/**
+ * The component to start collecting shortcut hints from: the one owning the focused element, or —
+ * when nothing focusable is (e.g. the image/media viewers) — the active pane's type widget.
+ */
+async function resolveFocusedComponent(): Promise<Component | undefined> {
+    const activeEl = document.activeElement;
+    if (activeEl instanceof HTMLElement) {
+        const component = appContext.getComponentByEl(activeEl) as Component | undefined;
+        if (component) {
+            return component;
+        }
+    }
+
+    return appContext.tabManager.getActiveContext()?.getTypeWidget();
+}

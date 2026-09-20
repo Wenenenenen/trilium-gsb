@@ -1,0 +1,353 @@
+import { t } from "./i18n.js";
+import { getSetupAuthToken } from "./setup_auth.js";
+import utils, { isShare } from "./utils.js";
+import ValidationError from "./validation_error.js";
+
+type Headers = Record<string, string | null | undefined>;
+
+interface Response {
+    headers: Headers;
+    body: unknown;
+}
+
+export interface StandardResponse {
+    success: boolean;
+}
+
+async function getHeaders(headers?: Headers) {
+    if (isShare) {
+        return {};
+    }
+
+    const activeNoteContext = glob.appContext?.tabManager ? glob.appContext.tabManager.getActiveContext() : null;
+
+    // headers need to be lowercase because node.js automatically converts them to lower case
+    // also avoiding using underscores instead of dashes since nginx filters them out by default
+    const allHeaders: Headers = {
+        "trilium-component-id": glob.componentId,
+        "trilium-local-now-datetime": utils.localNowDateTime(),
+        "trilium-hoisted-note-id": activeNoteContext ? activeNoteContext.hoistedNoteId : null,
+        "x-csrf-token": glob.csrfToken,
+        // What unlocks the setup wizard where a knowledge base is sitting behind it. Null on every
+        // other page, and dropped below along with every other header that has no value.
+        "trilium-setup-auth": getSetupAuthToken()
+    };
+
+    for (const headerName in headers) {
+        if (headers[headerName]) {
+            allHeaders[headerName] = headers[headerName];
+        }
+    }
+
+    return allHeaders;
+}
+
+async function getWithSilentNotFound<T>(url: string, componentId?: string) {
+    return await call<T>("GET", url, componentId, { silentNotFound: true });
+}
+
+/**
+ * @param raw if `true`, the value will be returned as a string instead of a JavaScript object if JSON, XMLDocument if XML, etc.
+ */
+async function get<T>(url: string, componentId?: string, raw?: boolean) {
+    return await call<T>("GET", url, componentId, { raw });
+}
+
+async function getWithSilentUnauthorized<T>(url: string, componentId?: string) {
+    return await call<T>("GET", url, componentId, { silentUnauthorized: true });
+}
+
+async function post<T>(url: string, data?: unknown, componentId?: string) {
+    return await call<T>("POST", url, componentId, { data });
+}
+
+async function postWithSilentInternalServerError<T>(url: string, data?: unknown, componentId?: string) {
+    return await call<T>("POST", url, componentId, { data, silentInternalServerError: true });
+}
+
+/**
+ * For an operation that runs in minutes rather than seconds — see {@link CallOptions.timeoutMs}. The
+ * work carries on server-side whatever the client does, so giving up early does not stop it; it only
+ * loses the answer, and reports a failure for something that is still succeeding.
+ */
+async function getWithTimeout<T>(url: string, timeoutMs: number, componentId?: string) {
+    return await call<T>("GET", url, componentId, { timeoutMs });
+}
+
+/** The POST counterpart of {@link getWithTimeout}. */
+async function postWithTimeout<T>(url: string, timeoutMs: number, data?: unknown, componentId?: string) {
+    return await call<T>("POST", url, componentId, { data, timeoutMs });
+}
+
+async function put<T>(url: string, data?: unknown, componentId?: string) {
+    return await call<T>("PUT", url, componentId, { data });
+}
+
+async function patch<T>(url: string, data: unknown, componentId?: string) {
+    return await call<T>("PATCH", url, componentId, { data });
+}
+
+async function remove<T>(url: string, componentId?: string) {
+    return await call<T>("DELETE", url, componentId);
+}
+
+async function upload(url: string, fileToUpload: File, componentId?: string, method = "PUT") {
+    const formData = new FormData();
+    formData.append("upload", fileToUpload);
+
+    const doUpload = async () => $.ajax({
+        url: window.glob.baseApiUrl + url,
+        headers: await getHeaders(componentId ? {
+            "trilium-component-id": componentId
+        } : undefined),
+        data: formData,
+        type: method,
+        timeout: 60 * 60 * 1000,
+        contentType: false, // NEEDED, DON'T REMOVE THIS
+        processData: false // NEEDED, DON'T REMOVE THIS
+    });
+
+    try {
+        return await doUpload();
+    } catch (e: unknown) {
+        // jQuery rejects with the jqXHR object
+        const jqXhr = e as JQuery.jqXHR;
+        if (jqXhr?.status && isCsrfError(jqXhr.status, jqXhr.responseText)) {
+            await refreshCsrfToken();
+            return await doUpload();
+        }
+        throw e;
+    }
+}
+
+let maxKnownEntityChangeId = 0;
+
+let csrfRefreshInProgress: Promise<void> | null = null;
+
+/**
+ * Re-fetches /bootstrap to obtain a fresh CSRF token. This is needed when the
+ * server session expires (e.g. mobile tab backgrounded for a long time) and the
+ * existing CSRF token is no longer valid.
+ *
+ * Coalesces concurrent calls so only one bootstrap request is in-flight at a time.
+ */
+async function refreshCsrfToken(): Promise<void> {
+    if (csrfRefreshInProgress) {
+        return csrfRefreshInProgress;
+    }
+
+    csrfRefreshInProgress = (async () => {
+        try {
+            const response = await fetch(`./bootstrap${window.location.search}`, { cache: "no-store" });
+            if (response.ok) {
+                const json = await response.json();
+                glob.csrfToken = json.csrfToken;
+            }
+        } finally {
+            csrfRefreshInProgress = null;
+        }
+    })();
+
+    return csrfRefreshInProgress;
+}
+
+function isCsrfError(status: number, responseText: string): boolean {
+    if (status !== 403) {
+        return false;
+    }
+    try {
+        const body = JSON.parse(responseText);
+        return body.message === "Invalid CSRF token";
+    } catch {
+        return false;
+    }
+}
+
+interface CallOptions {
+    data?: unknown;
+    silentNotFound?: boolean;
+    silentInternalServerError?: boolean;
+    /** Suppresses the generic error toast for a 401, for callers that present the failure themselves
+     *  (e.g. the OneNote import dialog showing an expired connection inline, with the server's reason). */
+    silentUnauthorized?: boolean;
+    // If `true`, the value will be returned as a string instead of a JavaScript object if JSON, XMLDocument if XML, etc.
+    raw?: boolean;
+    /** Used internally to prevent infinite retry loops on CSRF refresh. */
+    csrfRetried?: boolean;
+    /**
+     * How long to wait before giving up, for the few operations that legitimately run past
+     * {@link DEFAULT_TIMEOUT} — a database rebuild, an erasure sweeping a large database. Left unset
+     * everywhere else, so an ordinary request that hangs still fails rather than hanging its caller.
+     */
+    timeoutMs?: number;
+}
+
+/**
+ * Long enough for any request the UI makes while someone waits on it. Operations measured in
+ * minutes state their own — see {@link CallOptions.timeoutMs}.
+ */
+const DEFAULT_TIMEOUT = 60000;
+
+async function call<T>(method: string, url: string, componentId?: string, options: CallOptions = {}) {
+    const headers = await getHeaders({
+        "trilium-component-id": componentId
+    });
+    const { data } = options;
+
+    // In Electron the page is loaded from the `trilium-app://` custom
+    // protocol, whose handler routes everything through the same Express
+    // app the browser build talks to over HTTP. So a single $.ajax path
+    // covers both — no IPC bridge needed.
+    const resp = await ajax(url, method, data, headers, options);
+
+    const maxEntityChangeIdStr = resp.headers["trilium-max-entity-change-id"];
+
+    if (maxEntityChangeIdStr && maxEntityChangeIdStr.trim()) {
+        maxKnownEntityChangeId = Math.max(maxKnownEntityChangeId, parseInt(maxEntityChangeIdStr));
+    }
+
+    return resp.body as T;
+}
+
+function ajax(url: string, method: string, data: unknown, headers: Headers, opts: CallOptions): Promise<Response> {
+    return new Promise((res, rej) => {
+        const options: JQueryAjaxSettings = {
+            url: window.glob.baseApiUrl + url,
+            type: method,
+            headers,
+            timeout: opts.timeoutMs ?? DEFAULT_TIMEOUT,
+            success: (body, _textStatus, jqXhr) => {
+                const respHeaders: Headers = {};
+
+                jqXhr
+                    .getAllResponseHeaders()
+                    .trim()
+                    .split(/[\r\n]+/)
+                    .forEach((line) => {
+                        const parts = line.split(": ");
+                        const header = parts.shift();
+                        if (header) {
+                            respHeaders[header] = parts.join(": ");
+                        }
+                    });
+
+                res({
+                    body,
+                    headers: respHeaders
+                });
+            },
+            error: async (jqXhr) => {
+                if (jqXhr.status === 0) {
+                    // don't report requests that are rejected by the browser, usually when the user is refreshing or going to a different page.
+                    rej("rejected by browser");
+                    return;
+                }
+
+                // If the CSRF token is stale (e.g. session expired while tab was backgrounded),
+                // refresh it and retry the request once.
+                if (!opts.csrfRetried && isCsrfError(jqXhr.status, jqXhr.responseText)) {
+                    try {
+                        await refreshCsrfToken();
+                        // Rebuild headers so the fresh glob.csrfToken is picked up
+                        const retryHeaders = await getHeaders({ "trilium-component-id": headers["trilium-component-id"] });
+                        const retryResult = await ajax(url, method, data, retryHeaders, { ...opts, csrfRetried: true });
+                        res(retryResult);
+                        return;
+                    } catch (retryErr) {
+                        rej(retryErr);
+                        return;
+                    }
+                }
+
+                if (opts.silentNotFound && jqXhr.status === 404) {
+                    // report nothing
+                } else if (opts.silentInternalServerError && jqXhr.status === 500) {
+                    // report nothing
+                } else if (opts.silentUnauthorized && jqXhr.status === 401) {
+                    // report nothing
+                } else {
+                    try {
+                        await reportError(method, url, jqXhr.status, jqXhr.responseText);
+                    } catch {
+                        // reportError may throw (e.g. ValidationError); ensure rej() is still called below.
+                    }
+                }
+
+                rej(jqXhr.responseText);
+            }
+        };
+
+        if (opts.raw) {
+            options.dataType = "text";
+        }
+
+        if (data) {
+            try {
+                options.data = JSON.stringify(data);
+            } catch (e) {
+                console.log("Can't stringify data: ", data, " because of error: ", e);
+            }
+            options.contentType = "application/json";
+        }
+
+        $.ajax(options);
+    });
+}
+
+async function reportError(method: string, url: string, statusCode: number, response: unknown) {
+    let message = response;
+
+    if (typeof response === "string") {
+        try {
+            response = JSON.parse(response);
+            message = (response as any).message;
+        } catch (e) {}
+    }
+
+    // Dynamic import to avoid circular dependency (toast → app_context → options → server).
+    const toastService = (await import("./toast.js")).default;
+
+    const messageStr = (typeof message === "string" ? message : JSON.stringify(message)) || "-";
+
+    if ([400, 404].includes(statusCode) && response && typeof response === "object") {
+        toastService.showError(messageStr);
+        throw new ValidationError({
+            requestUrl: url,
+            method,
+            statusCode,
+            ...response
+        });
+    } else {
+        if (statusCode === 400 && (url.includes("%23") || url.includes("%2F"))) {
+            toastService.showPersistent({
+                id: "trafik-blocked",
+                icon: "bx bx-unlink",
+                title: t("server.unknown_http_error_title"),
+                message: t("server.traefik_blocks_requests")
+            });
+        } else {
+            toastService.showErrorTitleAndMessage(
+                t("server.unknown_http_error_title"),
+                t("server.unknown_http_error_content", { statusCode, method, url, message: messageStr }),
+                15_000);
+        }
+        window.logError(`${statusCode} ${method} ${url} - ${message}`);
+    }
+}
+
+export default {
+    get,
+    getWithSilentNotFound,
+    getWithSilentUnauthorized,
+    getWithTimeout,
+    post,
+    postWithSilentInternalServerError,
+    postWithTimeout,
+    put,
+    patch,
+    remove,
+    upload,
+    // don't remove, used from CKEditor image upload!
+    getHeaders,
+    getMaxKnownEntityChangeId: () => maxKnownEntityChangeId
+};

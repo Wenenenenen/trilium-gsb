@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "../../packages/highlightjs"
+    },
+    {
+      "path": "../../packages/commons"
+    },
+    {
+      "path": "../../packages/codemirror"
+    },
+    {
+      "path": "../../packages/ckeditor5"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}

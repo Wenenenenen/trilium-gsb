@@ -1,0 +1,44 @@
+{
+    "name": "@triliumnext/split.js",
+    "version": "1.6.5",
+    "description": "2kb unopinionated utility for resizeable split views",
+    "main": "src/split.js",
+    "types": "index.d.ts",
+    "repository": "https://github.com/nathancahill/split",
+    "keywords": [
+        "css",
+        "split",
+        "flexbox",
+        "tiny",
+        "split-layout"
+    ],
+    "author": "Nathan Cahill <nathan@nathancahill.com>",
+    "license": "MIT",
+    "homepage": "https://split.js.org/",
+    "scripts": {
+        "test": "vitest run",
+        "prepublish": "rollup -c",
+        "build": "rollup -c",
+        "watch": "rollup -cw"
+    },
+    "files": [
+        "index.d.ts",
+        "dist"
+    ],
+    "browserslist": [
+        "Chrome >= 22",
+        "Firefox >= 6",
+        "Opera >= 15",
+        "Safari >= 6.2",
+        "IE >= 9"
+    ],
+    "collective": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/splitjs"
+    },
+    "devDependencies": {
+        "@rollup/plugin-buble": "1.0.3",
+        "happy-dom": "20.11.2",
+        "vitest": "4.1.10"
+    }
+}

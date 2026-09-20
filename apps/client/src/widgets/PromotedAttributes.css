@@ -1,0 +1,94 @@
+body.mobile .promoted-attributes-widget {
+    /* https://github.com/zadam/trilium/issues/4468 */
+    flex-shrink: 0.4;
+    overflow: auto;
+}
+
+.component.promoted-attributes-widget {
+    contain: none;
+}
+
+/* The cells lay out as a row here rather than in whichever theme happens to be loaded: as a table with
+   flex cells, each one took an anonymous row of its own and the attributes stacked one per line. */
+.promoted-attributes-container {
+    margin: 0 1.5em;
+    overflow: auto;
+    max-height: 400px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+body.experimental-feature-new-layout .promoted-attributes-container {
+    max-height: unset;
+}
+
+.promoted-attribute-cell {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+}
+
+.promoted-attribute-cell > label {
+    user-select: none;
+    font-weight: bold;
+    vertical-align: middle;
+}
+.promoted-attribute-cell > * {
+    display: table-cell;
+    padding: 1px 0;
+}
+
+.promoted-attribute-cell div.input-group {
+    margin-inline-start: 10px;
+    display: flex;
+    min-height: 40px;
+}
+.promoted-attribute-cell strong {
+    word-break:keep-all;
+    white-space: nowrap;
+}
+
+.promoted-attribute-cell input[type="checkbox"] {
+    width: 22px !important;
+    flex-grow: 0;
+    width: unset;
+}
+
+/* Restore default apperance */
+.promoted-attribute-cell input[type="number"],
+.promoted-attribute-cell input[type="checkbox"] {
+    appearance: auto;
+}
+
+/* The colour swatch, and how it shows an unset label, are dressed with the field itself — see
+   label_value_input.css — so that a promoted colour and one edited anywhere else look alike. */
+
+.promoted-attribute-label-number input {
+    text-align: right;
+    width: 120px;
+}
+
+/*
+ * A label holding several values: one field carrying the whole set as chips, where the other kinds
+ * carry a single box. Laid out as the group around a single field is — the same gap after the name,
+ * the same height to sit against — so a note mixing the two reads as one grid rather than two.
+ */
+.promoted-attribute-cell > .promoted-attribute-values {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    min-height: 40px;
+    margin-inline-start: 10px;
+    padding: 1px 0;
+
+    > * {
+        flex: 1;
+    }
+}
+
+/* A number is read right-aligned in a box of its own; a chip is as wide as the number on it, and
+   pushing the text to its trailing edge would only leave a gap inside the chip. */
+.promoted-attribute-label-number .promoted-attribute-values input {
+    text-align: start;
+    width: auto;
+}

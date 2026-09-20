@@ -1,0 +1,13 @@
+.type-image .note-detail {
+    height: 100%;
+}
+
+.note-detail-image {
+    height: 100%;
+}
+
+.note-detail-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}
