@@ -8,6 +8,7 @@ import entityChangesService from "../../services/entity_changes.js";
 import { getLog } from "../../services/log.js";
 import TaskContext from "../../services/task_context.js";
 import treeService from "../../services/tree.js";
+import treeUndoService from "../../services/tree_undo.js";
 import { isEmptyOrWhitespace, randomString } from "../../services/utils/index.js";
 import { getSql } from "../../services/sql/index.js";
 import { ValidationError } from "../../errors.js";
@@ -27,7 +28,26 @@ function moveBranchToParent(req: Request<{ branchId: string, parentBranchId: str
         throw new ValidationError(`One or both branches '${branchId}', '${parentBranchId}' have not been found`);
     }
 
-    return branchService.moveBranchToBranch(branchToMove, targetParentBranch, branchId);
+    const undoGroupId = req.query.undoGroupId as string | undefined;
+    const undoRecord = treeUndoService.beginOperation(undoGroupId, "move");
+
+    if (undoRecord) {
+        treeUndoService.snapshotBranchWithSiblings(undoRecord, branchToMove);
+        treeUndoService.snapshotSiblingsOf(undoRecord, targetParentBranch.noteId);
+    }
+
+    const result = branchService.moveBranchToBranch(branchToMove, targetParentBranch, branchId);
+
+    if (undoRecord && !Array.isArray(result) && result.success && "branch" in result) {
+        const newBranchId = result.branch?.branchId;
+
+        if (newBranchId) {
+            treeUndoService.recordCreatedBranch(undoRecord, newBranchId, targetParentBranch.noteId);
+            treeUndoService.commitOperation(undoRecord);
+        }
+    }
+
+    return result;
 }
 
 function moveBranchBeforeNote(req: Request<{ branchId: string, beforeBranchId: string }>) {
@@ -43,6 +63,14 @@ function moveBranchBeforeNote(req: Request<{ branchId: string, beforeBranchId: s
     }
 
     const originalBeforeNotePosition = beforeBranch.notePosition;
+
+    const undoGroupId = req.query.undoGroupId as string | undefined;
+    const undoRecord = treeUndoService.beginOperation(undoGroupId, "move");
+
+    if (undoRecord) {
+        treeUndoService.snapshotBranchWithSiblings(undoRecord, branchToMove);
+        treeUndoService.snapshotSiblingsOf(undoRecord, beforeBranch.parentNoteId);
+    }
 
     // we don't change utcDateModified, so other changes are prioritized in case of conflict
     // also we would have to sync all those modified branches otherwise hash checks would fail
@@ -66,7 +94,13 @@ function moveBranchBeforeNote(req: Request<{ branchId: string, beforeBranchId: s
         newBranch.save();
 
         branchToMove.markAsDeleted();
+
+        if (undoRecord && newBranch.branchId) {
+            treeUndoService.recordCreatedBranch(undoRecord, newBranch.branchId, parentNote.noteId);
+        }
     }
+
+    treeUndoService.commitOperation(undoRecord);
 
     treeService.sortNotesIfNeeded(parentNote.noteId);
 
@@ -92,6 +126,14 @@ function moveBranchAfterNote(req: Request<{ branchId: string, afterBranchId: str
 
     const originalAfterNotePosition = afterNote.notePosition;
 
+    const undoGroupId = req.query.undoGroupId as string | undefined;
+    const undoRecord = treeUndoService.beginOperation(undoGroupId, "move");
+
+    if (undoRecord) {
+        treeUndoService.snapshotBranchWithSiblings(undoRecord, branchToMove);
+        treeUndoService.snapshotSiblingsOf(undoRecord, afterNote.parentNoteId);
+    }
+
     // we don't change utcDateModified, so other changes are prioritized in case of conflict
     // also we would have to sync all those modified branches otherwise hash checks would fail
     getSql().execute("UPDATE branches SET notePosition = notePosition + 10 WHERE parentNoteId = ? AND notePosition > ? AND isDeleted = 0", [afterNote.parentNoteId, originalAfterNotePosition]);
@@ -115,7 +157,13 @@ function moveBranchAfterNote(req: Request<{ branchId: string, afterBranchId: str
         newBranch.save();
 
         branchToMove.markAsDeleted();
+
+        if (undoRecord && newBranch.branchId) {
+            treeUndoService.recordCreatedBranch(undoRecord, newBranch.branchId, parentNote.noteId);
+        }
     }
+
+    treeUndoService.commitOperation(undoRecord);
 
     treeService.sortNotesIfNeeded(parentNote.noteId);
 
@@ -240,6 +288,14 @@ function deleteBranch(req: Request<{ branchId: string }>) {
 
     const taskContext = TaskContext.getInstance(req.query.taskId as string, "deleteNotes", null);
 
+    // Erasing is permanent by definition, so only soft deletes are recorded for undo.
+    const undoGroupId = req.query.undoGroupId as string | undefined;
+    const undoRecord = eraseNotes ? null : treeUndoService.beginOperation(undoGroupId, "delete");
+
+    if (undoRecord) {
+        treeUndoService.snapshotBranchWithSiblings(undoRecord, branch);
+    }
+
     const deleteId = randomString(10);
     let noteDeleted;
 
@@ -250,6 +306,14 @@ function deleteBranch(req: Request<{ branchId: string }>) {
         noteDeleted = true;
     } else {
         noteDeleted = branch.deleteBranch(deleteId, taskContext);
+    }
+
+    if (undoRecord) {
+        if (noteDeleted) {
+            treeUndoService.recordDeletedNote(undoRecord, branch.noteId, deleteId);
+        }
+
+        treeUndoService.commitOperation(undoRecord);
     }
 
     if (last) {

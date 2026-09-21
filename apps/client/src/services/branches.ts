@@ -28,13 +28,22 @@ async function moveBeforeBranch(branchIdsToMove: string[], beforeBranchId: strin
         return;
     }
 
+    const undoGroupId = utils.randomString(10);
+    let movedCount = 0;
+
     for (const branchIdToMove of branchIdsToMove) {
-        const resp = await server.put<Response>(`branches/${branchIdToMove}/move-before/${beforeBranchId}`);
+        const resp = await server.put<Response>(`branches/${branchIdToMove}/move-before/${beforeBranchId}?undoGroupId=${undoGroupId}`);
 
         if (!resp.success) {
             toastService.showError(resp.message);
-            return;
+            break;
         }
+
+        movedCount++;
+    }
+
+    if (movedCount > 0) {
+        showUndoToast(t("branches.notes-moved", { count: movedCount }));
     }
 }
 
@@ -56,13 +65,22 @@ async function moveAfterBranch(branchIdsToMove: string[], afterBranchId: string)
 
     branchIdsToMove.reverse(); // need to reverse to keep the note order
 
+    const undoGroupId = utils.randomString(10);
+    let movedCount = 0;
+
     for (const branchIdToMove of branchIdsToMove) {
-        const resp = await server.put<Response>(`branches/${branchIdToMove}/move-after/${afterBranchId}`);
+        const resp = await server.put<Response>(`branches/${branchIdToMove}/move-after/${afterBranchId}?undoGroupId=${undoGroupId}`);
 
         if (!resp.success) {
             toastService.showError(resp.message);
-            return;
+            break;
         }
+
+        movedCount++;
+    }
+
+    if (movedCount > 0) {
+        showUndoToast(t("branches.notes-moved", { count: movedCount }));
     }
 }
 
@@ -79,6 +97,9 @@ async function moveToParentNote(branchIdsToMove: string[], newParentBranchId: st
 
     branchIdsToMove = filterRootNote(branchIdsToMove);
 
+    const undoGroupId = utils.randomString(10);
+    let movedCount = 0;
+
     for (const branchIdToMove of branchIdsToMove) {
         const branchToMove = froca.getBranch(branchIdToMove);
 
@@ -86,12 +107,18 @@ async function moveToParentNote(branchIdsToMove: string[], newParentBranchId: st
             continue;
         }
 
-        const resp = await server.put<Response>(`branches/${branchIdToMove}/move-to/${newParentBranchId}`, undefined, componentId);
+        const resp = await server.put<Response>(`branches/${branchIdToMove}/move-to/${newParentBranchId}?undoGroupId=${undoGroupId}`, undefined, componentId);
 
         if (!resp.success) {
             toastService.showError(resp.message);
-            return;
+            break;
         }
+
+        movedCount++;
+    }
+
+    if (movedCount > 0) {
+        showUndoToast(t("branches.notes-moved", { count: movedCount }));
     }
 }
 
@@ -127,6 +154,7 @@ async function deleteNotes(branchIdsToDelete: string[], forceDeleteAllClones = f
     }
 
     const taskId = utils.randomString(10);
+    const undoGroupId = utils.randomString(10);
 
     let counter = 0;
 
@@ -134,7 +162,7 @@ async function deleteNotes(branchIdsToDelete: string[], forceDeleteAllClones = f
         counter++;
 
         const last = counter === branchIdsToDelete.length;
-        const query = `?taskId=${taskId}&eraseNotes=${eraseNotes ? "true" : "false"}&last=${last ? "true" : "false"}`;
+        const query = `?taskId=${taskId}&eraseNotes=${eraseNotes ? "true" : "false"}&last=${last ? "true" : "false"}&undoGroupId=${undoGroupId}`;
 
         const branch = froca.getBranch(branchIdToDelete);
 
@@ -147,6 +175,8 @@ async function deleteNotes(branchIdsToDelete: string[], forceDeleteAllClones = f
 
     if (eraseNotes) {
         utils.reloadFrontendApp("erasing notes requires reload");
+    } else {
+        showUndoToast(t("branches.notes-deleted", { count: branchIdsToDelete.length }));
     }
 
     return true;
@@ -185,11 +215,48 @@ async function moveNodeUpInHierarchy(node: Fancytree.FancytreeNode) {
     const targetBranchId = node.getParent().data.branchId;
     const branchIdToMove = node.data.branchId;
 
-    const resp = await server.put<Response>(`branches/${branchIdToMove}/move-after/${targetBranchId}`);
+    const resp = await server.put<Response>(`branches/${branchIdToMove}/move-after/${targetBranchId}?undoGroupId=${utils.randomString(10)}`);
 
     if (!resp.success) {
         toastService.showError(resp.message);
         return;
+    }
+
+    showUndoToast(t("branches.notes-moved", { count: 1 }));
+}
+
+const UNDO_TOAST_ID = "tree-structure-undo";
+
+/**
+ * Offers a one-shot undo for the most recent tree-structure operation. The toast shares a fixed
+ * id so a new operation replaces the previous offer, mirroring the server which only retains the
+ * last undoable operation.
+ */
+function showUndoToast(message: string) {
+    toastService.showPersistent({
+        id: UNDO_TOAST_ID,
+        icon: "bx bx-undo",
+        message,
+        timeout: 8000,
+        buttons: [
+            {
+                text: t("branches.undo"),
+                onClick: ({ dismissToast }) => {
+                    dismissToast();
+                    undoLastTreeOperation();
+                }
+            }
+        ]
+    });
+}
+
+async function undoLastTreeOperation() {
+    const resp = await server.post<Response>("tree/undo");
+
+    if (resp.success) {
+        toastService.showMessage(t("branches.undo-done"));
+    } else {
+        toastService.showError(resp.message || t("branches.undo-failed"));
     }
 }
 

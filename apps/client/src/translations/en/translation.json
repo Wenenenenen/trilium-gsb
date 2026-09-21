@@ -2765,7 +2765,14 @@
     "delete-notes-in-progress": "Delete notes in progress: {{count}}",
     "delete-finished-successfully": "Delete finished successfully.",
     "undeleting-notes-in-progress": "Undeleting notes in progress: {{count}}",
-    "undeleting-notes-finished-successfully": "Undeleting notes finished successfully."
+    "undeleting-notes-finished-successfully": "Undeleting notes finished successfully.",
+    "undo": "Undo",
+    "notes-moved_one": "Moved {{count}} note.",
+    "notes-moved_other": "Moved {{count}} notes.",
+    "notes-deleted_one": "Deleted {{count}} note.",
+    "notes-deleted_other": "Deleted {{count}} notes.",
+    "undo-done": "Tree operation undone.",
+    "undo-failed": "Could not undo the tree operation."
   },
   "frontend_script_api": {
     "async_warning": "You're passing an async function to `api.runOnBackend()` which will likely not work as you intended.\\nEither make the function synchronous (by removing `async` keyword), or use `api.runAsyncOnBackendWithManualTransactionHandling()`.",

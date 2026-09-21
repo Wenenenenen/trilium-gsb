@@ -12,6 +12,7 @@ import noteService from "../../services/notes.js";
 import { getSql } from "../../services/sql/index";
 import TaskContext from "../../services/task_context.js";
 import treeService from "../../services/tree.js";
+import treeUndoService from "../../services/tree_undo.js";
 import { randomString } from "../../services/utils/index";
 
 /**
@@ -199,7 +200,22 @@ function deleteNote(req: Request<{ noteId: string }>) {
     }
     const taskContext = TaskContext.getInstance(taskId, "deleteNotes", null);
 
+    // Erasing is permanent by definition, so only soft deletes are recorded for undo.
+    const undoGroupId = req.query.undoGroupId as string | undefined;
+    const undoRecord = eraseNotes ? null : treeUndoService.beginOperation(undoGroupId, "delete");
+
+    if (undoRecord) {
+        for (const branch of note.getParentBranches()) {
+            treeUndoService.snapshotBranchWithSiblings(undoRecord, branch);
+        }
+    }
+
     note.deleteNote(deleteId, taskContext);
+
+    if (undoRecord) {
+        treeUndoService.recordDeletedNote(undoRecord, noteId, deleteId);
+        treeUndoService.commitOperation(undoRecord);
+    }
 
     if (eraseNotes) {
         eraseService.eraseNotesWithDeleteId(deleteId);

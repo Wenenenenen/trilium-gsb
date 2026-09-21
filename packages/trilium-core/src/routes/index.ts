@@ -1,5 +1,6 @@
 import optionsApiRoute from "./api/options";
 import treeApiRoute from "./api/tree";
+import treeUndoApiRoute from "./api/tree_undo";
 import keysApiRoute from "./api/keys";
 import notesApiRoute from "./api/notes";
 import attachmentsApiRoute from "./api/attachments";
@@ -84,6 +85,7 @@ interface SharedApiRoutesContext {
 export function buildSharedApiRoutes({ route, asyncRoute, asyncRouteWithoutTransaction, apiRoute, asyncApiRoute, checkApiAuth, apiResultHandler, checkApiAuthOrElectron, checkAppNotInitialized, checkSetupAuth, checkCredentials, loginRateLimiter, uploadMiddlewareWithErrorHandling, importMiddlewareWithErrorHandling, csrfMiddleware }: SharedApiRoutesContext) {
     apiRoute(GET, '/api/tree', treeApiRoute.getTree);
     apiRoute(PST, '/api/tree/load', treeApiRoute.load);
+    apiRoute(PST, '/api/tree/undo', treeUndoApiRoute.undoTreeOperation);
 
     apiRoute(GET, "/api/options", optionsApiRoute.getOptions);
     // FIXME: possibly change to sending value in the body to avoid host of HTTP server issues with slashes

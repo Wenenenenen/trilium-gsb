@@ -69,6 +69,7 @@ beforeEach(() => {
     vi.clearAllMocks();
     // Reset commonly-overridden collaborators back to safe defaults.
     server.put = vi.fn(async () => ({ success: true, message: "" })) as typeof server.put;
+    server.post = vi.fn(async () => ({ success: true, message: "" })) as typeof server.post;
     server.remove = vi.fn(async () => ({})) as typeof server.remove;
     toastService.showError = vi.fn();
     toastService.showPersistent = vi.fn();
@@ -88,7 +89,7 @@ describe("moveBeforeBranch", () => {
 
         await branches.moveBeforeBranch(["virt-x", "rootBranch", "a1"], "before1");
         expect(server.put).toHaveBeenCalledTimes(1);
-        expect(server.put).toHaveBeenCalledWith(`branches/a1/move-before/before1`);
+        expect(server.put).toHaveBeenCalledWith(expect.stringMatching(/^branches\/a1\/move-before\/before1\?undoGroupId=.+/));
         expect(beforeBranch.noteId).toBe(targetNote.noteId);
         expect(a).toBeDefined();
 
@@ -128,8 +129,8 @@ describe("moveAfterBranch", () => {
         await branches.moveAfterBranch(["m1", "m2"], "afterDest");
         expect(server.put).toHaveBeenCalledTimes(2);
         // reversed order: m2 first, then m1
-        expect((server.put as any).mock.calls[0][0]).toBe("branches/m2/move-after/afterDest");
-        expect((server.put as any).mock.calls[1][0]).toBe("branches/m1/move-after/afterDest");
+        expect((server.put as any).mock.calls[0][0]).toMatch(/^branches\/m2\/move-after\/afterDest\?undoGroupId=.+/);
+        expect((server.put as any).mock.calls[1][0]).toMatch(/^branches\/m1\/move-after\/afterDest\?undoGroupId=.+/);
 
         server.put = vi.fn(async () => ({ success: false, message: "fail" })) as typeof server.put;
         await branches.moveAfterBranch(["m1"], "afterDest");
@@ -184,7 +185,11 @@ describe("moveToParentNote", () => {
         await branches.moveToParentNote(["missingBranch", "hoistedBranch", "searchChildBranch", "regularBranch"], "destParent", "comp-1");
 
         expect(server.put).toHaveBeenCalledTimes(1);
-        expect(server.put).toHaveBeenCalledWith("branches/regularBranch/move-to/destParent", undefined, "comp-1");
+        expect(server.put).toHaveBeenCalledWith(
+            expect.stringMatching(/^branches\/regularBranch\/move-to\/destParent\?undoGroupId=.+/),
+            undefined,
+            "comp-1"
+        );
     });
 
     it("shows error and bails when the move fails", async () => {
@@ -396,7 +401,7 @@ describe("moveNodeUpInHierarchy", () => {
         hoistedNoteService.isTopLevelNode = vi.fn(() => false);
 
         await branches.moveNodeUpInHierarchy(fakeNode({ parentNoteType: "text", parentBranchId: "pb", branchId: "cb" }));
-        expect(server.put).toHaveBeenCalledWith("branches/cb/move-after/pb");
+        expect(server.put).toHaveBeenCalledWith(expect.stringMatching(/^branches\/cb\/move-after\/pb\?undoGroupId=.+/));
 
         server.put = vi.fn(async () => ({ success: false, message: "denied" })) as typeof server.put;
         await branches.moveNodeUpInHierarchy(fakeNode({ parentNoteType: "text", parentBranchId: "pb", branchId: "cb" }));
@@ -481,5 +486,85 @@ describe("ws task-message subscribers", () => {
         const succeededToast = (toastService.showPersistent as any).mock.calls[1][0];
         expect(succeededToast.id).toBe("ue3");
         expect(succeededToast.timeout).toBe(5000);
+    });
+});
+
+describe("tree operation undo toast", () => {
+    /** Extracts the single undo toast shown via showPersistent. */
+    function getUndoToast() {
+        expect(toastService.showPersistent).toHaveBeenCalledTimes(1);
+        const toast = (toastService.showPersistent as any).mock.calls[0][0];
+        expect(toast.id).toBe("tree-structure-undo");
+        return toast;
+    }
+
+    it("offers an undo toast after a successful move, which triggers the undo endpoint", async () => {
+        const targetNote = buildNote({ title: "Undo target" });
+        makeBranch("undoBefore", targetNote.noteId);
+        const note = buildNote({ title: "Undo moved" });
+        makeBranch("undoMoveBranch", note.noteId);
+
+        await branches.moveBeforeBranch(["undoMoveBranch"], "undoBefore");
+
+        const toast = getUndoToast();
+        expect(toast.buttons).toHaveLength(1);
+
+        // Clicking the Undo button dismisses the toast and calls the undo endpoint.
+        const dismissToast = vi.fn();
+        toast.buttons[0].onClick({ dismissToast });
+        expect(dismissToast).toHaveBeenCalled();
+        await vi.waitFor(() => expect(server.post).toHaveBeenCalledWith("tree/undo"));
+    });
+
+    it("shows an error when the server reports the undo as no longer possible", async () => {
+        server.post = vi.fn(async () => ({ success: false, message: "Cannot undo: parent gone" })) as typeof server.post;
+
+        const targetNote = buildNote({ title: "Undo target 2" });
+        makeBranch("undoBefore2", targetNote.noteId);
+        const note = buildNote({ title: "Undo moved 2" });
+        makeBranch("undoMoveBranch2", note.noteId);
+
+        await branches.moveBeforeBranch(["undoMoveBranch2"], "undoBefore2");
+
+        getUndoToast().buttons[0].onClick({ dismissToast: vi.fn() });
+        await vi.waitFor(() => expect(toastService.showError).toHaveBeenCalledWith("Cannot undo: parent gone"));
+    });
+
+    it("does not offer undo when the move fails", async () => {
+        server.put = vi.fn(async () => ({ success: false, message: "nope" })) as typeof server.put;
+
+        const targetNote = buildNote({ title: "Undo target 3" });
+        makeBranch("undoBefore3", targetNote.noteId);
+        const note = buildNote({ title: "Undo moved 3" });
+        makeBranch("undoMoveBranch3", note.noteId);
+
+        await branches.moveBeforeBranch(["undoMoveBranch3"], "undoBefore3");
+        expect(toastService.showPersistent).not.toHaveBeenCalled();
+    });
+
+    it("offers an undo toast after a soft delete, but not after an erase", async () => {
+        const note = buildNote({ title: "Undo deleted" });
+        makeBranch("undoDeleteBranch", note.noteId, "root");
+        appContext.triggerCommand = vi.fn((_name: any, data: any) => {
+            data.callback({ proceed: true, deleteAllClones: false, eraseNotes: false });
+        }) as any;
+
+        await branches.deleteNotes(["undoDeleteBranch"], false, false);
+        getUndoToast();
+        const removeArg = (server.remove as any).mock.calls[0][0] as string;
+        expect(removeArg).toContain("undoGroupId=");
+
+        // Erase reloads the frontend instead of offering undo.
+        (toastService.showPersistent as any).mockClear();
+        const note2 = buildNote({ title: "Undo erased" });
+        makeBranch("undoEraseBranch", note2.noteId, "root");
+        appContext.triggerCommand = vi.fn((_name: any, data: any) => {
+            data.callback({ proceed: true, deleteAllClones: false, eraseNotes: true });
+        }) as any;
+        const reloadSpy = vi.spyOn(utils, "reloadFrontendApp").mockImplementation(() => {});
+
+        await branches.deleteNotes(["undoEraseBranch"], false, false);
+        expect(toastService.showPersistent).not.toHaveBeenCalled();
+        reloadSpy.mockRestore();
     });
 });
