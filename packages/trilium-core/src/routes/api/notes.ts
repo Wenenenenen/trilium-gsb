@@ -12,6 +12,7 @@ import noteService from "../../services/notes.js";
 import { getSql } from "../../services/sql/index";
 import TaskContext from "../../services/task_context.js";
 import treeService from "../../services/tree.js";
+import treeUndoService from "../../services/tree_undo.js";
 import { randomString } from "../../services/utils/index";
 
 /**
@@ -203,6 +204,8 @@ function deleteNote(req: Request<{ noteId: string }>) {
 
     if (eraseNotes) {
         eraseService.eraseNotesWithDeleteId(deleteId);
+    } else {
+        treeUndoService.recordNoteDeletion(taskId, noteId, deleteId);
     }
 
     if (last) {

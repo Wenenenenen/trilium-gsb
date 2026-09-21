@@ -2764,6 +2764,10 @@
     "cannot-move-notes-here": "Cannot move notes here.",
     "delete-notes-in-progress": "Delete notes in progress: {{count}}",
     "delete-finished-successfully": "Delete finished successfully.",
+    "tree-structure-changed": "Note tree structure changed.",
+    "tree-operation-undone": "Tree structure change undone.",
+    "tree-operation-undo-failed": "The tree structure change could not be undone.",
+    "undo": "Undo",
     "undeleting-notes-in-progress": "Undeleting notes in progress: {{count}}",
     "undeleting-notes-finished-successfully": "Undeleting notes finished successfully."
   },

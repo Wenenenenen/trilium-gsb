@@ -8,6 +8,7 @@ import entityChangesService from "../../services/entity_changes.js";
 import { getLog } from "../../services/log.js";
 import TaskContext from "../../services/task_context.js";
 import treeService from "../../services/tree.js";
+import treeUndoService from "../../services/tree_undo.js";
 import { isEmptyOrWhitespace, randomString } from "../../services/utils/index.js";
 import { getSql } from "../../services/sql/index.js";
 import { ValidationError } from "../../errors.js";
@@ -27,6 +28,22 @@ function moveBranchToParent(req: Request<{ branchId: string, parentBranchId: str
         throw new ValidationError(`One or both branches '${branchId}', '${parentBranchId}' have not been found`);
     }
 
+    const undoTaskId = req.query.undoTaskId;
+
+    if (typeof undoTaskId === "string" && branchToMove.parentNoteId !== targetParentBranch.noteId) {
+        // Record only moves that will actually happen, so a failed or no-op move doesn't
+        // replace the previous undo record.
+        const validationResult = treeService.validateParentChild(
+            targetParentBranch.noteId,
+            branchToMove.noteId,
+            branchId
+        );
+
+        if (validationResult.success) {
+            treeUndoService.recordBranchMove(undoTaskId, branchToMove, targetParentBranch.noteId);
+        }
+    }
+
     return branchService.moveBranchToBranch(branchToMove, targetParentBranch, branchId);
 }
 
@@ -40,6 +57,14 @@ function moveBranchBeforeNote(req: Request<{ branchId: string, beforeBranchId: s
 
     if (!validationResult.success) {
         return [200, validationResult];
+    }
+
+    if (typeof req.query.undoTaskId === "string") {
+        treeUndoService.recordBranchMove(
+            req.query.undoTaskId,
+            branchToMove,
+            beforeBranch.parentNoteId
+        );
     }
 
     const originalBeforeNotePosition = beforeBranch.notePosition;
@@ -88,6 +113,14 @@ function moveBranchAfterNote(req: Request<{ branchId: string, afterBranchId: str
 
     if (!validationResult.success) {
         return [200, validationResult];
+    }
+
+    if (typeof req.query.undoTaskId === "string") {
+        treeUndoService.recordBranchMove(
+            req.query.undoTaskId,
+            branchToMove,
+            afterNote.parentNoteId
+        );
     }
 
     const originalAfterNotePosition = afterNote.notePosition;
@@ -250,6 +283,10 @@ function deleteBranch(req: Request<{ branchId: string }>) {
         noteDeleted = true;
     } else {
         noteDeleted = branch.deleteBranch(deleteId, taskContext);
+
+        if (typeof req.query.taskId === "string") {
+            treeUndoService.recordBranchDeletion(req.query.taskId, req.params.branchId, deleteId);
+        }
     }
 
     if (last) {

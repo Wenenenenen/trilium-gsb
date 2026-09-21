@@ -1476,6 +1476,7 @@ export default {
     createNewNoteWithTarget,
     updateNoteData,
     undeleteNote,
+    undeleteBranch,
     protectNoteRecursively,
     duplicateSubtree,
     duplicateSubtreeWithoutRoot,
